@@ -160,33 +160,41 @@ $this->codextemplates->inlineJS('js-tablesorter-init', $table_sorter_js); ?>
         <?php $j++; endforeach; ?>
             </tbody>
         </table>
-
-        <input type="submit" value="<?=$this->lang->line('codex_delete_selected'); ?>" name="delete_selected" id="delete-selected">
-        <input type="submit" value="<?=$this->lang->line('codex_copy_selected'); ?>" name="copy_selected" id="delete-selected">
-        <?=form_close(); ?>
-        <div id="select-all">
-            <a id="select-all-anchor" href="#">Select All</a>
-
-            <div id="pager" class="pager">
-                <form>
-                    <img src="<?php echo $this->config->item('codex_asset_folder'); ?>images/pager/icons/first.png" class="first"/>
-                    <img src="<?php echo $this->config->item('codex_asset_folder'); ?>images/pager/icons/prev.png" class="prev"/>
-                    <input type="text" class="pagedisplay"/>
-                    <img src="<?php echo $this->config->item('codex_asset_folder'); ?>images/pager/icons/next.png" class="next"/>
-                    <img src="<?php echo $this->config->item('codex_asset_folder'); ?>images/pager/icons/last.png" class="last"/>
-                    <select class="pagesize">
+<div class="well">
+<button class="btn"  id="select-all-anchor" >Select all</button>
+<button class="btn btn-danger" id="delete-selected"><?=$this->lang->line('codex_delete_selected'); ?></button>
+<button class="btn btn-primary"  id="copy-selected" onclick="return false;"><?=$this->lang->line('codex_copy_selected'); ?></button>
+   <?=form_close(); ?>
+<div style="float:right">
+<form class="form-horizontal">
+<div class="control-group">
+<label class="control-label" for="count">Выводить по </label>
+<div class="controls">
+<select class="pagesize span1">
                         <option selected="selected" value="10">10</option>
                         <option value="20">20</option>
                         <option value="30">30</option>
                         <option  value="40">40</option>
                     </select>
-                </form>
-            </div>
-            
-            <div class="clear"></div>
-            
-        </div>
+</div>
+</div>
+</form>
+</div>
+</div>
+<ul class="pager">
+  <li>
+    <a href="javascript:void" class="prev">&larr; Previous</a>
+  </li>
+    <li>
+   <span class="badge badge-info"> 1/15</span>
+  </li>
+  <li>
+    <a href="javascript:void" сlass="next">Next &rarr;</a>
+  </li>
+</ul>
+
         <?php $this->load->view('templates/'.$this->template.'/codex_choosers'); ?>
         <?php } ?>
-</div>
-<div class="clear"></div>
+   </div>
+  </div>
+</div>   

@@ -15,7 +15,8 @@ $this->codextemplates->inlineJS('js-search', $js);
 function getSearchItemHTML($fields,$query,$selected_field,$asset_folder){
 
     $search_item_expand = '<div class="search-item">
-                                <a href="#" class="search-remove"><img src="'.$asset_folder.'images/minus.png"></a>
+    <button type="button" class="search-remove btn" ><i class="icon-minus"></i></button> 
+                               
                                 '.form_input('query[]',$query).'
                                 <select name="fields[]">';
                                 if(isset($fields))
@@ -33,15 +34,19 @@ function getSearchItemHTML($fields,$query,$selected_field,$asset_folder){
 };
 
 ?>
+<style type="text/css">
+#search-form-content input, #search-form-content select {margin-bottom: 0;}
+.search-item {margin-top: 10px;}
+</style>
 
                 <div id="search-form">
-                    <img src="<?php echo $this->config->item('codex_asset_folder').$this->template.'/images/'; ?>codexnew_03.gif">
+ 
                     <div id="search-form-content">
                     <?php
                     if(!empty($this->search_action)){
                     ?>
                         <?=form_open($this->search_action); ?>
-                        <a href="#" id="search-expand"><img src="<?php echo $this->codexadmin->asset_folder; ?>images/plus.png"></a>
+                      <button type="button" id="search-expand" class="btn"><i class="icon-plus"></i></button> 
                         <?php
                             $queries = $this->input->post('query');
                             $fields = $this->input->post('fields');
@@ -71,8 +76,8 @@ function getSearchItemHTML($fields,$query,$selected_field,$asset_folder){
                                 array_shift($fields); 
                             ?>
                         </select>
-                        <input type="image" src="<?php echo $this->codexadmin->asset_folder; ?>/images/search.png" id="search-submit" />
-
+                                <button type="submit" class="btn">Search</button>
+                       
                         <div id="search-overflow">
                         <?php
                             if($queries)
@@ -86,7 +91,7 @@ function getSearchItemHTML($fields,$query,$selected_field,$asset_folder){
                     }
                     ?>
                     </div>
-                    <img src="<?php echo $this->config->item('codex_asset_folder').$this->template.'/images/'; ?>codexnew_10.gif">
+                  
                 </div>
             <div class="hidden" id="search-overflow-html">
                 <?php echo getSearchItemHTML($this->codexadmin->display_fields,'','',$this->codexadmin->asset_folder); ?>

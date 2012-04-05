@@ -88,7 +88,11 @@
             $auto_generated_links = $_auto_generated_links;
         }
 ?>
-    <div id="accordion">
+
+
+
+<div class="accordion" id="accordion2" style="margin-right:20px">
+
             <?php 
             $active = 0;
             $i=-1;
@@ -107,15 +111,26 @@
                     foreach($val as $_key=>$_val){
                         if($temp != $_val['groups']){
                             $i++;
-                            echo '<h3><a href="#">'.mb_ucfirst($_val['groups'],'UTF8').'</a></h3><div><ul>';
+                            echo '
+                            <div class="accordion-group">
+              <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse'.$i.'">
+                  '.mb_ucfirst($_val['groups'],'UTF8').'
+                </a>
+              </div>
+              <div id="collapse'.$i.'" class="accordion-body collapse '.(($i==0)?'in':'').'">
+                <div class="accordion-inner" style="background-color:whiteSmoke">
+                 <ul class="nav nav-list">';
                             $temp = $_val['groups'];
                         }
             ?>
                     <?php echo '<li';
-                          if((strstr($_val['link'],$main_url[2])) || (strcmp(humanize($_val['key']),humanize($this->page_header)) == 0)){ echo ' id="active-page"';$active=$i;}
+                          if((strstr($_val['link'],$main_url[2])) || (strcmp(humanize($_val['key']),humanize($this->page_header)) == 0)){ echo ' class="active"';$active=$i;}
                           echo '>'.codexAnchor($_val['link'],$_val['key'])."</li>\n"; 
                         }
-                        echo '</ul></div>';
+                        echo '</ul> </div>
+              </div>
+            </div>';
                       ?>
             <?php
                 }else{
@@ -126,14 +141,6 @@
                 }
             } 
             ?>
-    </div>
-    <script type="text/javascript">
-    //$("#accordion").ready(function() {
-        $("#accordion").accordion({
-            collapsible: true,
-            autoheight: false,
-            active: <?=$active?>
-        });
-    //});
-    </script>
+
+   
     </div>

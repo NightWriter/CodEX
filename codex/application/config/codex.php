@@ -21,9 +21,9 @@ $config['base_url'] .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER
 | when he/she logs in successfully
 |
 */
-$config['codex_site_title']         = "CodeExtinguisher";
+$config['codex_site_title']         = "CodEX";
 
-$config['codex_site_title']         = "CodeExtinguisher";
+$config['codex_site_title']         = "CodEX";
 $config['codex_items_per_page']     = "20";
 $config['codex_trust_mode']         = "true";
 
