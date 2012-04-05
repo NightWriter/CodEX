@@ -1,0 +1,64 @@
+page_header: 'Блоги'
+groups: 'Сайт'
+display_fields:
+    -title
+    -date_cr
+    -short_text
+    -status
+form_setup:
+    title:
+        class: TextBox
+        label: 'Название'
+        params:
+            display_name: 'Название'
+    alias:
+        class: AliasBox
+        label: 'Алиас'
+        params:
+            table: blogs
+            field: alias
+            display_name: 'Алиас'
+    date_cr:
+        class: Date
+        label: 'Дата публикации'
+        params:
+            display_name: 'Дата публикации'
+    short_text:
+        class: TextArea
+        label: 'Превью текст'
+        params:
+            display_name: 'Превью текст'
+    text:
+        class: TextArea
+        label: 'Текст'
+        params:
+            display_name: 'Текст'
+    tags:
+        class: ManyToMany
+        label: 'Таги'
+        params:
+            display_field: 
+                -title
+            display_name: 'Таги'
+            order_by:
+                -title: asc
+    meta_title:
+        class: TextBox
+        label: 'МЕТА Title'
+        params:
+            display_name: 'МЕТА Title'
+    meta_description:
+        class: TextBox
+        label: 'МЕТА описание'
+        params:
+            display_name: 'МЕТА описание'
+    meta_keywords:
+        class: TextBox
+        label: 'МЕТА ключевые слова'
+        params:
+            display_name: 'МЕТА ключевые слова'
+    status:
+        class: CheckBox
+        label: 'Выводить на сайте'
+        params:
+            display_name: 'Выводить на сайте'

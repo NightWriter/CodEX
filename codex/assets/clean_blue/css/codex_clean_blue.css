@@ -1,0 +1,642 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-weight: inherit;
+	font-style: inherit;
+	font-size: 100%;
+	font-family: "Lucida Grande", Lucida, Verdana, sans-serif;
+	vertical-align: baseline;
+}
+/* remember to define focus styles! */
+:focus {
+	outline: 0;
+}
+body {
+	line-height: 1;
+	color: black;
+	background: white;
+}
+/*было none*/
+ol, ul {
+	list-style: circle;
+}
+.ul_style{
+    list-style: none;
+}
+/* tables still need 'cellspacing="0"' in the markup */
+table {
+	border-collapse: separate;
+	border-spacing: 0;
+}
+caption, th, td {
+	text-align: left;
+	font-weight: normal;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: "";
+}
+blockquote, q {
+	quotes: "" "";
+}
+a{
+	color: inherit;
+}
+.hidden,.manytomany-hidden{
+	display: none;
+}
+
+
+
+
+
+
+
+#header{
+	padding: 15px 20px;
+	background: #1a2227;
+	color: white;
+	clear: both;
+}
+
+	#header h1{	
+		margin-top: 20px;
+		float: left;
+	}
+	
+	#header h1 a{
+		text-decoration: none;
+		font-weight: normal;
+	}
+	
+	#header #login-nav{
+		float: right;
+		text-align: center;
+		font-size: 0.8em;
+		line-height: 1.5em;
+		padding: 10px 15px;
+		background: #141b1f;
+		border: 1px solid #222e35;
+	}
+	
+	#header #login-nav:hover{
+		background-color: #101519;
+	}
+	
+	#header #login-nav a{
+		color: #ff5400;
+	}
+	
+	#header #login-nav a:hover{
+		color: #ffc232;
+	}
+
+#sub-header{
+	margin: 15px 20px 0 20px;
+	font-size: 0.8em;
+}	
+
+	#codex-crumbs{
+		position: relative;
+		top: 10px;
+	}
+		
+		#codex-crumbs li{
+			float: left;
+			color: #4c4c4c;
+		}
+		
+		#codex-crumbs a{
+			text-decoration: none;
+		}
+		
+		#codex-crumbs a:hover{
+			color: black;
+			text-decoration: underline;
+		}
+		
+		#codex-crumbs .codex-crumbs-separator{
+			width: 10px;
+			height: 8px;
+			margin: 2px 10px 0 10px;
+			background: url("../images/codexnew_07.gif");
+			float: left;
+		}
+		
+		#codex-crumbs .codex-crumbs-selected a{
+			font-weight: bold;
+			text-decoration: underline;
+			color: black;
+		}
+	
+	
+	#search-form{
+		width: 398px;
+		float: right;
+	}
+		#search-form-content{
+			background: #f1f1f1;
+			border: 1px #cdcdcd solid;
+			border-width: 0 1px;
+			margin-bottom: -6px;
+			margin-top: -3px;
+			padding: 0 0 0 5px;
+		}
+		
+		#search-expand, #search-submit{
+			position: relative;
+			top: 3px;
+		}
+		
+		#search-form input[type="text"]{
+			width: 210px;
+		}
+	
+#content{
+	margin: 15px 20px 0 20px;
+}
+
+#body{
+	width: 77%;
+	float: left;
+}
+	#body h1{
+		text-align: center;
+		font-size: 2em;
+	}
+		
+	#main-nav{
+		float: left;
+		width: 20%;
+	}
+	
+		#main-nav li.first a{
+			padding-top: 0;
+		}
+		
+		#main-nav li.first a:hover{
+			background-position: 3px left;
+		}
+	
+		#main-nav a{
+			display: block;
+			padding: 10px 15px 10px 0px;
+			padding-left: 0;
+			font-size: 0.8em;
+			color: #45728d;
+			text-decoration: none;
+		}
+		
+		#main-nav a:hover{
+			color: #16262e;
+		}
+		
+		#main-nav #active-page{
+			color: #16262e;
+			font-weight: bold;
+			padding-left: 15px;
+			background: url("../images/codexnew_20.gif") left center no-repeat;
+		}
+
+	#messages{
+		margin-top: 15px;
+	}
+		.success, .info, .failure{
+			font-size: 0.7em;
+			padding: 5px;
+		}
+		
+		.success{
+			color: #008f0c;
+			background: #b6ffcd;
+		}
+		
+		.info{
+			color: #b09d00;
+			background-color: #fff48e;
+		}
+		
+		.failure{
+			color: #bd0000;
+			background-color: #ffc0b9;
+		}
+			
+	#add-new a{
+		display: block;
+		width: 154px;
+		height: 18px;
+		font-weight: bold;
+		text-decoration: none;
+		color: #ff5400;
+}
+	
+		#add-new a:hover{
+			color: #ffc232;
+		}
+	
+	#codex-table table{
+		margin-top: 15px;
+		width: 100%;
+		font-size: 0.8em;
+	}
+	
+		#codex-table a:hover{
+			color: #ffc232;
+		}
+		
+		#codex-table #header-row, #select-all{
+			background: #a7c1de url("../images/codexnew_16.gif") repeat-x;
+			height: 18px;
+		
+		}
+		
+		#codex-table #header-row th, #select-all{
+			padding: 5px 0 5px 5px;
+			color: white;
+			font-size: 1.2em;
+		}
+		#codex-table thead th{
+			padding-left: 5px;
+		}
+		#codex-table tbody td{
+			font-size: 0.9em;
+			padding: 6px 0;
+			padding-left: 5px;
+			border-bottom: 1px #d9d9d9 solid;
+		}
+		#codex-table tbody td a{
+			color: #ff5400;
+			font-weight: bold;
+		}
+		
+		#codex-table tbody td a:hover{
+			color: #ffc232;
+		}
+		
+/*было cfcfcf		*/
+		#codex-table .even{
+			background: #E7EAF3;
+		}
+		
+		#codex-table #select-all{
+			font-size: 0.8em;
+			margin-top: 10px;
+			padding-bottom: 5px;
+			font-weight: bold;
+			border-bottom: 1px #d9d9d9 solid;
+			width: 100%;
+		}
+			#select-all a{
+			float: left;
+				margin-left: 10px;
+				color: white;
+			}
+		
+		#codex-table #delete-selected{
+			margin-top: 10px;
+		}
+		
+#pager{
+	float: right;
+	margin-top: -2px;
+	margin-right: 10px;
+}
+	#pager img{
+		position: relative;
+		top: 3px;
+	}
+	
+
+/*  Form */
+.codex-form{
+	margin: 0 0 60px 0;
+	font-size: 0.8em;
+}
+
+	.codex-form .failure{
+		text-align: left;
+		padding: 4px;
+		margin-bottom: 10px;
+		background: #feeeee;
+	}
+	
+	.codex-form .codex-table{
+		padding: 0;
+		margin: 0;
+	}
+	
+	.codex-form .form-element{
+		padding: 10px;
+		margin: 10px 0;
+		background-color: #fafafa;
+	}
+	
+	.codex-form .form-element-text{
+		margin-left: 150px;
+		margin-bottom: 10px;
+		color: #3f5394;
+	}
+	
+	.codex-form .loading{
+		padding: 10px 0;
+		display: none;
+		margin-left: 150px;
+	}
+	
+	.codex-form label{
+		float: left;
+		font-weight: bold;
+		width: 150px;
+		color: #3f5394;
+	}
+	
+	.codex-form .radio-group{
+		margin-left: 150px;
+	}
+	
+	.codex-form .radio-group input{
+		float: left;
+		position: relative;
+		top: 4px;
+		margin-right: 5px;
+	}
+	
+	.codex-form fieldset{
+		clear: both;
+		border: 3px solid #9baad6;
+	}
+	
+	.codex-form legend{	
+		padding: 10px;
+		margin-left: 10px;
+		color: #3f5394;
+        background-color: #f6f6f7;
+    }
+    
+    .codex-form #delete-selected{
+		float: left;
+		margin: 15px 15px 0 15px;
+	}
+	
+	.codex-form #cancel-selected{
+		margin-top: 16px;
+	}
+	
+	.codex-form #cancel-selected a:hover{
+		color: grey;
+	}
+    
+	.codex-form #permissions-form{
+		border: 0;
+		background-color: #ecf3f3;
+	}
+	
+		.codex-form #permissions-form-header{
+			background: #f6f6f6;
+			border: 5px solid #fff;
+			padding: 10px;
+			margin-bottom: 10px;
+		}
+		
+		.codex-form #permissions-form-header h3{
+			margin: 0;	
+			margin-bottom: 5px;	
+		}
+		
+		.codex-form #permissions-form-header p{
+			margin: 0;	
+			padding-left: 23px;
+		}
+		
+		.codex-form #permissions-form-header .user-permission{
+			padding-left: 0;
+		}
+		
+		.codex-form #permissions-form-header img{
+			position: relative;
+			top: 4px;
+			margin-right: 5px;
+		}
+		
+		.codex-form #permissions-form-content{
+			display: none;
+			padding: 10px;
+		}
+		
+		.codex-form #permissions-form legend{
+			background: #5ab168;
+			color: #fff;
+		}
+		
+		.codex-form #permissions-form-content .label{
+			margin-bottom: 10px;
+			font-weight: bold;
+			color: #2a5432;
+		}
+		
+		.codex-form .permissions-form-left select{
+			width: 150px;
+		}
+		
+		.codex-form .permissions-form-left{
+			float: left;
+			padding-right: 20px;
+		}
+		
+	.codex-form .codex-relational{
+		float: left;
+		width: 455px;
+	}
+		.codex-form .codex-relational-left{
+			float: left;
+		}
+					
+		.codex-form .codex-relational-move{
+			float: left;
+			margin: 40px 0 0 10px;
+		}
+					
+		.codex-form .codex-relational-move img{
+			display: block;
+			margin-top: 10px;
+		}
+				
+		.codex-form .codex-relational-right{
+			float: right;
+		}
+		
+		.codex-form .codex-relational-left,
+		.codex-form .codex-relational-right
+		{
+			width: 200px;
+			height: 200px;
+			margin-bottom: 10px;
+		}
+		
+		.codex-form .codex-relational-form{
+			width: 430px;
+			background-color: #fff;
+			padding: 10px;
+			margin: 0px 0 10px 0px;
+			border: 3px solid #b3b9c5;
+		}
+		
+		.codex-form .codex-relational-form .form-element-text input{
+			margin-left: 0;
+		}
+		
+		.codex-form .codex-relational-form .form-element-text{
+			margin-bottom: 5px;
+		}
+		
+		.codex-form .codex-relational-form .form-element-text,
+		.codex-form .codex-relational-form input,
+		.codex-form .codex-relational-form textarea,
+		.codex-form .codex-relational-form select{
+			margin-left: 30px;
+
+		}	
+		
+		
+		.codex-form .relational-form-close{
+			text-align: center;
+			float: right;
+			width: 23px;
+			height: 18px;
+			display: block;
+			padding-top: 5px;
+			background-color: #e0686c;
+			color: white;
+		}
+		.codex-form .relational-form-close:hover{
+			background-color: #fcc0bc;
+		}
+		
+		.codex-form .codex-relational-form label{
+			float: none;
+			display: block;
+			margin-bottom: 10px;
+			background-color: #f3f3f3;
+			padding: 5px;
+			width: 100%;
+		}
+				
+		.codex-form .codex-relational-form .form-element{
+			background: none;
+			margin: 0;
+		}
+		
+		.codex-form .codex-relational-anchor{
+			margin-left: 0;
+			display: block;
+			width: 60px;
+			text-align: center;
+			background-color: #1eb133;
+			padding: 10px 5px;
+			color: white;
+			text-decoration: none;
+		}
+
+		
+.header {
+	cursor: pointer;
+    text-shadow: #74a0d0 1px 1px 0;
+}
+.headerSortUp {
+	background-image: url(../images/desc.png);
+}
+.headerSortDown {
+	background-image: url(../images/asc.png);
+}
+.headerSortDown, .headerSortUp {
+	background-position: center left;
+	background-repeat: no-repeat;
+	padding-left: 15px !important;
+	background-color: #476e91;
+	text-shadow: #1e2f3f 1px 1px 0;
+}
+#choosers{
+	font-size: 0.8em;
+	float: right;
+	margin-top: 15px;
+}
+	#choosers #template-chooser,#choosers #view-mode-chooser{
+		background: #e7eaf3;
+		padding: 10px;
+		text-align: right;
+	}
+	
+	#choosers #template-chooser{
+		margin-top: 5px;
+		padding-top: 5px;
+	}
+.codex-login-form{
+	width: 300px;
+	margin: auto;
+	margin-top: 100px;
+	padding: 30px;
+	background: #eff5fc;
+	font: 1.0em Georgia, "Times New Roman", Times, serif;
+	border: 15px solid #c0d7fb;
+}
+	.codex-login-form label{
+		display: block;
+		margin-bottom: 5px;
+	}
+	
+	.codex-login-form input[type="text"],
+	.codex-login-form input[type="password"]
+	{
+		margin-bottom: 10px;
+		width: 100%;
+		font-size: 0.8em;
+		padding: 5px;
+	}
+	
+	.codex-login-form input[type="submit"]{
+		font-size: 0.8em;
+	}
+	
+	.codex-login-form #messages{
+		margin-top: 0;
+		margin-bottom: 10px;
+	}
+.clear{
+	clear: both;
+}
+#statistic{
+    font-size: 0.8em;
+    margin-top: 15px;
+    width: 80%;
+}
+    #statistic #template-chooser,#choosers #view-mode-chooser{
+        background: #e7eaf3;
+        padding: 10px;
+    }
+    
+    #statistic #template-chooser{
+        margin-top: 5px;
+        padding-top: 5px;
+    }
+
+#main-nav ul{
+    border-right: 1px solid #A7C1DE;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+#main-nav h3 span{
+    left: 0;
+}
+#main-nav h3 a{
+    padding-left: 15px;
+}

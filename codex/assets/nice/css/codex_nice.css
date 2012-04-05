@@ -1,0 +1,801 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-weight: inherit;
+    font-style: inherit;
+    font-size: 100%;
+    font-family: "Lucida Grande", Lucida, Verdana, sans-serif;
+    vertical-align: baseline;
+}
+/* remember to define focus styles! */
+:focus {
+    outline: 0;
+}
+body {
+    line-height: 1;
+    color: black;
+    background: white;
+}
+/*было none*/
+ol, ul {
+    list-style: circle;
+}
+.ul_style{
+    list-style: none;
+}
+/* tables still need 'cellspacing="0"' in the markup */
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+caption, th, td {
+    text-align: left;
+    font-weight: normal;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: "";
+}
+blockquote, q {
+    quotes: "" "";
+}
+a{
+    color: inherit;
+}
+.hidden,.manytomany-hidden{
+    display: none;
+}
+
+
+
+
+
+
+
+#header{
+    padding: 15px 20px;
+    background: #1a2227;
+    color: white;
+    clear: both;
+}
+
+    #header h1{    
+        margin-top: 20px;
+        float: left;
+        font-size:32px;
+    }
+    
+    #header h1 a{
+        text-decoration: none;
+        font-weight: normal;
+    }
+    
+    #header #login-nav{
+        float: right;
+        text-align: center;
+        font-size: 0.8em;
+        line-height: 1.5em;
+        padding: 10px 15px;
+        background: #141b1f;
+        border: 1px solid #222e35;
+    }
+    
+    #header #login-nav:hover{
+        background-color: #101519;
+    }
+    
+    #header #login-nav a{
+        color: #ffffff;
+    }
+    
+    #header #login-nav a:hover{
+        color: #ffffff;
+        text-decoration:none;
+    }
+
+#sub-header{
+    margin: 0px 0px 0 0px;
+    font-size: 0.8em;
+}    
+
+    #codex-crumbs{
+        
+        
+        background:#e5e5e5;
+        border:1px solid #CCC;
+        height:25px;
+    }
+        #codex-crumbs ul {
+            padding-top:5px;
+            padding-left:20px;
+        }
+        #codex-crumbs li{
+            float: left;
+            color: #086F8F;
+        }
+        
+        #codex-crumbs a{
+            text-decoration: none;
+            color: #086F8F;
+        }
+        
+        #codex-crumbs a:hover{
+            
+            text-decoration: underline;
+        }
+        
+        #codex-crumbs .codex-crumbs-separator{
+            width: 10px;
+            height: 8px;
+            margin: 0px;
+            margin: 0 3px 0 3px;
+            background: url("../images/more.gif") no-repeat left 5px;
+            float: left;
+        }
+        
+        #codex-crumbs .codex-crumbs-selected a{
+            text-decoration: underline;
+        }
+    
+        #codex-crumbs .preview{
+            display:block;
+            float:right;
+            padding: 0 20px 0 20px;
+            background:url(../images/preview_icon.png) no-repeat left 2px;
+            height:20px;
+        }
+    
+    
+    
+    #search-form{
+        width: 398px;
+        float: right;
+    }
+        #search-form-content{
+            background: #f1f1f1;
+            border: 1px #cdcdcd solid;
+            border-width: 0 1px;
+            margin-bottom: -6px;
+            margin-top: -3px;
+            padding: 0 0 0 5px;
+        }
+        
+        #search-expand, #search-submit{
+            position: relative;
+            top: 3px;
+        }
+        
+        #search-form input[type="text"]{
+            width: 180px;
+        }
+    
+#content{
+    margin: 3px 20px 0 20px;
+}
+
+#body{
+    width: 77%;
+    float: left;
+}
+    #body h1{
+        text-align: center;
+        font-size: 2em;
+    }
+        
+    #main-nav{
+        float: left;
+        width: 20%;
+    }
+    
+        #main-nav li.first a{
+            padding-top: 0;
+        }
+        
+        #main-nav li.first a:hover{
+            background-position: 3px left;
+        }
+    
+        #main-nav a{
+            display: block;
+            padding: 10px 15px 10px 0px;
+            padding-left: 0;
+            font-size: 0.8em;
+            color: #45728d;
+            text-decoration: none;
+        }
+        
+        #main-nav a:hover{
+            color: #16262e;
+        }
+        #main-nav li a:hover{
+            color: #16262e;
+            text-decoration:underline;
+        }
+        
+        
+        #main-nav #active-page{
+            color: #16262e;
+            font-weight: bold;
+            font-size:14px;
+            /*padding-left: 15px;*/
+            /*background: url("../images/codexnew_20.gif") left center no-repeat;*/
+        }
+
+    #messages{
+        margin-top: 15px;
+    }
+    
+        .success, .info, .failure{
+            font-size: 0.7em;
+            padding: 5px;
+        }
+        
+        .success{
+            color: #008f0c;
+            background: #b6ffcd;
+        }
+        
+        .info{
+            color: #b09d00;
+            background-color: #fff48e;
+        }
+        
+        .failure{
+            color: #bd0000;
+            background-color: #ffc0b9;
+        }
+            
+    #add-new a{
+        display: block;
+        width: 154px;
+        height: 18px;
+        font-weight: bold;
+        text-decoration: none;
+        color: #086F8F;
+}
+    
+        #add-new a:hover{
+            color: #ffc232;
+        }
+    
+    #codex-table table{
+        margin-top: 15px;
+        width: 100%;
+        font-size: 0.8em;
+    }
+    
+        #codex-table a:hover{
+            color: #ffc232;
+        }
+        #codex-table #header-row th {
+            border-bottom:1px solid #000000;
+        }
+        #codex-table #header-row, #select-all{
+            background:#666666;
+            height: 18px;
+        
+        }
+        
+        #codex-table #header-row th, #select-all{
+            padding: 5px 0 5px 5px;
+            color: white;
+            font-size: 11px;
+            vertical-align: middle;
+        }
+        #codex-table thead th{
+            padding-left: 5px;
+            
+        }
+        #codex-table tbody td{
+            font-size: 11px;
+            padding: 2px 0;
+            padding-left: 5px;
+            border-bottom: 1px #d9d9d9 solid;
+            cursor:pointer;
+        }
+        #codex-table tbody tr:hover td {        
+            background:#FFF8A5;
+            border-bottom: 1px solid #F1D663;
+        }    
+
+        
+        #codex-table tbody td a{
+            color: #086F8F;
+        }
+        
+        #codex-table tbody td a:hover{
+            color:#660000;
+        }
+        
+/*было cfcfcf        */
+        #codex-table .even{
+            background: #e5e5e5;
+        }
+        
+        #codex-table #select-all{
+            font-size: 0.8em;
+            margin-top: 10px;
+            padding-bottom: 5px;
+            font-weight: bold;
+            border-bottom: 1px #d9d9d9 solid;
+            width: 100%;
+        }
+            #select-all a{
+            float: left;
+                margin-left: 10px;
+                color: white;
+            }
+        
+        #codex-table #delete-selected{
+            margin-top: 10px;
+        }
+        
+#pager{
+    float: right;
+    margin-top: -2px;
+    margin-right: 10px;
+}
+    #pager img{
+        position: relative;
+        top: 3px;
+    }
+    
+
+/*  Form */
+.codex-form{
+    margin: 0 0 60px 0;
+    font-size: 11px;
+}
+
+    .codex-form .failure{
+        text-align: left;
+        padding: 4px;
+        margin-bottom: 10px;
+        background: #feeeee;
+    }
+    
+    .codex-form .codex-table{
+        padding: 0;
+        margin: 0;
+    }
+    
+    .codex-form .form-element{
+        padding: 2px 10px 2px 10px;
+        margin: 0px;
+        border-bottom: 1px solid #D9D9D9;
+        background:#e5e5e5;
+    }
+    
+    .codex-form .form-element-text{
+        margin-left: 150px;
+        margin-bottom: 10px;
+        color: #3f5394;
+    }
+    
+    .codex-form .loading{
+        padding: 10px 0;
+        display: none;
+        margin-left: 150px;
+    }
+    
+    .codex-form label{
+        float: left;
+        font-weight: normal;
+        width: 150px;
+        color: #666666;
+        padding: 4px 0 0 0;
+    }
+    
+    .codex-form .radio-group{
+        margin-left: 150px;
+    }
+    
+    .codex-form .radio-group input{
+        float: left;
+        position: relative;
+        top: 4px;
+        margin-right: 5px;
+    }
+    
+    .codex-form fieldset{
+        clear: both;
+        border: 3px solid #9baad6;
+    }
+    
+    .codex-form legend{    
+        padding: 10px;
+        margin-left: 10px;
+        color: #3f5394;
+        background-color: #f6f6f7;
+    }
+    
+    .codex-form #delete-selected{
+        float: left;
+        margin: 15px 15px 0 0px;
+    }
+    
+    .codex-form #cancel-selected{
+        margin-top: 16px;
+    }
+    
+    .codex-form #cancel-selected a {
+        background: none repeat scroll 0 0 #EF3200;
+        border: 1px solid #DF2F00;
+        color: #FFFFFF;
+        cursor: pointer;
+        font: -moz-button;
+        line-height: normal !important;
+        padding: 0px 6px 3px 6px;
+        text-align: center;
+        white-space: pre;
+        text-decoration: none;
+    }
+    
+    
+    .codex-form #permissions-form{
+        border: 0;
+        background-color: #ecf3f3;
+    }
+    
+        .codex-form #permissions-form-header{
+            background: #f6f6f6;
+            border: 5px solid #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .codex-form #permissions-form-header h3{
+            margin: 0;    
+            margin-bottom: 5px;    
+        }
+        
+        .codex-form #permissions-form-header p{
+            margin: 0;    
+            padding-left: 23px;
+        }
+        
+        .codex-form #permissions-form-header .user-permission{
+            padding-left: 0;
+        }
+        
+        .codex-form #permissions-form-header img{
+            position: relative;
+            top: 4px;
+            margin-right: 5px;
+        }
+        
+        .codex-form #permissions-form-content{
+            display: none;
+            padding: 10px;
+        }
+        
+        .codex-form #permissions-form legend{
+            color: #086F8F;
+            cursor:pointer;
+            border-bottom:1px dashed #086F8F;
+            padding: 3px 0px 2px 0px;
+        }
+        .codex-form #permissions-form legend:hover{
+            color: #086F8F;
+            cursor:pointer;
+            border-bottom:1px dashed #ffffff;
+            padding: 3px 0px 2px 0px;
+        }
+        
+        
+        .codex-form #permissions-form-content .label{
+            margin-bottom: 10px;
+            font-weight: normal;
+            color: #666666;
+        }
+        
+        .codex-form .permissions-form-left select{
+            width: 150px;
+        }
+        
+        .codex-form .permissions-form-left{
+            float: left;
+            padding-right: 20px;
+        }
+        
+    .codex-form .codex-relational{
+        float: left;
+        width: 435px;
+    }
+        .codex-form .codex-relational-left{
+            float: left;
+        }
+                    
+        .codex-form .codex-relational-move{
+            float: left;
+            margin: 40px 0 0 10px;
+        }
+                    
+        .codex-form .codex-relational-move img{
+            display: block;
+            margin-top: 10px;
+            width:15px;
+            height:15px;
+        }
+                
+        .codex-form .codex-relational-right{
+            float: right;
+        }
+        
+        .codex-form .codex-relational-left,
+        .codex-form .codex-relational-right
+        {
+            width: 200px;
+            height: 200px;
+            margin-bottom: 10px;
+        }
+        
+        .codex-form .codex-relational-form{
+            width: 414px;
+            background-color: #fff;
+            padding: 10px;
+            margin: 0px 0 10px 0px;
+            border: 1px solid #b3b9c5;
+        }
+        
+        .codex-form .codex-relational-form .form-element-text input{
+            margin-left: 0;
+        }
+        
+        .codex-form .codex-relational-form .form-element-text{
+            margin-bottom: 5px;
+        }
+        
+        .codex-form .codex-relational-form .form-element-text,
+        .codex-form .codex-relational-form input,
+        .codex-form .codex-relational-form textarea,
+        .codex-form .codex-relational-form select{
+            margin-left: 0px;
+
+        }    
+        
+        
+        .codex-form .relational-form-close{
+            text-align: center;
+            float: right;
+            width: 23px;
+            height: 18px;
+            display: block;
+            padding-top: 5px;
+            
+            background-color: #fcc0bc;
+            color: white;
+            cursor:pointer;
+        }
+        .codex-form .relational-form-close:hover{
+            background-color: #e0686c;
+        }
+        
+        .codex-form .codex-relational-form label{
+            float: none;
+            display: block;
+            margin-bottom: 10px;
+            background-color: #f3f3f3;
+            padding: 5px;
+            width: 100%;
+        }
+                
+        .codex-form .codex-relational-form .form-element{
+            background: none;
+            margin: 0;
+        }
+        
+        .codex-form .codex-relational-anchor{
+            margin-left: 0;
+            display: block;
+            width: 60px;
+            text-align: center;
+            
+            background: #FFAD1F;
+            border: 1px solid #EFA21D;
+            
+            padding: 3px 3px;
+            color: white;
+            text-decoration: none;
+            cursor:pointer;
+        }
+
+        
+.header {
+    cursor: pointer;
+}
+.headerSortUp {
+    background-image: url(../images/desc.png);
+}
+.headerSortDown {
+    background-image: url(../images/asc.png);
+}
+.headerSortDown, .headerSortUp {
+    background-position: center left;
+    background-repeat: no-repeat;
+    padding-left: 15px !important;
+}
+.loadingSort{
+    background-image: url(../images/loading_small.gif);
+}
+#choosers{
+    font-size: 0.8em;
+    float: right;
+    margin-top: 15px;
+}
+    #choosers #template-chooser,#choosers #view-mode-chooser{
+        background: #e7eaf3;
+        padding: 10px;
+        text-align: right;
+    }
+    
+    #choosers #template-chooser{
+        margin-top: 5px;
+        padding-top: 5px;
+    }
+.codex-login-form{
+    width: 300px;
+    margin: auto;
+    margin-top: 100px;
+    padding: 30px;
+    background: #eff5fc;
+    font: 1.0em Georgia, "Times New Roman", Times, serif;
+    border: 15px solid #c0d7fb;
+}
+    .codex-login-form label{
+        display: block;
+        margin-bottom: 5px;
+    }
+    
+    .codex-login-form input[type="text"],
+    .codex-login-form input[type="password"]
+    {
+        margin-bottom: 10px;
+        width: 100%;
+        font-size: 0.8em;
+        padding: 5px;
+    }
+    
+    .codex-login-form input[type="submit"]{
+        font-size: 0.8em;
+    }
+    
+    .codex-login-form #messages{
+        margin-top: 0;
+        margin-bottom: 10px;
+    }
+.clear{
+    clear: both;
+}
+#statistic{
+    font-size: 0.8em;
+    margin-top: 15px;
+    width: 80%;
+}
+    #statistic #template-chooser,#choosers #view-mode-chooser{
+        background: #e7eaf3;
+        padding: 10px;
+    }
+    
+    #statistic #template-chooser{
+        margin-top: 5px;
+        padding-top: 5px;
+    }
+
+#main-nav ul{
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+#main-nav h3 span{
+    left: 0;
+}
+#main-nav h3 a{
+    padding-left: 15px;
+}
+
+#accordion  {
+    padding-right:20px;
+}
+h3.ui-accordion-header {
+    background:#666;    
+    border:1px solid #333;
+   -moz-border-radius:0px;
+   border-bottom-left-radius: 0px;
+   border-bottom-right-radius: 0px;
+   border-top-left-radius: 0px;
+   border-top-right-radius: 0px;
+   
+   
+   color:#ffffff;
+}
+h3.ui-accordion-header a {
+    padding: 2px 15px 3px 15px !important;
+    color:#ffffff !important;
+    font-size:12px !important;
+}
+h3.ui-accordion-header .ui-icon {
+    display:none;
+}
+h3.ui-accordion-header a:hover {
+    color:#ffffff !important;
+}
+.ui-accordion .ui-accordion-content {
+    padding: 5px 15px 0 15px !important;
+    background:#e5e5e5;
+}
+.ui-accordion .ui-accordion-content li {
+    list-style:none;
+    font-size:14px;
+    
+}
+.ui-accordion .ui-accordion-content li a {
+    padding:0px !important;
+    color:#086F8F !important;
+}
+
+.title {
+    background: #666;
+    border: 1px solid #333;
+    height:25px;
+}
+.title h1 {
+    font-size:14px !important;
+    font-weight:normal;
+    color:#ffffff;
+    display:block;
+    width:200px;
+    float:left;
+    padding: 4px 0 0 5px;
+    text-align:left !important;
+}
+.title #add-new {
+    float:right;
+    color:#ffffff;
+}
+.title #add-new a {
+    color:#ffffff;
+    font-size:12px;
+    font-weight:normal;
+    text-decoration: underline;
+    padding-top:4px;
+    padding-right:23px;
+    text-align:right;
+}
+
+button, input[type="reset"], input[type="button"], input[type="submit"] {
+    -moz-appearance: button;
+    -moz-binding: none;
+    -moz-box-sizing: border-box;
+    -moz-user-select: none;
+    background: #EF3200;
+    border: 1px solid #DF2F00;
+    
+  
+    
+    color: #fff;
+    cursor: default;
+    font: -moz-button;
+    line-height: normal !important;
+    padding: 0 6px;
+    text-align: center;
+    white-space: pre;
+    cursor: pointer;
+}
+
+.pagination {
+    text-align:center;
+    font-size:12px;
+}
+.pagination a {
+    font-size:11px;
+}
