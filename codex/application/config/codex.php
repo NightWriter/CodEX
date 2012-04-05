@@ -44,8 +44,5 @@ $config['codex_exclude_tables']     = array(
                                       );
 
 $config['codex_navigation']         = array(
-                                        /*'Example'=>'example/',
-                                        'User Registration'=>'userregistration/'*/
+                                        'Build components'=>array('groups'=>'System', 'link'=>'construct')
                                       );
-
-?>

@@ -23,6 +23,7 @@ class Construct extends codexController
                 $this->codextemplates->css('template-css-'.$k,$this->config->item('codex_asset_folder').$this->template.'/css/'.$file);
         }
         //
+        $this->codextemplates->js('jquery',$this->config->item('codex_asset_folder').'js/jquery.js');
         $files = get_files('./codex/assets/'.$this->template.'/js/');
         if(!empty($files))
         {
