@@ -667,7 +667,7 @@ class codexController extends CI_Controller {
         if(!$id){
             show_error($this->lang->line('codex_invalid_id'));
         }
-
+        
         $query = $this->db->get_where('user_records',array('user_id'=>$this->codexsession->userdata('user_id'),
                                                            'record_id'=>$id));
         $result = $query->result_array();
@@ -677,6 +677,7 @@ class codexController extends CI_Controller {
                 redirect(str_replace('&amp;','&',$this->controller_link));
             }
         }
+        
         $this->codexmodel->copy_row($table,$id);
         
         return false;
@@ -694,6 +695,7 @@ class codexController extends CI_Controller {
         $this->codextemplates->printHTML();
     }
     function manage(){
+        
         if($id = $this->input->post('edit'))
             return $this->_edit();
 
@@ -713,7 +715,8 @@ class codexController extends CI_Controller {
         }
         else if($id = $this->input->post('copy_selected')){
             $selected_rows = $this->input->post("selected_rows");
-
+            
+            
             if(is_array($selected_rows)){
                 foreach($selected_rows as $id){
                     $this->_copy_selected_helper($id);

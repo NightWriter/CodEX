@@ -45,7 +45,7 @@ class CRUD extends codexController{
         $config['controller_link'] = $prefix.$this->implodeAssoc('=','&amp;',array_merge($_GET,array('m'=>'index')));
         
         $config['ordering_link'] = $prefix.$this->implodeAssoc('=','&amp;',array_merge($_GET,array('m'=>'ajax_ordering')));
-        $config['pagination_link'] = $prefix.$this->implodeAssoc('=','&amp;',array_merge($_GET,array('m'=>'ajax_pagination')));
+        $config['pagination_link'] = site_url($prefix.$this->implodeAssoc('=','&amp;',array_merge($_GET,array('m'=>'ajax_pagination'))));
         
         $config['edit_link'] = $prefix.$this->implodeAssoc('=','&amp;',array_merge($_GET,array('m'=>'manage','a'=>'edit','id'=>'{num}')));
         $config['add_link'] = $prefix.$this->implodeAssoc('=','&amp;',array_merge($_GET,array('m'=>'add')));

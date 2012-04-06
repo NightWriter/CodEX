@@ -108,7 +108,6 @@ class CodexModel extends CI_Model{
     function copy_row($table,$id){
         if($this->table_data_logs == $table)
             return;
-            
         $this->db->where($this->codexadmin->primary_key, $id);
         $row = $this->db->get($table,1);
         if($row->num_rows == 1){
@@ -116,7 +115,7 @@ class CodexModel extends CI_Model{
             foreach($row->row() as $key=>$val)
                 if($key != $this->codexadmin->primary_key)
                     $insert[$key] = $val;
-            
+        
             return $this->db->insert($table,$insert);
         }
         return;

@@ -160,9 +160,10 @@ $this->codextemplates->inlineJS('js-tablesorter-init', $table_sorter_js); ?>
         <?php $j++; endforeach; ?>
             </tbody>
         </table>
+<div id="pager" class="pager">
 <div class="well">
 <button class="btn"  id="select-all-anchor" >Select all</button>
-<button class="btn btn-danger" id="delete-selected" name="delete_selected" value="1"><?=$this->lang->line('codex_delete_selected'); ?></button>
+<button class="btn btn-danger" id="delete-selected" onclick="return confirm('Вы уверены?')" name="delete_selected" value="1"><?=$this->lang->line('codex_delete_selected'); ?></button>
 <button class="btn btn-primary"  id="copy-selected" name="copy_selected" value="1"><?=$this->lang->line('codex_copy_selected'); ?></button>
    <?=form_close(); ?>
 <div style="float:right">
@@ -193,7 +194,7 @@ $this->codextemplates->inlineJS('js-tablesorter-init', $table_sorter_js); ?>
     <a href="javascript:void" сlass="next">Next &rarr;</a>
   </li>
 </ul>
-
+</div>
         <?php $this->load->view('templates/'.$this->template.'/codex_choosers'); ?>
         <?php } ?>
    </div>
