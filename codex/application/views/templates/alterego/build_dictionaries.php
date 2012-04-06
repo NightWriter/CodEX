@@ -16,13 +16,14 @@ jQuery(document).ready(function(){
             jQuery.post('<?=site_url('dictionaries/check_alias')?>',{name:obj.val()},function(data){
                 if(data == 1)
                 {
-                    jQuery('#alias_yes').show();
-                    jQuery('#alias_no').hide();
+                    jQuery('#div_alias').removeClass('error');
+                    jQuery('#div_alias').addClass('success');
+                    
                 }else
                 {
-                    jQuery('#alias_no').show();
-                    jQuery('#alias_yes').hide();
-                }
+                    jQuery('#div_alias').removeClass('success');
+                    jQuery('#div_alias').addClass('error');                
+                } 
             });
             
         });
@@ -40,7 +41,7 @@ jQuery(document).ready(function(){
             <input type="text" value="" name="title" id="title" /> 
         </div>
     </div>
-    <div class="control-group">
+    <div class="control-group"  id="div_alias">
         <label class="control-label" for="alias">Alias</label>
         <div class="controls">
             <input type="text" name="alias" value="" id="alias" /> 
@@ -54,8 +55,6 @@ jQuery(document).ready(function(){
 </fieldset>
 <fieldset>
     <legend>Values</legend>
-    <a id="add_field" class="btn btn-success" href="#"><i class="icon-plus icon-white"></i> Add Value</a>
-    
     
     <div id="blanck_fields">
         <div class="control-group">
@@ -65,7 +64,7 @@ jQuery(document).ready(function(){
             </div>
         </div>
     </div>
-    <div id="area_fields">
+    <div id="area_fields" style="padding-top:20px">
         
         <div class="control-group">
             <label class="control-label" for="value">Value</label>
@@ -75,9 +74,9 @@ jQuery(document).ready(function(){
         </div>
         
     </div>
-    
+<div class="form-actions" style="background:none"> <button  id="add_field" class="btn btn-success" href="#"><i class="icon-plus icon-white"></i> Add value</button>   </div>    
 </fieldset>
 <div class="form-actions">
-    <button type="submit" name="codex_installer_submit" class="btn btn-primary">Save</button>    
+    <button type="submit" name="codex_installer_submit" class="btn btn-primary">Create dictionary</button>    
 </div>
 </form>
