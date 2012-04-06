@@ -779,8 +779,8 @@ class codexController extends CI_Controller {
                 $this->codextemplates->js('js-'.$k,$this->config->item('codex_asset_folder').$this->template.'/js/'.$file);
         }
         $this->codextemplates->loadView('templates/'.$this->template.'/codex_header');
-        $this->codextemplates->loadView('templates/'.$this->template.'/codex_footer');
         $this->codextemplates->loadView('templates/'.$this->template.'/'.$data['view'],$data);
+        $this->codextemplates->loadView('templates/'.$this->template.'/codex_footer');
         $this->codextemplates->setTitle($this->config->item('codex_site_title').' - '.$data['title']);
         $this->codextemplates->printHTML();
     }

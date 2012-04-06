@@ -35,8 +35,8 @@ class codexAdmin {
         $this->db_table        = (isset($params['db_table']))? $params['db_table'] : show_error($this->CI->lang->line('codex_table_not_defined'));
         $this->form_setup      = (isset($params['form_setup']))? $params['form_setup'] : show_error($this->CI->lang->line('codex_form_not_defined'));
         $this->controller_name = (isset($params['controller_name']))? $params['controller_name'] : show_error($this->CI->lang->line('codex_controller_not_defined'));
-        $this->form_prefix     = (isset($params['form_prefix']))? $params['form_prefix'] : '<div class="form-element">';
-        $this->form_suffix     = (isset($params['form_suffix']))? $params['form_suffix'] : '<div class="clear"></div></div>';
+        $this->form_prefix     = (isset($params['form_prefix']))? $params['form_prefix'] : '<div class="control-group">';
+        $this->form_suffix     = (isset($params['form_suffix']))? $params['form_suffix'] : '</div>';
         $this->rules           = (isset($params['rules']))? $params['rules'] : array();
         $this->primary_key     = (isset($params['primary_key']))? $params['primary_key'] : 'id';
 

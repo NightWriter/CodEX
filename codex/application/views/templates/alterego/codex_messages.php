@@ -6,19 +6,19 @@ if(!function_exists('message_output'))
         $output = '';
         switch($type){
             case 'success':
-                $prefix = '<div class="success">';
+                $prefix = '<div class="alert alert-success">';
                 $suffix = '</div>';
             break;
             case 'info':
-                $prefix = '<div class="info">';
+                $prefix = '<div class="alert alert-info">';
                 $suffix = '</div>';
             break;
             case 'failure':
-                $prefix = '<div class="failure">';
+                $prefix = '<div class="alert alert-error">';
                 $suffix = '</div>';
             break;
             default:
-                $prefix = '<div class="info">';
+                $prefix = '<div class="alert alert-info">';
                 $suffix = '</div>';
             break;
         }

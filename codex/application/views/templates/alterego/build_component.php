@@ -28,12 +28,13 @@ jQuery(document).ready(function(){
             jQuery.post('<?=site_url('construct/check_alias')?>',{name:obj.val()},function(data){
                 if(data == 1)
                 {
-                    jQuery('#alias_yes').show();
-                    jQuery('#alias_no').hide();
+                    jQuery('#div_alias').removeClass('error');
+                    jQuery('#div_alias').addClass('success');
+                    
                 }else
                 {
-                    jQuery('#alias_no').show();
-                    jQuery('#alias_yes').hide();
+                    jQuery('#div_alias').removeClass('success');
+                    jQuery('#div_alias').addClass('error');                
                 }
             });
             
@@ -52,13 +53,11 @@ jQuery(document).ready(function(){
             <input type="text" value="" name="title" id="title" /> 
         </div>
     </div>
-    <div class="control-group">
+    <div class="control-group" id="div_alias">
         <label class="control-label" for="alias">Alias</label>
         <div class="controls">
             <input type="text" name="alias" value="" id="alias" /> 
             
-            <img src="<?=base_url()?>codex/images/no.jpg" id="alias_no" style="display:none;width: 20px;" class="alias_img">
-            <img src="<?=base_url()?>codex/images/yes.jpg" id="alias_yes" style="display:none;width: 20px;" class="alias_img">
             <span class="help-inline">It should only contain letters and numbers</span>
         </div>
     </div>
@@ -66,10 +65,10 @@ jQuery(document).ready(function(){
 </fieldset>
 <fieldset>
     <legend>Fields</legend>
-    <a id="add_field" class="btn btn-success" href="#"><i class="icon-plus icon-white"></i> Add Field</a>
     
     
-    <div id="blanck_fields">
+    
+    <div id="blanck_fields" >
         <div class="control-group">
             <label class="control-label" for="label_field">Label field</label>
             <div class="controls">
@@ -104,7 +103,7 @@ jQuery(document).ready(function(){
             </div>
         </div>
     </div>
-    <div id="area_fields">
+    <div id="area_fields" style="padding-top: 20px;">
         <div class="control-group">
             <label class="control-label" for="label_field">Label field</label>
             <div class="controls">
@@ -146,9 +145,9 @@ jQuery(document).ready(function(){
             </div>
         </div>
     </div>
-    
+<div class="form-actions" style="background:none"> <button  id="add_field" class="btn btn-success" href="#"><i class="icon-plus icon-white"></i> Add new field</button>   </div>
 </fieldset>
 <div class="form-actions">
-    <button type="submit" name="codex_installer_submit" class="btn btn-primary">Save</button>    
+    <button type="submit" name="codex_installer_submit" class="btn btn-primary">Create new component</button>    
 </div>
 </form>

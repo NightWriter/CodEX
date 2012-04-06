@@ -11,7 +11,7 @@ class Construct extends codexController
     function check_alias()
     {
         $name = $this->input->post('name');
-        if(preg_match('/[^a-zA-Z0-9_]+/u',$alias))
+        if(preg_match('/[^a-zA-Z0-9_]+/u',$name))
             exit('0');
         $file_name = strip_tags(trim($name));
         if(empty($file_name))

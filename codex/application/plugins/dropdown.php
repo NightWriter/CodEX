@@ -44,7 +44,7 @@ class DropDown extends codexForms
             $html .= '<div class="failure">'.$this->getMessage($this->name).'</div>';
 
         $html .= '
-            <label for="'.$this->element_name.'">
+            <label for="'.$this->element_name.'" class="control-label">
                 '.$this->label.'
             </label>';
         $html .= '<select name="'.$this->element_name.((isset($this->params['multiple']) AND $this->params['multiple'] == true)?'[]':'').'" ';

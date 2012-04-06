@@ -197,12 +197,12 @@ EOT;
         if($this->getMessage($this->name))
             $html .= '<div class="failure">'.$this->getMessage($this->name).'</div>';
 
-        $html .= ' <label for="'.$this->name.'">
+        $html .= ' <label for="'.$this->name.'"  class="control-label" >
                     '.$this->label.'
                    </label>';
 
-        $html .='<div class="'.$this->name.'-relational codex-relational">
-                   <select class="codex-relational-left" name="'.$this->element_name.'_null[]" multiple>'."\n";
+        $html .='<div class="controls"><div class="'.$this->name.'-relational codex-relational"  style="float:left">
+                   <select class="codex-relational-left" name="'.$this->element_name.'_null[]" multiple></div>'."\n";
 
         foreach($all_foreign_records as $row){
                 $display_field = '';
@@ -222,6 +222,14 @@ EOT;
         }
 
         $html .='  </select>
+        <div class="codex-relational-move" style="float:left;margin:5px 20px">
+                     <button class="btn relational-move" href="#">
+                        <i class="icon-chevron-right"></i>
+                      </button>
+                     <button class="btn relational-move-back" style="display: block; margin-top:5px" href="#">
+                        <i class="icon-chevron-left"></i>
+                      </button>
+                   </div>
                    <select class="codex-relational-right" name="'.$this->element_name.'_selected_values[]" multiple>';
 
         foreach($this->preselected_rows as $row){
@@ -240,16 +248,8 @@ EOT;
             $html .= '<option name="'.$this->name.'" value="'.$row[$this->primary_key].'">'.$display_field.'</option>'."\n";
         }
 
-        $html .='  </select>
-                   <div class="codex-relational-move">
-                     <a class="relational-move" href="#">
-                        <img src="'.$this->CI->config->item('codex_asset_folder').'images/relational_move.png">
-                      </a>
-                      <a class="relational-move-back" href="#">
-                        <img src="'.$this->CI->config->item('codex_asset_folder').'images/relational_move_back.png">
-                      </a>
-                   </div>
-                   <div class="clear"></div><table border=0 cellspacing=0 cellpadding=0>';
+        $html .='  </select></div>
+                   <table border=0 cellspacing=0 cellpadding=0>';
                    
         if(!empty($this->change_field)){
             foreach($this->preselected_rows as $row){
