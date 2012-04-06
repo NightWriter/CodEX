@@ -7,10 +7,36 @@ class Construct extends codexController
     {
         parent::__construct();
     }
-    //
-    function index()
+    // проверяем уникальность для компонента
+    function check_alias()
     {
-        $this->template                 = (isset($_COOKIE['codex_template']))? $_COOKIE['codex_template'] : $this->config->item("codex_template");
+        $file_name = trim($this->input->post('name')).'.yml';
+        $files = get_files('./codex/application/definitions/');
+        
+        if(!in_array($file_name,$files))
+            echo 1;
+        else
+            echo 0;
+    }
+    // проверяем права на запись
+    function _check_perms(&$data)
+    {
+        if(!file_exists('./codex/application/definitions/'))
+            $data['errors'][] = 'Не существует директории ./codex/application/definitions';
+        if(!is_writable('./codex/application/definitions/'))
+            $data['errors'][] = 'Нет прав на запись в папке ./codex/application/definitions';
+        //
+        if(!file_exists('./application/modules/'))
+            $data['errors'][] = 'Не существует директории ./application/modules';
+        if(!is_writable('./application/modules/'))
+            $data['errors'][] = 'Нет прав на запись в папке ./application/modules';
+    }
+    //
+    function index($data = array())
+    {
+        $this->_check_perms($data);
+        
+        $this->template = (isset($_COOKIE['codex_template']))? $_COOKIE['codex_template'] : $this->config->item("codex_template");
 
         $this->codextemplates->clearHTML();
         $this->codextemplates->docType('html5');
@@ -32,40 +58,76 @@ class Construct extends codexController
         }
         $this->codextemplates->loadView('templates/'.$this->template.'/codex_header');
         $this->codextemplates->loadView('templates/'.$this->template.'/codex_footer');
-        $this->codextemplates->loadView('templates/alterego/build_component');
+        $this->codextemplates->loadView('templates/alterego/build_component',$data);
         $this->codextemplates->setTitle($this->config->item('codex_site_title').' - Build component');
         $this->codextemplates->printHTML();
     }
     //
     function build()
     {
+        $data = array();
+        
+        $this->_check_perms($data);
+        
+        //if(!empty($data))
+            //redirect('construct');
+            
         $fields     = '';
         $yml_fields = '';
         
-        $title = $this->input->post('title');
-        $alias = $this->input->post('alias');
-        
-        foreach($_POST['type_field'] as $k=>$v)
+        $title = trim($this->input->post('title'));
+        $alias = trim($this->input->post('alias'));
+        //
+        $file_name = $alias.'.yml';
+        $files = get_files('./codex/application/definitions/');
+        // проверяем есть ли уже такой файл,
+        // чтобы соблюдать уникальность
+        if(in_array($file_name,$files))
+            $data['errors']['alias'] = 'Alias "'.$alias.'" exists';
+        //
+        if(empty($_POST['type_field']))
+            $data['errors']['alias'] = 'Ошибка данных: не найден тип полей';
+        if(empty($_POST['name_field']))
+            $data['errors']['alias'] = 'Ошибка данных: не найдено имя полей';
+        if(empty($_POST['label_field']))
+            $data['errors']['alias'] = 'Ошибка данных: не найдено название полей';
+        if(sizeof($_POST['type_field']) != sizeof($_POST['name_field']) || sizeof($_POST['name_field']) != sizeof($_POST['label_field']))
+            $data['errors']['alias'] = 'Ошибка данных: не совпадает информация о полях';
+        //
+        if(empty($data['errors']))
         {
-            // пропускаем невидимые поля
-            if($k == 0) continue;
-            
-            $type = '';
-            if(in_array($v, array('textbox','aliasbox','checkbox','dropdown','password','image','file')))
-                $type = 'varchar(255)';
-            if($v == 'textarea')
-                $type = 'text';
+            foreach($_POST['type_field'] as $k=>$v)
+            {
+                // пропускаем невидимые поля
+                if($k == 0) continue;
                 
-            $fields .= '`'.$_POST['name_field'][$k].'` '.$type.' NOT NULL, ';
-            
-            $yml_fields .= '    
-    '.$_POST['name_field'][$k].":
-        class: ".$v."
-        label: '".$_POST['label_field'][$k]."'
-        params:
-            display_name: '".$_POST['label_field'][$k]."'";
-        }
-        
+                $type = '';
+                if(in_array($v, array('textbox','aliasbox','checkbox','dropdown','password','radio','image','file')))
+                    $type = 'varchar(255)';
+                
+                if($v == 'date')
+                    $type = 'DATE';
+                if($v == 'time')
+                    $type = 'DATETIME';
+                    
+                if($v == 'textarea')
+                    $type = 'text';
+                
+                //dbdropdown
+                //manytomany
+                
+                $fields .= '`'.$_POST['name_field'][$k].'` '.$type.' NOT NULL, ';
+                
+                $yml_fields .= '    
+        '.$_POST['name_field'][$k].":
+            class: ".$v."
+            label: '".$_POST['label_field'][$k]."'
+            params:
+                display_name: '".$_POST['label_field'][$k]."'";
+            }
+/*        
+создаём таблицу
+*/
         $sql = 'CREATE TABLE `'.$alias.'` (
                                   `id` int(11) NOT NULL auto_increment,
                                   '.$fields.'
@@ -74,9 +136,19 @@ class Construct extends codexController
         $yml = 'page_header: \''.$title.'\'
 groups: \'Default\'
 form_setup:'.$yml_fields;
-
+/*        
+создаём *.yml файл для автоматической генерации в админке
+*/
         $fp = fopen('./codex/application/definitions/'.$alias.'.yml','w');
         fwrite($fp,$yml);
         fclose($fp);        
+/*        
+создаём модуль на фронтенде
+*/
+
+// редирект на созданые файл в админке
+        }else{
+            $this->index();            
+        }
     }
 }

@@ -7,13 +7,35 @@ jQuery(document).ready(function(){
         jQuery('#area_fields').after(jQuery('#blanck_fields').html());
         return false;
     });
+    
+    jQuery('#alias').keyup(function(e){
+            jQuery('#alias_yes').hide();
+            jQuery('#alias_no').hide();
+            
+            var obj = jQuery(this);
+            jQuery.post('<?=site_url('construct/check_alias')?>',{name:obj.val()},function(data){
+                if(data == 1)
+                    jQuery('#alias_yes').show();
+                else
+                    jQuery('#alias_no').show();
+            });
+            
+        });
 });
-
 </script>
+<?php
+if(!empty($errors))
+{
+    foreach($errors as $error)
+    {
+        echo $error.'<br>';
+    }
+}
+?>
 <form action="<?=site_url('construct/build')?>" method="post" class="form-horizontal">
 <fieldset>
       <legend>New Component</legend>
-    <div class="control-group ">
+    <div class="control-group">
         <label class="control-label" for="title">Title</label>
         <div class="controls">
             <input type="text" value="" name="title" id="title" /> 
@@ -23,6 +45,9 @@ jQuery(document).ready(function(){
         <label class="control-label" for="alias">Alias</label>
         <div class="controls">
             <input type="text" name="alias" value="" id="alias" /> 
+            
+            <img src="<?=base_url()?>codex/images/no.jpg" id="alias_no" style="display:none;width: 20px;" class="alias_img">
+            <img src="<?=base_url()?>codex/images/yes.jpg" id="alias_yes" style="display:none;width: 20px;" class="alias_img">
             <span class="help-inline">It should only contain letters and numbers</span>
         </div>
     </div>
@@ -57,7 +82,8 @@ jQuery(document).ready(function(){
                     <option value="date">Date</option>
                     <option value="time">Date Time</option>
                     <option value="dropdown">DropDown</option>
-                    <!--<option value="dbdropdown">DbDropDown</option>-->
+                    <option value="dbdropdown">DbDropDown</option>
+                    <option value="manytomany">ManyToMany</option>
                     <option value="checkbox">Checkbox</option>
                     <option value="radio">Radio button</option>
                     <option value="file">File</option>
