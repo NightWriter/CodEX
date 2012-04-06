@@ -161,7 +161,7 @@ form_setup:'.$yml_fields;
         fclose($fp);
         
         // редирект на созданые файл в админке
-        redirect('?c=crud&m=index&t='.$alias);
+        redirect('c=crud&m=index&t='.$alias);
         }else{
             $this->index($data);
         }
