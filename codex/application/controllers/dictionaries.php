@@ -8,10 +8,17 @@ class Dictionaries extends codexController
         parent::__construct();
     }
     //
+    function _check_perms(&$data)
+    {
+        if(!file_exists('./codex/application/definitions/'))
+            $data['errors'][] = 'Не существует директории ./codex/application/definitions';
+        if(!is_writable('./codex/application/definitions/'))
+            $data['errors'][] = 'Нет прав на запись в папке ./codex/application/definitions';
+    }
+    //
     function check_alias()
     {
         $name          = $this->input->post('name');
-        $dictionary_id = $this->input->post('dictionary_id');
         
         if(preg_match('/[^a-zA-Z0-9_]+/u',$name))
             exit('0');
@@ -26,29 +33,25 @@ class Dictionaries extends codexController
         {
             echo 1;
         }else{
-            if($row->row()->id == $dictionary_id)
-                echo 1;
-            else
-                echo 0;
+            echo 0;
         }
     }
     //
     function build()
     {
         $data           = array();
+        
+        $this->_check_perms($data);
+        
         $alias          = strip_tags(trim($this->input->post('alias')));
         $title          = strip_tags(trim($this->input->post('title')));
         $value          = $this->input->post('value');
-        $dictionary_id  = $this->input->post('dictionary_id');
-        $dictionary     = NULL;
         
         $this->db->where('alias_table',$alias);
         $row = $this->db->get('dictionaries',1);
         if($row->num_rows == 1)
         {
-            $dictionary = $row->row();
-            if( $dictionary_id != $dictionary->id )
-                $data['errors'][] = 'Alias "'.$alias.'" exists';
+            $data['errors'][] = 'Alias "'.$alias.'" exists';
         }
         if(preg_match('/[^a-zA-Z0-9_]+/u',$alias))
             $data['errors'][] = 'Alias должен содержать только латинские буквы и цифры';
@@ -75,25 +78,11 @@ class Dictionaries extends codexController
         
         if(empty($data['errors']))
         {
-            if(empty($dictionary_id))
-            {
-                // create table and insert data
-                $this->db->set('alias_table',$alias);
-                $this->db->set('desc',$title);
-                $this->db->insert('dictionaries');
-                //
-                $redirect_id = $this->db->insert_id();
-            }else{
-                $this->db->set('alias_table',$alias);
-                $this->db->set('desc',$title);
-                $this->db->where('id',$dictionary->id);
-                $this->db->update('dictionaries');
-                
-                $redirect_id = $dictionary->id;
-                
-                $sql = 'DROP TABLE  `'.$dictionary->alias_table.'` ';
-                $this->db->query($sql);
-            }
+            // create table and insert data
+            $this->db->set('alias_table',$alias);
+            $this->db->set('desc',$title);
+            $this->db->insert('dictionaries');
+            //
             
             $sql = 'CREATE TABLE  `'.$alias.'` (
                          `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
@@ -109,7 +98,20 @@ class Dictionaries extends codexController
                     $this->db->insert($alias);
                 }
             }
-            redirect('dictionaries/index/'.$redirect_id);
+            ///
+            $yml = 'page_header: \''.$title.'\'
+groups: \'Dictionaries\'
+form_setup:
+    value:
+        class: TextBox';
+/*        
+создаём *.yml файл для автоматической генерации в админке
+*/
+        $fp = fopen('./codex/application/definitions/'.$alias.'.yml','w');
+        fwrite($fp,$yml);
+        fclose($fp);
+            ///
+            redirect('dictionaries/index/');
         }else{
             $this->index($data);
         }
@@ -117,32 +119,10 @@ class Dictionaries extends codexController
     //
     function index($data = array())
     {
-        $dictionary_id = $this->uri->segment(3);
-        if(is_numeric($dictionary_id))
-            $data = array();
+        $this->_check_perms($data);
         
         $data['view'] = 'build_dictionaries';
         $data['title'] = 'Dictionaries';
-        
-        $rows = $this->db->get('dictionaries');
-        if($rows->num_rows > 0)
-            $data['dictionaries'] = $rows->result();
-        
-        $dictionary_id = ((!empty($dictionary_id))?$dictionary_id:trim($this->input->post('dictionary_id')));
-        if( !empty($dictionary_id) && is_numeric($dictionary_id) )
-        {
-            $this->db->where('id',$dictionary_id);
-            $row = $this->db->get('dictionaries',1);
-            if($row->num_rows == 1)
-            {
-                $data['dictionary'] = $row->row();
-                
-                $rows = $this->db->get($data['dictionary']->alias_table);
-                if($rows->num_rows > 0)
-                    $data['dictionary_values'] = $rows->result();
-            }
-            
-        }
         
         $this->_view($data);
     }
