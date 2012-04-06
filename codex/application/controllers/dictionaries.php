@@ -11,9 +11,9 @@ class Dictionaries extends codexController
     function _check_perms(&$data)
     {
         if(!file_exists('./codex/application/definitions/'))
-            $data['errors'][] = 'Не существует директории ./codex/application/definitions';
+            $data['messages']['failure'][] = 'Не существует директории ./codex/application/definitions';
         if(!is_writable('./codex/application/definitions/'))
-            $data['errors'][] = 'Нет прав на запись в папке ./codex/application/definitions';
+            $data['messages']['failure'][] = 'Нет прав на запись в папке ./codex/application/definitions';
     }
     //
     function check_alias()
@@ -51,16 +51,16 @@ class Dictionaries extends codexController
         $row = $this->db->get('dictionaries',1);
         if($row->num_rows == 1)
         {
-            $data['errors'][] = 'Alias "'.$alias.'" exists';
+            $data['messages']['failure'][] = 'Alias "'.$alias.'" exists';
         }
         if(preg_match('/[^a-zA-Z0-9_]+/u',$alias))
-            $data['errors'][] = 'Alias должен содержать только латинские буквы и цифры';
+            $data['messages']['failure'][] = 'Alias должен содержать только латинские буквы и цифры';
         
         if(empty($title))
-            $data['errors'][] = 'Title empty';
+            $data['messages']['failure'][] = 'Title empty';
         
         if(!is_array($value))
-            $data['errors'][] = 'Ошибка данных';
+            $data['messages']['failure'][] = 'Ошибка данных';
             
         $insert_data = array();
         if(is_array($value))
@@ -74,9 +74,9 @@ class Dictionaries extends codexController
             }
         }
         if(empty($insert_data))
-            $data['errors'][] = 'Не введенны значения';
+            $data['messages']['failure'][] = 'Не введенны значения';
         
-        if(empty($data['errors']))
+        if(empty($data['messages']))
         {
             // create table and insert data
             $this->db->set('alias_table',$alias);

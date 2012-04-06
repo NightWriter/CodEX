@@ -28,15 +28,9 @@ jQuery(document).ready(function(){
         });
 });
 </script>
-<?php
-if(!empty($errors))
-{
-    foreach($errors as $error)
-    {
-        echo $error.'<br>';
-    }
-}
-?>
+<div id="messages">
+    <?php $this->codextemplates->loadInlineView('templates/'.$this->template.'/codex_messages');?>
+</div>
 <form action="<?=site_url('dictionaries/build')?>" method="post" class="form-horizontal">
 <fieldset>
       <legend>New Dictionaries</legend>
