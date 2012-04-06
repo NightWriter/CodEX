@@ -44,5 +44,6 @@ $config['codex_exclude_tables']     = array(
                                       );
 
 $config['codex_navigation']         = array(
-                                        'Build components'=>array('groups'=>'System', 'link'=>'construct')
+                                        'Build Components'=>array('groups'=>'System', 'link'=>'construct'),
+                                        'Build Dictionaries'=>array('groups'=>'System', 'link'=>'dictionaries')
                                       );

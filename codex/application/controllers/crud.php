@@ -38,23 +38,27 @@ class CRUD extends codexController{
 
         // Setup the special links 
         
-        $config['controller_link'] = '?'.$this->implodeAssoc('=','&amp;',array_merge($_GET,array('m'=>'index')));
+        $prefix = '?';
+        if($this->config->item("enable_query_strings"))
+            $prefix = '';
+            
+        $config['controller_link'] = $prefix.$this->implodeAssoc('=','&amp;',array_merge($_GET,array('m'=>'index')));
         
-        $config['ordering_link'] = '?'.$this->implodeAssoc('=','&amp;',array_merge($_GET,array('m'=>'ajax_ordering')));
-        $config['pagination_link'] = '?'.$this->implodeAssoc('=','&amp;',array_merge($_GET,array('m'=>'ajax_pagination')));
+        $config['ordering_link'] = $prefix.$this->implodeAssoc('=','&amp;',array_merge($_GET,array('m'=>'ajax_ordering')));
+        $config['pagination_link'] = $prefix.$this->implodeAssoc('=','&amp;',array_merge($_GET,array('m'=>'ajax_pagination')));
         
-        $config['edit_link'] = '?'.$this->implodeAssoc('=','&amp;',array_merge($_GET,array('m'=>'manage','a'=>'edit','id'=>'{num}')));
-        $config['add_link'] = '?'.$this->implodeAssoc('=','&amp;',array_merge($_GET,array('m'=>'add')));
+        $config['edit_link'] = $prefix.$this->implodeAssoc('=','&amp;',array_merge($_GET,array('m'=>'manage','a'=>'edit','id'=>'{num}')));
+        $config['add_link'] = $prefix.$this->implodeAssoc('=','&amp;',array_merge($_GET,array('m'=>'add')));
         
         if(isset($config['user_link']))
             $config['user_link'] = $config['user_link'];
 
-        $config['add_action'] = '?'.$this->implodeAssoc('=','&amp;',array_merge($_GET,array('m'=>'execute_add')));
-        $config['edit_action'] = '?'.$this->implodeAssoc('=','&amp;',array('c'=>'crud','m'=>'execute_edit','t'=>$table));
-        $config['delete_action'] = '?'.$this->implodeAssoc('=','&amp;',array('c'=>'crud','m'=>'manage','a'=>'delete_selected','t'=>$table));
-        $config['search_action'] = '?'.$this->implodeAssoc('=','&amp;',array('c'=>'crud','m'=>'search','a'=>'delete_selected','t'=>$table));
-        $config['template_chooser_action'] = '?'.$this->implodeAssoc('=','&amp;',array('c'=>'crud','m'=>'changeTemplate','a'=>'delete_selected','t'=>$table));
-        $config['view_mode_chooser_action'] = '?'.$this->implodeAssoc('=','&amp;',array('c'=>'crud','m'=>'changeViewMode','a'=>'delete_selected','t'=>$table));
+        $config['add_action'] = $prefix.$this->implodeAssoc('=','&amp;',array_merge($_GET,array('m'=>'execute_add')));
+        $config['edit_action'] = $prefix.$this->implodeAssoc('=','&amp;',array('c'=>'crud','m'=>'execute_edit','t'=>$table));
+        $config['delete_action'] = $prefix.$this->implodeAssoc('=','&amp;',array('c'=>'crud','m'=>'manage','a'=>'delete_selected','t'=>$table));
+        $config['search_action'] = $prefix.$this->implodeAssoc('=','&amp;',array('c'=>'crud','m'=>'search','a'=>'delete_selected','t'=>$table));
+        $config['template_chooser_action'] = $prefix.$this->implodeAssoc('=','&amp;',array('c'=>'crud','m'=>'changeTemplate','a'=>'delete_selected','t'=>$table));
+        $config['view_mode_chooser_action'] = $prefix.$this->implodeAssoc('=','&amp;',array('c'=>'crud','m'=>'changeViewMode','a'=>'delete_selected','t'=>$table));
 
 
         $this->setConfig($config);

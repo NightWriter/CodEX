@@ -49,7 +49,7 @@
          <div class="page-header">
          <h1 style="float:left;"><?php echo mb_ucfirst($this->page_header); ?></h1>
          <?php if($this->add_link) echo '
-<a class="btn btn-success"  style="float:right;margin:0" href="'.$this->add_link.'"><i class="icon-plus icon-white"></i> Добавить запись</a> '; ?>
+<a class="btn btn-success"  style="float:right;margin:0" href="'.site_url($this->add_link).'"><i class="icon-plus icon-white"></i> Добавить запись</a> '; ?>
    <div style="clear:both"></div>   
 </div>
         

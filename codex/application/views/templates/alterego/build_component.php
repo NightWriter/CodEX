@@ -1,6 +1,18 @@
 <script type="text/javascript">
 jQuery(document).ready(function(){
     jQuery('#blanck_fields').hide();
+    jQuery('#dictionaries').hide();
+    
+    jQuery('.type_field').change(function(){
+        
+        jQuery('#dictionaries').hide();
+        
+        var val = jQuery(this).val();
+        
+        if( val == 'dropdown' || val == 'checkbox' || val == 'radio' )
+            jQuery('#dictionaries').show();
+        
+    });
     
     jQuery('#add_field').click(function(){
         
@@ -15,9 +27,14 @@ jQuery(document).ready(function(){
             var obj = jQuery(this);
             jQuery.post('<?=site_url('construct/check_alias')?>',{name:obj.val()},function(data){
                 if(data == 1)
+                {
                     jQuery('#alias_yes').show();
-                else
+                    jQuery('#alias_no').hide();
+                }else
+                {
                     jQuery('#alias_no').show();
+                    jQuery('#alias_yes').hide();
+                }
             });
             
         });
@@ -55,7 +72,7 @@ if(!empty($errors))
 </fieldset>
 <fieldset>
     <legend>Fields</legend>
-    <a id="add_field" class="btn btn-success" href="#"><i class="icon-plus icon-white"></i> Добавить поле</a>
+    <a id="add_field" class="btn btn-success" href="#"><i class="icon-plus icon-white"></i> Add Field</a>
     
     
     <div id="blanck_fields">
@@ -74,7 +91,7 @@ if(!empty($errors))
         <div class="control-group ">
             <label class="control-label" for="type_field">Type field</label>
             <div class="controls">
-                <select name="type_field[]" id="type_field">
+                <select name="type_field[]" class="type_field" id="type_field">
                     <option value="-">-</option>
                     <option value="textbox">Text</option>
                     <option value="password">Password</option>
@@ -82,13 +99,14 @@ if(!empty($errors))
                     <option value="date">Date</option>
                     <option value="time">Date Time</option>
                     <option value="dropdown">DropDown</option>
-                    <option value="dbdropdown">DbDropDown</option>
-                    <option value="manytomany">ManyToMany</option>
+                    <!--<option value="dbdropdown">DbDropDown</option>
+                    <option value="manytomany">ManyToMany</option>-->
                     <option value="checkbox">Checkbox</option>
                     <option value="radio">Radio button</option>
                     <option value="file">File</option>
                     <option value="image">Image</option>
                 </select>
+                
             </div>
         </div>
     </div>
@@ -108,7 +126,7 @@ if(!empty($errors))
         <div class="control-group ">
             <label class="control-label" for="type_field">Type field</label>
             <div class="controls">
-                <select name="type_field[]" id="type_field">
+                <select name="type_field[]" class="type_field" id="type_field">
                     <option value="-">-</option>
                     <option value="textbox">Text</option>
                     <option value="password">Password</option>
@@ -116,12 +134,21 @@ if(!empty($errors))
                     <option value="date">Date</option>
                     <option value="time">Date Time</option>
                     <option value="dropdown">DropDown</option>
-                    <!--<option value="dbdropdown">DbDropDown</option>-->
+                    <!--<option value="dbdropdown">DbDropDown</option>
+                    <option value="manytomany">ManyToMany</option>-->
                     <option value="checkbox">Checkbox</option>
                     <option value="radio">Radio button</option>
                     <option value="file">File</option>
                     <option value="image">Image</option>
                 </select>
+                <? if(!empty($dictionaries)): ?>
+                <select name="dictionaries[]" id="dictionaries">
+                    <option value="0">выбери из списка</option>
+                    <? foreach($dictionaries as $row): ?>
+                        <option value="<?=$row->id?>"><?=$row->desc?></option>
+                    <? endforeach; ?>
+                </select>
+                <? endif; ?>
             </div>
         </div>
     </div>

@@ -124,6 +124,22 @@ EOD;
                         $errors[] = "Problem creating the new database. Do you have enough privleges to do so?";
                 }
 ///
+            $sql = 'CREATE TABLE  `dictionaries` (
+                     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+                     `alias_table` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
+                     `desc` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
+                    PRIMARY KEY (  `id` )
+                    ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;';
+
+            $result = mysql_query($sql);
+            
+            if(!$result)
+               $warnings['dictionaries'] = "Problem creating the dictionaries table: ".mysql_error();
+            
+            $affected_rows = mysql_affected_rows();
+            if($affected_rows == 1)
+                $success['dictionaries'] =  "Successfully created the table (dictionaries).";
+                
             $sql = 'CREATE TABLE IF NOT EXISTS `access` (
               `id` int(11) NOT NULL AUTO_INCREMENT,
               `title` varchar(255) NOT NULL,
@@ -134,11 +150,11 @@ EOD;
             $result = mysql_query($sql);
             
             if(!$result)
-               $warnings['ci_sessions'] = "Problem creating the access table: ".mysql_error();
+               $warnings['access'] = "Problem creating the access table: ".mysql_error();
 
             $affected_rows = mysql_affected_rows();
             if($affected_rows == 1)
-                $success['ci_sessions'] =  "Successfully created the table (access).";
+                $success['access'] =  "Successfully created the table (access).";
             //
             $sql = 'CREATE TABLE IF NOT EXISTS `access_level` (
               `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -149,11 +165,11 @@ EOD;
             $result = mysql_query($sql);
             
             if(!$result)
-               $warnings['ci_sessions'] = "Problem creating the access_level table: ".mysql_error();
+               $warnings['access_level'] = "Problem creating the access_level table: ".mysql_error();
 
             $affected_rows = mysql_affected_rows();
             if($affected_rows == 1)
-                $success['ci_sessions'] =  "Successfully created the table (access_level).";
+                $success['access_level'] =  "Successfully created the table (access_level).";
 
 
             $sql = 'CREATE TABLE IF NOT EXISTS `admin_data_logs` (
@@ -170,11 +186,11 @@ EOD;
             $result = mysql_query($sql);
             
             if(!$result)
-               $warnings['ci_sessions'] = "Problem creating the admin_data_logs table: ".mysql_error();
+               $warnings['admin_data_logs'] = "Problem creating the admin_data_logs table: ".mysql_error();
 
             $affected_rows = mysql_affected_rows();
             if($affected_rows == 1)
-                $success['ci_sessions'] =  "Successfully created the table (admin_data_logs).";
+                $success['admin_data_logs'] =  "Successfully created the table (admin_data_logs).";
 
             $sql = 'CREATE TABLE IF NOT EXISTS `access_access_level` (
               `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -186,11 +202,11 @@ EOD;
             $result = mysql_query($sql);
             
             if(!$result)
-               $warnings['ci_sessions'] = "Problem creating the access_access_level table: ".mysql_error();
+               $warnings['access_access_level'] = "Problem creating the access_access_level table: ".mysql_error();
 
             $affected_rows = mysql_affected_rows();
             if($affected_rows == 1)
-                $success['ci_sessions'] =  "Successfully created the table (access_access_level).";
+                $success['access_access_level'] =  "Successfully created the table (access_access_level).";
 ///
                     $sql = "
                             CREATE TABLE `ci_sessions` (
@@ -241,8 +257,7 @@ EOD;
                         $success['example'] =  "Successfully created the example table (example).";
 
 
-                    $sql = "
-                            CREATE TABLE `related_example` (
+                    $sql = "CREATE TABLE `related_example` (
                               `id` int(11) NOT NULL auto_increment,
                               `name` varchar(200) NOT NULL,
                               `description` text NOT NULL,
@@ -282,8 +297,7 @@ EOD;
                     if($affected_rows == 1)
                         $success['new_user'] =  "Successfully created the new account. <br>";
 
-                    $sql = "
-                            CREATE TABLE `user_records` (
+                    $sql = "CREATE TABLE `user_records` (
                               `id` int(11) NOT NULL auto_increment,
                               `user_id` int(11) NOT NULL,
                               `record_id` int(11) NOT NULL,
@@ -300,9 +314,7 @@ EOD;
                     if($affected_rows == 1)
                         $success['users_records'] = "Successfully created the table to handle user permissions (users_records).";
 
-                    $sql = "
-                            INSERT INTO  `user_records` VALUES ( NULL ,  '1',  '1',  'owner',  'users');
-                        ";
+                    $sql = "INSERT INTO  `user_records` VALUES ( NULL ,  '1',  '1',  'owner',  'users');";
                     $result = mysql_query($sql);
                     if(!$result)
                        $warnings['new_user_record'] = "Problem adding the new permissions for the new user: ".mysql_error();

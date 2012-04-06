@@ -755,4 +755,33 @@ class codexController extends CI_Controller {
         $plugin_instance = new $plugin($name,$params);
         return $plugin_instance->$action();
     }
+    //
+    function _view($data=array())
+    {
+        $this->template = (isset($_COOKIE['codex_template']))? $_COOKIE['codex_template'] : $this->config->item("codex_template");
+
+        $this->codextemplates->clearHTML();
+        $this->codextemplates->docType('html5');
+        $this->codextemplates->rawHeaderHTML('<meta http-equiv="Content-Type" content="text/html;charset=utf-8">');
+        
+        $files = get_files('./codex/assets/'.$this->template.'/css/');
+        if(!empty($files))
+        {
+            foreach($files as $k=>$file)
+                $this->codextemplates->css('template-css-'.$k,$this->config->item('codex_asset_folder').$this->template.'/css/'.$file);
+        }
+        //
+        $this->codextemplates->js('jquery',$this->config->item('codex_asset_folder').'js/jquery.js');
+        $files = get_files('./codex/assets/'.$this->template.'/js/');
+        if(!empty($files))
+        {
+            foreach($files as $k=>$file)
+                $this->codextemplates->js('js-'.$k,$this->config->item('codex_asset_folder').$this->template.'/js/'.$file);
+        }
+        $this->codextemplates->loadView('templates/'.$this->template.'/codex_header');
+        $this->codextemplates->loadView('templates/'.$this->template.'/codex_footer');
+        $this->codextemplates->loadView('templates/'.$this->template.'/'.$data['view'],$data);
+        $this->codextemplates->setTitle($this->config->item('codex_site_title').' - '.$data['title']);
+        $this->codextemplates->printHTML();
+    }
 }

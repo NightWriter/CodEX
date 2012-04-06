@@ -10,7 +10,10 @@ class Construct extends codexController
     // проверяем уникальность для компонента
     function check_alias()
     {
-        $file_name = trim($this->input->post('name'));
+        $name = $this->input->post('name');
+        if(preg_match('/[^a-zA-Z0-9_]+/u',$alias))
+            exit('0');
+        $file_name = strip_tags(trim($name));
         if(empty($file_name))
             exit('0');
             
@@ -40,31 +43,15 @@ class Construct extends codexController
     {
         $this->_check_perms($data);
         
-        $this->template = (isset($_COOKIE['codex_template']))? $_COOKIE['codex_template'] : $this->config->item("codex_template");
-
-        $this->codextemplates->clearHTML();
-        $this->codextemplates->docType('html5');
-        $this->codextemplates->rawHeaderHTML('<meta http-equiv="Content-Type" content="text/html;charset=utf-8">');
+        $data['view'] = 'build_component';
+        $data['title'] = 'Build component';
         
-        $files = get_files('./codex/assets/'.$this->template.'/css/');
-        if(!empty($files))
-        {
-            foreach($files as $k=>$file)
-                $this->codextemplates->css('template-css-'.$k,$this->config->item('codex_asset_folder').$this->template.'/css/'.$file);
-        }
-        //
-        $this->codextemplates->js('jquery',$this->config->item('codex_asset_folder').'js/jquery.js');
-        $files = get_files('./codex/assets/'.$this->template.'/js/');
-        if(!empty($files))
-        {
-            foreach($files as $k=>$file)
-                $this->codextemplates->js('js-'.$k,$this->config->item('codex_asset_folder').$this->template.'/js/'.$file);
-        }
-        $this->codextemplates->loadView('templates/'.$this->template.'/codex_header');
-        $this->codextemplates->loadView('templates/'.$this->template.'/codex_footer');
-        $this->codextemplates->loadView('templates/alterego/build_component',$data);
-        $this->codextemplates->setTitle($this->config->item('codex_site_title').' - Build component');
-        $this->codextemplates->printHTML();
+        
+        $rows = $this->db->get('dictionaries');
+        if($rows->num_rows > 0)
+            $data['dictionaries'] = $rows->result();
+        
+        $this->_view($data);
     }
     //
     function build()
@@ -76,8 +63,8 @@ class Construct extends codexController
         $fields     = '';
         $yml_fields = '';
         
-        $title = trim($this->input->post('title'));
-        $alias = trim($this->input->post('alias'));
+        $title = mysql_escape_string(strip_tags(trim($this->input->post('title'))));
+        $alias = mysql_escape_string(strip_tags(trim($this->input->post('alias'))));
         //
         $file_name = $alias.'.yml';
         $files = get_files('./codex/application/definitions/');
@@ -88,6 +75,10 @@ class Construct extends codexController
         //
         if(empty($alias))
             $data['errors']['alias'] = 'Alias is empty';
+        
+        if(preg_match('/[^a-zA-Z0-9_]+/u',$alias))
+            $data['errors'][] = 'Alias должен содержать только латинские буквы и цифры';
+        
         if(in_array($file_name,$files))
             $data['errors']['alias'] = 'Alias "'.$alias.'" exists';
         //
@@ -104,13 +95,13 @@ class Construct extends codexController
         {
             foreach($_POST['type_field'] as $k=>$v)
             {
-                $v = trim($v);
+                $v = strip_tags(trim($v));
                 // пропускаем невидимые поля или поля которые не выбрали
                 if($k == 0 || $v == '-') continue;
                 
                 $type = '';
                 if(in_array($v, array('textbox','aliasbox','checkbox','dropdown','password','radio','image','file')))
-                    $type = 'varchar(255)';
+                    $type = 'varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci ';
                 
                 if($v == 'date')
                     $type = 'DATE';
@@ -118,25 +109,28 @@ class Construct extends codexController
                     $type = 'DATETIME';
                     
                 if($v == 'textarea')
-                    $type = 'text';
+                    $type = 'text CHARACTER SET utf8 COLLATE utf8_unicode_ci';
+                
+                if($v == 'dbdropdown')
+                    $type = 'int(11) UNSIGNED ';
                 
                 //dbdropdown
                 //manytomany
                 if($v != 'manytomany')
-                    $fields .= '`'.$_POST['name_field'][$k].'` '.$type.' NOT NULL, ';
+                    $fields .= '`'.mysql_escape_string(strip_tags(trim($_POST['name_field'][$k]))).'` '.$type.' NOT NULL, ';
                 
                 $yml_fields .= '    
-        '.$_POST['name_field'][$k].":
+        '.strip_tags(trim($_POST['name_field'][$k])).":
             class: ".$v."
-            label: '".$_POST['label_field'][$k]."'
+            label: '".strip_tags(trim($_POST['label_field'][$k]))."'
             params:
-                display_name: '".$_POST['label_field'][$k]."'";
+                display_name: '".strip_tags(trim($_POST['label_field'][$k]))."'";
             }
 /*        
 создаём таблицу
 */
         $sql = 'CREATE TABLE `'.$alias.'` (
-                                  `id` int(11) NOT NULL auto_increment,
+                                  `id` int(11) UNSIGNED  NOT NULL auto_increment,
                                   '.$fields.'
                                   PRIMARY KEY  (`id`));';
         mysql_query($sql);
