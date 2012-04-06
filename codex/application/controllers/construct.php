@@ -10,7 +10,11 @@ class Construct extends codexController
     // проверяем уникальность для компонента
     function check_alias()
     {
-        $file_name = trim($this->input->post('name')).'.yml';
+        $file_name = trim($this->input->post('name'));
+        if(empty($file_name))
+            exit('0');
+            
+        $file_name .= '.yml';
         $files = get_files('./codex/application/definitions/');
         
         if(!in_array($file_name,$files))
@@ -69,9 +73,6 @@ class Construct extends codexController
         
         $this->_check_perms($data);
         
-        //if(!empty($data))
-            //redirect('construct');
-            
         $fields     = '';
         $yml_fields = '';
         
@@ -82,6 +83,11 @@ class Construct extends codexController
         $files = get_files('./codex/application/definitions/');
         // проверяем есть ли уже такой файл,
         // чтобы соблюдать уникальность
+        if(empty($title))
+            $data['errors']['title'] = 'Title is empty';
+        //
+        if(empty($alias))
+            $data['errors']['alias'] = 'Alias is empty';
         if(in_array($file_name,$files))
             $data['errors']['alias'] = 'Alias "'.$alias.'" exists';
         //
@@ -98,8 +104,9 @@ class Construct extends codexController
         {
             foreach($_POST['type_field'] as $k=>$v)
             {
-                // пропускаем невидимые поля
-                if($k == 0) continue;
+                $v = trim($v);
+                // пропускаем невидимые поля или поля которые не выбрали
+                if($k == 0 || $v == '-') continue;
                 
                 $type = '';
                 if(in_array($v, array('textbox','aliasbox','checkbox','dropdown','password','radio','image','file')))
@@ -115,8 +122,8 @@ class Construct extends codexController
                 
                 //dbdropdown
                 //manytomany
-                
-                $fields .= '`'.$_POST['name_field'][$k].'` '.$type.' NOT NULL, ';
+                if($v != 'manytomany')
+                    $fields .= '`'.$_POST['name_field'][$k].'` '.$type.' NOT NULL, ';
                 
                 $yml_fields .= '    
         '.$_POST['name_field'][$k].":
@@ -145,10 +152,25 @@ form_setup:'.$yml_fields;
 /*        
 создаём модуль на фронтенде
 */
-
-// редирект на созданые файл в админке
+        mkdir('./application/modules/'.$alias,0777);
+        mkdir('./application/modules/'.$alias.'/controllers',0777);
+        mkdir('./application/modules/'.$alias.'/models',0777);
+        mkdir('./application/modules/'.$alias.'/views',0777);
+        
+        $fp = fopen('./application/modules/'.$alias.'/controllers/'.$alias.'.php','w');
+        //
+        fclose($fp);
+        $fp = fopen('./application/modules/'.$alias.'/models/'.$alias.'_model.php','w');
+        //
+        fclose($fp);
+        $fp = fopen('./application/modules/'.$alias.'/views/'.$alias.'.php','w');
+        //
+        fclose($fp);
+        
+        // редирект на созданые файл в админке
+        redirect('?c=crud&m=index&t='.$alias);
         }else{
-            $this->index();            
+            $this->index($data);
         }
     }
 }

@@ -23,7 +23,7 @@
           <ul class="nav" style="float:right">
           <li><a><?php echo sprintf($this->lang->line('codexadmin_logged_in_as'), $user_name)?></a></li>
           <li class="active"><a href="<?php echo base_url().'index.php'; ?>" target="_blank">Просмотр сайта</a></li>
-                       <li class="active"><a href="login/quit"><?=$this->lang->line('codexadmin_logout')?></a></li>
+                       <li class="active"><a href="<?=site_url('login/quit')?>"><?=$this->lang->line('codexadmin_logout')?></a></li>
           </ul>
              <?php } 
                 ?>
