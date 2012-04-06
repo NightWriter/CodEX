@@ -69,16 +69,16 @@ class CheckBox extends codexForms
             $html .= '<div class="failure">'.$this->getMessage($this->name).'</div>';
 
         $html .= '
-            <label for="'.$this->element_name.'">
+            <label for="'.$this->element_name.'"  class="control-label">
                 '.$this->label.'
-            </label>
+            </label><div class="controls">
             <input type="checkbox" value="1" 
         '; 
         if($this->value == 'y' || $this->value == 1) 
             $html .= 'checked'; 
 
         $html.='
-            name="'.$this->element_name.'" '.$this->getAttributes($this->attributes).'>
+            name="'.$this->element_name.'" '.$this->getAttributes($this->attributes).'></div>
         ';
 
 		$html .= $this->suffix;

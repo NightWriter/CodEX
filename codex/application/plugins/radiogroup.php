@@ -21,13 +21,12 @@ class RadioGroup extends codexForms
             $html .= '<div class="failure">'.$this->getMessage($this->name).'</div>';
 
         $html .='
-            <label for="'.$this->name.'">
+            <label for="'.$this->name.'"  class="control-label">
                 '.$this->label.'
-            </label>
+            </label><div class="controls">
             ';
-        $html .= '<ul class="radio-group">';
-        $html .= $this->getList();
-        $html .= '</ul>';
+        
+        $html .= $this->getList()."</div>";
         $html .= $this->suffix;
 		
 		return $html;
@@ -36,10 +35,10 @@ class RadioGroup extends codexForms
 	{
 		$html = '';
 		foreach($this->params['list'] as $k => $v){
-            $html .= '<li><input type="radio" name="'.$this->name.'" value="'.$k.'"';
+            $html .= '<label for="'.$this->name.'" class="radio"><input type="radio" name="'.$this->name.'" value="'.$k.'"';
             if($this->value == $k)
                $html .= ' checked'; 
-            $html .= '><label for="'.$this->name.'">'.$v.'</label><div class="clear"></div></li>'."\n";
+            $html .= '>'.$v.'</label>'."\n";
         }
         $html .= '';
 		return $html;

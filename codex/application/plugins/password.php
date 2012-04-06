@@ -25,10 +25,10 @@ class Password extends codexForms
             $html .= '<div class="failure">'.$this->getMessage($this->name).'</div>';
 
         $html .= '
-            <label for="'.$this->element_name.'">
+            <label for="'.$this->element_name.'" class="control-label">
                 '.$this->label.'
-            </label>
-            <input class="text" type="password" name="'.$this->element_name.'" '.$this->getAttributes($this->attributes).'>
+            </label><div class="controls">
+            <input class="input-xlarge" type="password" name="'.$this->element_name.'" '.$this->getAttributes($this->attributes).'></div>
         ';
 
 		$html .= $this->suffix;

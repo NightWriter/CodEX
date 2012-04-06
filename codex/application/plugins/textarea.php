@@ -47,8 +47,8 @@ class TextArea extends codexForms
             $html .= '
             <table border=0>
                 <tr>
-                    <td>
-                        <label for="'.$this->element_name.'">
+                    <td> 
+                        <label for="'.$this->element_name.'"  class="control-label">
                             '.$this->label.'
                         </label>
                     </td>
@@ -57,10 +57,10 @@ class TextArea extends codexForms
             </table>';
         }else{
            $html .= '
-            <label for="'.$this->element_name.'">
+            <label for="'.$this->element_name.'" class="control-label">
                 '.$this->label.'
-            </label>
-            <textarea id="'.$this->name.'" name="'.$this->element_name.'" '.$this->getAttributes($this->attributes).'>'.$this->value.'</textarea>';
+            </label><div class="controls">
+            <textarea id="'.$this->name.'" name="'.$this->element_name.'" '.$this->getAttributes($this->attributes).'>'.$this->value.'</textarea></div>';
         }
 		$html .= $this->suffix;
 		
