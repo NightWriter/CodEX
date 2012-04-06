@@ -38,11 +38,11 @@ class Date extends codexForms
             $html .= '<div class="failure">'.$this->getMessage($this->name).'</div>';
 
         $html .= '
-            <label for="'.$this->element_name.'">
+            <label for="'.$this->element_name.'"  class="control-label">
                 '.$this->label.'
             </label>';
         $html .= '
-            <input class="text" id="codexdatepicker'.$this->name.'" type="text" value="'.$this->value.'" name="'.$this->element_name.'" '.$this->getAttributes($this->attributes).'>
+          <div class="controls">  <input  class="input-xlarge" id="codexdatepicker'.$this->name.'" type="text" value="'.$this->value.'" name="'.$this->element_name.'" '.$this->getAttributes($this->attributes).'></div>
         ';
         $js ="$(document).ready(function() {
                 $('#codexdatepicker".$this->name."').datepicker({dateFormat: 'yy-mm-dd'});

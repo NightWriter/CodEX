@@ -47,8 +47,8 @@ class codexForms
         if(!is_array($elements))
             show_error($this->CI->lang->line('codexforms_first_param_not_array'));
 
-        $this->prefix = ($prefix == "")? '<div class="form-element">' : $prefix;
-        $this->suffix = ($suffix == "")? '</div><div class="clearer"></div>' : $suffix;
+        $this->prefix = ($prefix == "")? '<div class="control-group">' : $prefix;
+        $this->suffix = ($suffix == "")? '</div>' : $suffix;
 
         foreach($elements as $name => $params){
             if(!class_exists($params['class'])){

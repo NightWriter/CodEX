@@ -23,7 +23,7 @@ if(!empty($queries) && !empty($fields) && sizeof($queries) == sizeof($fields))
 }
 
 $table_sorter_js = "
-
+var selected = false;
     $(document).ready(function() {
  
         $('#main-table')
@@ -45,10 +45,10 @@ $table_sorter_js = "
                 });
             });
         
-            var selected = false;
+            
             $('#select-all-anchor').bind('click',function(){
                 if(selected){
-                    $('#main-table input').attr('checked','');
+                    $('#main-table input').removeAttr('checked');
                     $('#select-all-anchor').text('Select All');
                     selected = false;
                 }
@@ -162,8 +162,8 @@ $this->codextemplates->inlineJS('js-tablesorter-init', $table_sorter_js); ?>
         </table>
 <div class="well">
 <button class="btn"  id="select-all-anchor" >Select all</button>
-<button class="btn btn-danger" id="delete-selected"><?=$this->lang->line('codex_delete_selected'); ?></button>
-<button class="btn btn-primary"  id="copy-selected" onclick="return false;"><?=$this->lang->line('codex_copy_selected'); ?></button>
+<button class="btn btn-danger" id="delete-selected" name="delete_selected" value="1"><?=$this->lang->line('codex_delete_selected'); ?></button>
+<button class="btn btn-primary"  id="copy-selected" name="copy_selected" value="1"><?=$this->lang->line('codex_copy_selected'); ?></button>
    <?=form_close(); ?>
 <div style="float:right">
 <form class="form-horizontal">
@@ -186,6 +186,7 @@ $this->codextemplates->inlineJS('js-tablesorter-init', $table_sorter_js); ?>
     <a href="javascript:void" class="prev">&larr; Previous</a>
   </li>
     <li>
+      <input type="text" class="pagedisplay"/>
    <span class="badge badge-info"> 1/15</span>
   </li>
   <li>

@@ -118,7 +118,7 @@
                   '.mb_ucfirst($_val['groups'],'UTF8').'
                 </a>
               </div>
-              <div id="collapse'.$i.'" class="accordion-body collapse '.(($i==0)?'in':'').'">
+              <div id="collapse'.$i.'" class="accordion-body">
                 <div class="accordion-inner" style="background-color:whiteSmoke">
                  <ul class="nav nav-list">';
                             $temp = $_val['groups'];
