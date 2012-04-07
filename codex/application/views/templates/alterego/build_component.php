@@ -16,7 +16,7 @@ jQuery(document).ready(function(){
     
     jQuery('#add_field').click(function(){
         
-        jQuery('#area_fields').after('<div class="group-new">'+jQuery('#blanck_fields').html()+'</div>');
+        jQuery('#area_fields .group-new:last-child').after('<div class="group-new">'+jQuery('#blanck_fields').html()+'</div>');
         return false;
     });
     
@@ -172,6 +172,7 @@ jQuery(document).ready(function(){
                 <? endif; ?>
             </div>
         </div>
+        <div class="group-new"></div>
     </div>
 <div class="form-actions" style="background:none"> <button  id="add_field" class="btn btn-success" href="#"><i class="icon-plus icon-white"></i> Add new field</button>   </div>
 </fieldset>
