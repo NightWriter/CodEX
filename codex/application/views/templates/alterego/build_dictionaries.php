@@ -4,7 +4,11 @@ jQuery(document).ready(function(){
     
     jQuery('#add_field').click(function(){
         
-        jQuery('#area_fields').after(jQuery('#blanck_fields').html());
+        jQuery('#area_fields').after('<div class="group-new">'+jQuery('#blanck_fields').html()+'</div>');
+        return false;
+    });
+    jQuery('fieldset').delegate('.remove-rows', 'click',function(){
+        jQuery(this).parents('.group-new').remove();
         return false;
     });
     
@@ -62,6 +66,9 @@ jQuery(document).ready(function(){
             <div class="controls">
                 <input type="text" name="value[]" value="" id="" /> 
             </div>
+        </div>
+        <div class="form-actions">
+            <a class="btn btn-danger remove-rows" href="#"><i class="icon-trash icon-white"></i>Delete</a>
         </div>
     </div>
     <div id="area_fields" style="padding-top:20px">
