@@ -117,12 +117,10 @@ jQuery(document).ready(function(){
                     <option value="file">File</option>
                     <option value="image">Image</option>
                 </select>
-                
+                <a class="btn btn-danger remove-rows" href="#"><i class="icon-trash icon-white"></i>Delete</a>
             </div>
         </div>
-        <div class="form-actions">
-            <a class="btn btn-danger remove-rows" href="#"><i class="icon-trash icon-white"></i>Delete</a>
-        </div>
+       
     </div>
     <div id="area_fields" style="padding-top: 20px;">
         <div class="control-group">

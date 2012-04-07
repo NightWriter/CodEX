@@ -64,11 +64,8 @@ jQuery(document).ready(function(){
         <div class="control-group">
             <label class="control-label" for="value">Value</label>
             <div class="controls">
-                <input type="text" name="value[]" value="" id="" /> 
+                <input type="text" name="value[]" value="" id="" /> <a class="btn btn-danger remove-rows" href="#"><i class="icon-trash icon-white"></i>Delete</a>
             </div>
-        </div>
-        <div class="form-actions">
-            <a class="btn btn-danger remove-rows" href="#"><i class="icon-trash icon-white"></i>Delete</a>
         </div>
     </div>
     <div id="area_fields" style="padding-top:20px">
