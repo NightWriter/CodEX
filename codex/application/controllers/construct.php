@@ -121,7 +121,8 @@ class Construct extends codexController
                     $fields .= '`'.mysql_escape_string($field_name).'` '.$type.' NOT NULL, ';
                 
                 if(!empty($_POST['required_field'][$k]))
-                    $rules .= "\n\t".$field_name.':trim|required';
+                    $rules .= '
+                    '.$field_name.':trim|required';
                     
                 $yml_fields .= '    
         '.$field_name.":

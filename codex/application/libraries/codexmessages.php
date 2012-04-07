@@ -71,7 +71,8 @@ class CodexMessages
     {
         $return = array();
         $messages = $this->_ci->codexsession->userdata('messages');
-        if (!empty($type)) {
+        
+        if (!empty($type) && !empty($messages[$type])) {
             if (count($messages[$type]) == 0) {
                 return false;
             }

@@ -591,12 +591,14 @@ class codexController extends CI_Controller {
 
                 $validation_errors = $this->codexmessages->get('form');
                 $errors = array();
-
-                foreach($validation_errors as $validation_error){
-                    $parts = explode('|',$validation_error);
-                    $errors[$parts[0]] = $parts[1];
+                
+                if(is_array($validation_errors))
+                {
+                    foreach($validation_errors as $validation_error){
+                        $parts = explode('|',$validation_error);
+                        $errors[$parts[0]] = $parts[1];
+                    }
                 }
-
                 $this->codexforms->setValidationErrors($errors);
                 $this->$func($_POST);
                 exit();

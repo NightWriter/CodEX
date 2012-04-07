@@ -265,6 +265,7 @@
                         moveToFirstPage(table);
                         return false;
                     });
+                    
                     $(config.cssNext,pager).click(function() {
                         moveToNextPage(table);
                         return false;

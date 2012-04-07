@@ -182,13 +182,12 @@ $this->codextemplates->inlineJS('js-tablesorter-init', $table_sorter_js); ?>
 </form>
 </div>
 </div>
-<ul class="pager">
+<ul>
   <li>
     <a href="javascript:void" class="prev">&larr; Previous</a>
   </li>
     <li>
-      <input type="text" class="pagedisplay"/>
-   <span class="badge badge-info"> 1/15</span>
+      <input type="text" style="width:40px" class="pagedisplay badge badge-info"/>
   </li>
   <li>
     <a href="javascript:void" сlass="next">Next &rarr;</a>
