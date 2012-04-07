@@ -81,6 +81,13 @@ jQuery(document).ready(function(){
                 <input type="text" name="name_field[]" value="" id="name_field" /> 
             </div>
         </div>
+        <div class="control-group">
+            <label class="control-label" for="required_field">Required field</label>
+            <div class="controls">
+                <input type="hidden" name="required_field[]" value="0">
+                <input type="checkbox" value="" /> 
+            </div>
+        </div>
         <div class="control-group ">
             <label class="control-label" for="type_field">Type field</label>
             <div class="controls">
@@ -114,6 +121,13 @@ jQuery(document).ready(function(){
             <label class="control-label" for="name_field">Name field</label>
             <div class="controls">
                 <input type="text" name="name_field[]" value="" id="name_field" /> 
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="required_field">Required field</label>
+            <div class="controls">
+                <input type="hidden" name="required_field[]" value="0">
+                <input type="checkbox" value="" /> 
             </div>
         </div>
         <div class="control-group ">

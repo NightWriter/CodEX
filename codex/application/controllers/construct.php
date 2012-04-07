@@ -61,6 +61,7 @@ class Construct extends codexController
         
         $fields     = '';
         $yml_fields = '';
+        $rules      = '';
         
         $title = mysql_escape_string(strip_tags(trim($this->input->post('title'))));
         $alias = mysql_escape_string(strip_tags(trim($this->input->post('alias'))));
@@ -115,11 +116,15 @@ class Construct extends codexController
                 
                 //dbdropdown
                 //manytomany
+                $field_name = strip_tags(trim($_POST['name_field'][$k]));
                 if($v != 'manytomany')
-                    $fields .= '`'.mysql_escape_string(strip_tags(trim($_POST['name_field'][$k]))).'` '.$type.' NOT NULL, ';
+                    $fields .= '`'.mysql_escape_string($field_name).'` '.$type.' NOT NULL, ';
                 
+                if(!empty($_POST['required_field'][$k]))
+                    $rules .= "\n\t".$field_name.':trim|required';
+                    
                 $yml_fields .= '    
-        '.strip_tags(trim($_POST['name_field'][$k])).":
+        '.$field_name.":
             class: ".$v."
             label: '".strip_tags(trim($_POST['label_field'][$k]))."'
             params:
@@ -135,6 +140,7 @@ class Construct extends codexController
         mysql_query($sql);
         $yml = 'page_header: \''.$title.'\'
 groups: \'Default\'
+'.((!empty($rules))?'rules:'.$rules:'').'
 form_setup:'.$yml_fields;
 /*        
 создаём *.yml файл для автоматической генерации в админке

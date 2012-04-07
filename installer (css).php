@@ -419,7 +419,7 @@ $base_url .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_N
                     <div class="control-group <? if(!empty($errors['db_host'])): ?>error<? endif ?>">
                         <label class="control-label" for="hostname">Hostname *</label>
                         <div class="controls">
-                            <input type="text" value="<?=(($_POST['db_host']!='')?$_POST['db_host']:'localhost')?>" name="db_host" id="hostname" /> 
+                            <input type="text" value="<?=((!empty($_POST['db_host']))?$_POST['db_host']:'localhost')?>" name="db_host" id="hostname" /> 
                             <? if(!empty($errors['db_host'])): ?>
                                 <span class="help-inline"><?=$errors['first_password']?></span>
                             <? endif ?>
@@ -428,19 +428,19 @@ $base_url .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_N
                     <div class="control-group">
                         <label class="control-label" for="username">Username</label>
                         <div class="controls">
-                            <input type="text" name="db_username" value="<?=$_POST['db_username']?>" id="username" /> 
+                            <input type="text" name="db_username" value="<?=((!empty($_POST['db_username']))?$_POST['db_username']:'')?>" id="username" /> 
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="password">Password</label>
                         <div class="controls">
-                            <input type="text" name="db_password" value="<?=$_POST['db_password']?>" id="password" /> 
+                            <input type="password" name="db_password" value="<?=((!empty($_POST['db_password']))?$_POST['db_password']:'')?>" id="password" /> 
                         </div>
                     </div>
                     <div class="control-group <? if(!empty($errors['db_database'])): ?>error<? endif ?>">
                         <label class="control-label" for="database">Database *</label>
                         <div class="controls">
-                            <input type="text" name="db_database" value="<?=$_POST['db_database']?>" id="database" /> 
+                            <input type="text" name="db_database" value="<?=((!empty($_POST['db_database']))?$_POST['db_database']:'')?>" id="database" /> 
                             <span class="help-inline">
                             <? if(!empty($errors['db_database'])): ?>
                                 Error in database name
@@ -457,7 +457,7 @@ $base_url .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_N
                     <div class="control-group <? if(!empty($errors['first_username'])): ?>error<? endif ?>">  
                         <label class="control-label" for="useradmin">Username *</label>
                         <div class="controls">
-                            <input type="text" name="first_username" value="<?=$_POST['first_username']?>" id="useradmin" /> 
+                            <input type="text" name="first_username" value="<?=((!empty($_POST['first_username']))?$_POST['first_username']:'')?>" id="useradmin" /> 
                             <? if(!empty($errors['first_username'])): ?>
                                 <span class="help-inline"><?=$errors['first_username']?></span>
                             <? endif ?>
@@ -466,7 +466,7 @@ $base_url .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_N
                     <div class="control-group <? if(!empty($errors['first_password'])): ?>error<? endif ?>"> 
                         <label class="control-label" for="passadmin">Password *</label>
                         <div class="controls">    
-                            <input type="password" name="first_password" value="<?=$_POST['first_password']?>" id="passadmin" />  
+                            <input type="password" name="first_password" value="<?=((!empty($_POST['first_password']))?$_POST['first_password']:'')?>" id="passadmin" />  
                             <? if(!empty($errors['first_password'])): ?>
                                 <span class="help-inline"><?=$errors['first_password']?></span>
                             <? endif ?>
