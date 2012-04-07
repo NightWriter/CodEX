@@ -39,6 +39,12 @@ jQuery(document).ready(function(){
             });
             
         });
+    jQuery('fieldset').delegate('.tmp-ckeck', 'change',function(){
+        if (jQuery(this).attr('checked'))
+            jQuery(this).prev('.tmp-ckeck-parent').val(1);
+        else
+            jQuery(this).prev('.tmp-ckeck-parent').val(0);
+    });
 });
 </script>
 <div id="messages">
@@ -84,8 +90,8 @@ jQuery(document).ready(function(){
         <div class="control-group">
             <label class="control-label" for="required_field">Required field</label>
             <div class="controls">
-                <input type="hidden" name="required_field[]" value="0">
-                <input type="checkbox" value="" /> 
+                <input type="hidden" class="tmp-ckeck-parent" name="required_field[]" value="0">
+                <input type="checkbox" class="tmp-ckeck" value="1" /> 
             </div>
         </div>
         <div class="control-group ">
@@ -126,8 +132,8 @@ jQuery(document).ready(function(){
         <div class="control-group">
             <label class="control-label" for="required_field">Required field</label>
             <div class="controls">
-                <input type="hidden" name="required_field[]" value="0">
-                <input type="checkbox" value="" /> 
+                <input type="hidden" class="tmp-ckeck-parent" name="required_field[]" value="0">
+                <input type="checkbox" class="tmp-ckeck" value="1" /> 
             </div>
         </div>
         <div class="control-group ">
