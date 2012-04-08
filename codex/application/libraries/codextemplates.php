@@ -122,6 +122,7 @@ class codexTemplates{
 <html>
     <head>
         <title>{$this->content['title']}</title>
+        <link rel="shortcut icon" type="image/x-icon" src='{$this->asset_folder}favicon.ico' />
         {$this->content['head']}
     </head>
     <body>
