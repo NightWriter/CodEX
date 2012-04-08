@@ -39,7 +39,7 @@
 |
 */
 
-$route['default_controller'] = "example";
+$route['default_controller'] = "construct";
 $route['scaffolding_trigger'] = "";
 
 ?>
