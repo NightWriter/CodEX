@@ -179,20 +179,21 @@ $this->codextemplates->inlineJS('js-tablesorter-init', $table_sorter_js); ?>
                     </select>
 </div>
 </div>
-</form>
+
 </div>
 </div>
 <ul>
   <li>
     <a href="javascript:void" class="prev">&larr; Previous</a>
   </li>
-    <li>
-      <input type="text" style="width:40px" class="pagedisplay badge badge-info"/>
+  <li>
+      <input type="text" style="width:40px" class="pagedisplay badge badge-info" />
   </li>
   <li>
-    <a href="javascript:void" сlass="next">Next &rarr;</a>
+    <a href="javascript:void" class="next">Next &rarr;</a>
   </li>
 </ul>
+</form>
 </div>
         <?php $this->load->view('templates/'.$this->template.'/codex_choosers'); ?>
         <?php } ?>
