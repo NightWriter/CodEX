@@ -137,7 +137,7 @@ class Construct extends codexController
         $sql = 'CREATE TABLE `'.$alias.'` (
                                   `id` int(11) UNSIGNED  NOT NULL auto_increment,
                                   '.$fields.'
-                                  PRIMARY KEY  (`id`));';
+                                  PRIMARY KEY  (`id`)) CHARACTER SET utf8 COLLATE utf8_unicode_ci;';
         mysql_query($sql);
         $yml = 'page_header: \''.$title.'\'
 groups: \'Default\'
@@ -157,14 +157,29 @@ form_setup:'.$yml_fields;
         mkdir('./application/modules/'.$alias.'/models',0777);
         mkdir('./application/modules/'.$alias.'/views',0777);
         
+        // контроллер
         $fp = fopen('./application/modules/'.$alias.'/controllers/'.$alias.'.php','w');
-        //
+        $content = file_get_contents('./codex/application/controllers/template_modul/controllers/controller.php');
+        $content = str_replace('{alias}',$alias,$content);
+        fwrite($fp,$content);
         fclose($fp);
+        // моделька
         $fp = fopen('./application/modules/'.$alias.'/models/'.$alias.'_model.php','w');
-        //
+        $content = file_get_contents('./codex/application/controllers/template_modul/models/model.php');
+        $content = str_replace('{alias}',$alias,$content);
+        fwrite($fp,$content);
         fclose($fp);
+        // общий список
         $fp = fopen('./application/modules/'.$alias.'/views/'.$alias.'.php','w');
-        //
+        $content = file_get_contents('./codex/application/controllers/template_modul/views/view.php');
+        $content = str_replace('{alias}',$alias,$content);
+        fwrite($fp,$content);
+        fclose($fp);
+        // просмотр 1 записи
+        $fp = fopen('./application/modules/'.$alias.'/views/item_view.php','w');
+        $content = file_get_contents('./codex/application/controllers/template_modul/views/item_view.php');
+        $content = str_replace('{alias}',$alias,$content);
+        fwrite($fp,$content);
         fclose($fp);
         
         // редирект на созданые файл в админке
