@@ -16,7 +16,7 @@ jQuery(document).ready(function(){
     
     jQuery('#add_field').click(function(){
         
-        jQuery('#area_fields .group-new:last-child').after('<div class="group-new">'+jQuery('#blanck_fields').html()+'</div>');
+        jQuery('#area_fields .group-new:last-child').after('<hr><div class="group-new">'+jQuery('#blanck_fields').html()+'</div>');
         return false;
     });
     
