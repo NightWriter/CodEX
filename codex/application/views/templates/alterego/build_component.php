@@ -5,18 +5,18 @@ jQuery(document).ready(function(){
     
     jQuery('.type_field').change(function(){
         
-        jQuery('#dictionaries').hide();
+        jQuery('.dictionaries').hide();
         
         var val = jQuery(this).val();
         
         if( val == 'dropdown' || val == 'checkbox' || val == 'radio' )
-            jQuery('#dictionaries').show();
+            jQuery('.dictionaries').show();
         
     });
     
-    jQuery('#add_field').click(function(){
+    jQuery('.add_field').click(function(){
         
-        jQuery('#area_fields .group-new:last-child').after('<hr><div class="group-new">'+jQuery('#blanck_fields').html()+'</div>');
+        jQuery('#area_fields .group-new:last-child').after('<div class="group-new"><hr>'+jQuery('#blanck_fields').html()+'</div>');
         return false;
     });
     
@@ -39,6 +39,28 @@ jQuery(document).ready(function(){
             });
             
         });
+    
+  
+    jQuery('#area_fields').delegate('.name_field', 'keyup', function(e){
+        jQuery('.name_field_yes').hide();
+        jQuery('.name_field_no').hide();
+        var obj = jQuery(this);
+        jQuery.post('<?=site_url('construct/check_field_name')?>',{name:obj.val()},function(data)
+        {
+            if(data == 1)
+            {
+                obj.parents('.control-group').removeClass('error');
+                obj.parents('.control-group').addClass('success');    
+            }    
+            else
+            {
+                obj.parents('.control-group').removeClass('success');
+                obj.parents('.control-group').addClass('error');       
+            }
+        });
+    });
+    
+    
     jQuery('fieldset').delegate('.tmp-ckeck', 'change',function(){
         if (jQuery(this).attr('checked'))
             jQuery(this).prev('.tmp-ckeck-parent').val(1);
@@ -83,13 +105,14 @@ jQuery(document).ready(function(){
         <div class="control-group">
             <label class="control-label" for="label_field">Label field</label>
             <div class="controls">
-                <input type="text" name="label_field[]" value="" id="label_field" /> 
+                <input type="text" name="label_field[]" value="" class="label_field" /> 
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" for="name_field">Name field</label>
             <div class="controls">
-                <input type="text" name="name_field[]" value="" id="name_field" /> 
+                <input type="text" name="name_field[]" value="" class="name_field" /> 
+                <span class="help-inline">It should only contain letters and numbers</span>
             </div>
         </div>
         <div class="control-group">
@@ -126,13 +149,14 @@ jQuery(document).ready(function(){
         <div class="control-group">
             <label class="control-label" for="label_field">Label field</label>
             <div class="controls">
-                <input type="text" name="label_field[]" value="" id="label_field" /> 
+                <input type="text" name="label_field[]" value="" class="label_field" /> 
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" for="name_field">Name field</label>
             <div class="controls">
-                <input type="text" name="name_field[]" value="" id="name_field" /> 
+                <input type="text" name="name_field[]" value="" class="name_field" /> 
+                <span class="help-inline">It should only contain letters and numbers</span>
             </div>
         </div>
         <div class="control-group">
@@ -145,7 +169,7 @@ jQuery(document).ready(function(){
         <div class="control-group ">
             <label class="control-label" for="type_field">Type field</label>
             <div class="controls">
-                <select name="type_field[]" class="type_field" id="type_field">
+                <select name="type_field[]" class="type_field" class="type_field">
                     <option value="-">-</option>
                     <option value="textbox">Text</option>
                     <option value="password">Password</option>
@@ -161,7 +185,7 @@ jQuery(document).ready(function(){
                     <option value="image">Image</option>
                 </select>
                 <? if(!empty($dictionaries)): ?>
-                <select name="dictionaries[]" id="dictionaries">
+                <select name="dictionaries[]" class="dictionaries">
                     <option value="0">выбери из списка</option>
                     <? foreach($dictionaries as $row): ?>
                         <option value="<?=$row->id?>"><?=$row->desc?></option>
@@ -172,7 +196,7 @@ jQuery(document).ready(function(){
         </div>
         <div class="group-new"></div>
     </div>
-<div class="form-actions" style="background:none"> <button  id="add_field" class="btn btn-success" href="#"><i class="icon-plus icon-white"></i> Add new field</button>   </div>
+<div class="form-actions" style="background:none"> <button  id="add_field" class="btn btn-success add_field" href="#"><i class="icon-plus icon-white"></i> Add new field</button>   </div>
 </fieldset>
 <div class="form-actions">
     <button type="submit" name="codex_installer_submit" class="btn btn-primary">Create new component</button>    

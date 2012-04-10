@@ -25,6 +25,21 @@ class Construct extends codexController
         else
             echo 0;
     }
+    
+    /*
+        Check field name value. It must contents only English lowercase letters and numbers.   
+    */
+    function check_field_name()
+    {
+        $name = $this->input->post('name');
+        if(preg_match('/[^a-z0-9_]+/u',$name))
+            exit('0');
+        $name = strip_tags(trim($name));
+        if(empty($name))
+            exit('0');
+        echo '1';    
+    }
+    
     // проверяем права на запись
     function _check_perms(&$data)
     {
@@ -56,7 +71,7 @@ class Construct extends codexController
     function build()
     {
         $data = array();
-        
+
         $this->_check_perms($data);
         
         $fields     = '';
@@ -86,6 +101,8 @@ class Construct extends codexController
             $data['messages']['failure'][] = 'Ошибка данных: не найден тип полей';
         if(empty($_POST['name_field']))
             $data['messages']['failure'][] = 'Ошибка данных: не найдено имя полей';
+        if(sizeof($_POST['name_field']) != sizeof(array_unique($_POST['name_field'])))
+            $data['messages']['failure'][] = 'Ошибка данных: имена должны быть уникальными';
         if(empty($_POST['label_field']))
             $data['messages']['failure'][] = 'Ошибка данных: не найдено название полей';
         if(sizeof($_POST['type_field']) != sizeof($_POST['name_field']) || sizeof($_POST['name_field']) != sizeof($_POST['label_field']))
