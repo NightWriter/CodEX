@@ -91,7 +91,7 @@
 
 
 
-<div class="accordion" id="accordion2" style="margin-right:20px">
+<div class="accordion" id="accordion-02" style="margin-right:20px">
 
             <?php 
             $active = 0;
@@ -113,28 +113,31 @@
                             $i++;
                             echo '
                             <div class="accordion-group">
-              <div class="accordion-heading">
-                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse'.$i.'">
-                  '.mb_ucfirst($_val['groups'],'UTF8').'
-                </a>
-              </div>
-              <div id="collapse'.$i.'" class="accordion-body">
-                <div class="accordion-inner" style="background-color:whiteSmoke">
-                 <ul class="nav nav-list">';
+                                <div class="accordion-heading">
+                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-02" href="#collapse-'.$i.'">
+                                        '.mb_ucfirst($_val['groups'],'UTF8').'
+                                    </a>
+                                </div>
+                                <div id="collapse-'.$i.'" class="accordion-body collapse '.((strstr($_val['link'],$main_url[2])) || (strcmp(humanize($_val['key']),humanize($this->page_header)) == 0)?'in':'').'">
+                                    <div class="accordion-inner" style="background-color:whiteSmoke;">
+                                        <ul class="nav nav-list">';
                             $temp = $_val['groups'];
                         }
             ?>
-                    <?php echo '<li';
-                          if((strstr($_val['link'],$main_url[2])) || (strcmp(humanize($_val['key']),humanize($this->page_header)) == 0)){ echo ' class="active"';$active=$i;}
-                          echo '>'.codexAnchor($_val['link'],$_val['key'])."</li>\n"; 
-                        }
-                        echo '</ul> </div>
-              </div>
-            </div>';
-                      ?>
+                                        <?php echo '<li';
+                                        if((strstr($_val['link'],$main_url[2])) || (strcmp(humanize($_val['key']),humanize($this->page_header)) == 0)){ echo ' class="active"';$active=$i;}
+                                            echo '>'.codexAnchor($_val['link'],$_val['key'])."</li>\n"; 
+                    }
+                                        echo '</ul>
+                                    </div>
+                                </div>
+                            </div>';
+            ?>
             <?php
                 }else{
-                    echo '<h3><a href="#">Развернуть</a></h3><div><p';
+                    echo '<h3><a href="#">Развернуть</a></h3>
+                        <div>
+                            <p';
                     if((strstr($val,$main_url[2])) || (strcmp(humanize($key),humanize($this->page_header)) == 0)){ echo ' id="active-page"';$active=$i;}
                     echo '>'.codexAnchor($val,$key)."</p></div>\n"; 
                       //echo '>'.codexAnchor($link,humanize($name))."</li>\n"; 
@@ -142,5 +145,10 @@
             } 
             ?>
 
-   
-    </div>
+
+
+
+ 
+</div>
+
+
