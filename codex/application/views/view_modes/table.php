@@ -161,40 +161,38 @@ $this->codextemplates->inlineJS('js-tablesorter-init', $table_sorter_js); ?>
             </tbody>
         </table>
 <div id="pager" class="pager">
-<div class="well">
-<button class="btn"  id="select-all-anchor" >Select all</button>
-<button class="btn btn-danger" id="delete-selected" onclick="return confirm('Вы уверены?')" name="delete_selected" value="1"><?=$this->lang->line('codex_delete_selected'); ?></button>
-<button class="btn btn-primary"  id="copy-selected" name="copy_selected" value="1"><?=$this->lang->line('codex_copy_selected'); ?></button>
-   <?=form_close(); ?>
-<div style="float:right">
-<form class="form-horizontal">
-<div class="control-group">
-<label class="control-label" for="count">Выводить по </label>
-<div class="controls">
-<select class="pagesize span1">
+    <div class="well">
+        <button class="btn"  id="select-all-anchor" >Select all</button>
+        <button class="btn btn-danger" id="delete-selected" onclick="return confirm('Вы уверены?')" name="delete_selected" value="1"><?=$this->lang->line('codex_delete_selected'); ?></button>
+        <button class="btn btn-primary"  id="copy-selected" name="copy_selected" value="1"><?=$this->lang->line('codex_copy_selected'); ?></button>
+           
+        <div class="inline-user">
+            <div class="control-group">
+                <label class="control-label" for="count">Выводить по </label>
+                <div class="controls">
+                    <select class="pagesize span1">
                         <option selected="selected" value="10">10</option>
                         <option value="20">20</option>
                         <option value="30">30</option>
                         <option  value="40">40</option>
                     </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ul>
+      <li>
+        <a href="javascript:void" class="prev">&larr; Previous</a>
+      </li>
+      <li>
+          <input type="text" style="width:40px" class="pagedisplay badge badge-info" />
+      </li>
+      <li>
+        <a href="javascript:void" class="next">Next &rarr;</a>
+      </li>
+    </ul>
 </div>
-</div>
-
-</div>
-</div>
-<ul>
-  <li>
-    <a href="javascript:void" class="prev">&larr; Previous</a>
-  </li>
-  <li>
-      <input type="text" style="width:40px" class="pagedisplay badge badge-info" />
-  </li>
-  <li>
-    <a href="javascript:void" class="next">Next &rarr;</a>
-  </li>
-</ul>
-</form>
-</div>
+<?=form_close(); ?>
         <?php $this->load->view('templates/'.$this->template.'/codex_choosers'); ?>
         <?php } ?>
    </div>
