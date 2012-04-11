@@ -2,6 +2,7 @@
 jQuery(document).ready(function(){
     jQuery('#blanck_fields').hide();
     jQuery('#dictionaries').hide();
+    jQuery('.dictionaries').hide();
     
     jQuery('.type_field').change(function(){
         
