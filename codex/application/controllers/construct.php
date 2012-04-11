@@ -171,6 +171,7 @@ form_setup:'.$yml_fields;
 */
         mkdir('./application/modules/'.$alias,0777);
         mkdir('./application/modules/'.$alias.'/controllers',0777);
+        mkdir('./application/modules/'.$alias.'/core',0777);
         mkdir('./application/modules/'.$alias.'/models',0777);
         mkdir('./application/modules/'.$alias.'/views',0777);
         
@@ -180,10 +181,28 @@ form_setup:'.$yml_fields;
         $content = str_replace('{alias}',$alias,$content);
         fwrite($fp,$content);
         fclose($fp);
+        // My controller
+        $fp = fopen('./application/modules/'.$alias.'/core/MY_Controller.php','w');
+        $content = file_get_contents('./codex/application/controllers/template_modul/core/MY_Controller.php');
+        //$content = str_replace('{alias}',$alias,$content);
+        fwrite($fp,$content);
+        fclose($fp);
+        // My model
+        $fp = fopen('./application/modules/'.$alias.'/core/MY_Model.php','w');
+        $content = file_get_contents('./codex/application/controllers/template_modul/core/MY_Model.php');
+        //$content = str_replace('{alias}',$alias,$content);
+        fwrite($fp,$content);
+        fclose($fp);
         // моделька
         $fp = fopen('./application/modules/'.$alias.'/models/'.$alias.'_model.php','w');
         $content = file_get_contents('./codex/application/controllers/template_modul/models/model.php');
         $content = str_replace('{alias}',$alias,$content);
+        fwrite($fp,$content);
+        fclose($fp);
+        // главный шаблон
+        $fp = fopen('./application/modules/'.$alias.'/views/main.php','w');
+        $content = file_get_contents('./codex/application/controllers/template_modul/views/main.php');
+        //$content = str_replace('{alias}',$alias,$content);
         fwrite($fp,$content);
         fclose($fp);
         // общий список

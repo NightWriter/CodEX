@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class {alias} extends CI_Controller {
+class {alias} extends MY_Controller {
     var $per_page = 20;
     
     function __construct()
@@ -15,7 +15,8 @@ class {alias} extends CI_Controller {
     {
         $data = array();
         $data['row'] = $this->{alias}->get($id);
-        $this->load->view('item_view',$data);
+        $this->content = $this->load->view('item_view',$data,true);
+        $this->_view();
     }
     //
     function index($page=0)
@@ -37,6 +38,7 @@ class {alias} extends CI_Controller {
         $this->pagination->initialize($config);
         $data['pagination'] = $this->pagination->create_links();
         //
-        $this->load->view('{alias}',$data);
+        $this->content = $this->load->view('{alias}',$data,true);
+        $this->_view();
     }
 }
