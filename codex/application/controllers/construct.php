@@ -147,6 +147,25 @@ class Construct extends codexController
             label: '".strip_tags(trim($_POST['label_field'][$k]))."'
             params:
                 display_name: '".strip_tags(trim($_POST['label_field'][$k]))."'";
+                
+                if(in_array($v,array('dropdown','checkbox','radio')) && !empty($_POST['dictionaries'][0]))
+                {
+                    $yml_fields .= '
+                list:';
+                
+                    $this->db->where('id',$_POST['dictionaries'][0]);
+                    $row = $this->db->get('dictionaries',1);
+                    if($row->num_rows == 1)
+                    {
+                        $this->db->where('dictionaries_id',$row->row()->id);
+                        $rows = $this->db->get($row->row()->alias_table);
+                        foreach($rows->result() as $row)
+                        {
+                            $yml_fields .= '
+                    -'.$row->value;
+                        }
+                    }
+                }
             }
 /*        
 создаём таблицу
@@ -182,17 +201,17 @@ form_setup:'.$yml_fields;
         fwrite($fp,$content);
         fclose($fp);
         // My controller
-        $fp = fopen('./application/modules/'.$alias.'/core/MY_Controller.php','w');
-        $content = file_get_contents('./codex/application/controllers/template_modul/core/MY_Controller.php');
+        //$fp = fopen('./application/modules/'.$alias.'/core/MY_Controller.php','w');
+        //$content = file_get_contents('./codex/application/controllers/template_modul/core/MY_Controller.php');
         //$content = str_replace('{alias}',$alias,$content);
-        fwrite($fp,$content);
-        fclose($fp);
+        //fwrite($fp,$content);
+        //fclose($fp);
         // My model
-        $fp = fopen('./application/modules/'.$alias.'/core/MY_Model.php','w');
-        $content = file_get_contents('./codex/application/controllers/template_modul/core/MY_Model.php');
+        //$fp = fopen('./application/modules/'.$alias.'/core/MY_Model.php','w');
+        //$content = file_get_contents('./codex/application/controllers/template_modul/core/MY_Model.php');
         //$content = str_replace('{alias}',$alias,$content);
-        fwrite($fp,$content);
-        fclose($fp);
+        //fwrite($fp,$content);
+        //fclose($fp);
         // моделька
         $fp = fopen('./application/modules/'.$alias.'/models/'.$alias.'_model.php','w');
         $content = file_get_contents('./codex/application/controllers/template_modul/models/model.php');

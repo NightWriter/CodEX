@@ -82,10 +82,12 @@ class Dictionaries extends codexController
             $this->db->set('alias_table',$alias);
             $this->db->set('desc',$title);
             $this->db->insert('dictionaries');
+            $dictionaries_id = $this->db->insert_id();
             //
             
             $sql = 'CREATE TABLE  `'.$alias.'` (
                          `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+                         `dictionaries_id` INT UNSIGNED NOT NULL ,
                          `value` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL ,
                         PRIMARY KEY (  `id` )
                         ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
@@ -94,6 +96,7 @@ class Dictionaries extends codexController
             {
                 foreach($insert_data as $item)
                 {
+                    $this->db->set('dictionaries_id',$dictionaries_id);
                     $this->db->set('value',$item);
                     $this->db->insert($alias);
                 }
