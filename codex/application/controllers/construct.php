@@ -153,12 +153,12 @@ class Construct extends codexController
             params:
                 display_name: '".strip_tags(trim($_POST['label_field'][$k]))."'";
                 
-                if(in_array($v,array('dropdown','checkbox','radio')) && !empty($_POST['dictionaries'][0]))
+                if(in_array($v,array('dropdown','checkbox','radio')) && !empty($_POST['dictionaries'][$k]))
                 {
                     $yml_fields .= '
                 list:';
                 
-                    $this->db->where('id',$_POST['dictionaries'][0]);
+                    $this->db->where('id',$_POST['dictionaries'][$k]);
                     $row = $this->db->get('dictionaries',1);
                     if($row->num_rows == 1)
                     {
