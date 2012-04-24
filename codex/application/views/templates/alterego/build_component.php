@@ -80,8 +80,38 @@ jQuery(document).ready(function(){
         jQuery.post(url,data,function(responce){
             if(responce.success)
                 location.href = responce.redirect;
-            alert(responce.messages);
-            
+                
+            var output = '';
+            for(i in responce.messages)
+            {
+                for(k in responce.messages[i])
+                {
+                    var prefix = '';
+                    var suffix = '';
+                    
+                    switch(i)
+                    {
+                        case 'success':
+                            prefix = '<div class="alert alert-success">';
+                            suffix = '</div>';
+                        break;
+                        case 'info':
+                            prefix = '<div class="alert alert-info">';
+                            suffix = '</div>';
+                        break;
+                        case 'failure':
+                            prefix = '<div class="alert alert-error">';
+                            suffix = '</div>';
+                        break;
+                        default:
+                            prefix = '<div class="alert alert-info">';
+                            suffix = '</div>';
+                        break;
+                    }
+                    output += prefix+responce.messages[i][k]+suffix+"\n";
+                }
+            }
+            jQuery('#messages').html(output);
         },'json');
         return false;
     });
