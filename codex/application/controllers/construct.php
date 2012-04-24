@@ -101,12 +101,17 @@ class Construct extends codexController
             $data['messages']['failure'][] = 'Ошибка данных: не найден тип полей';
         if(empty($_POST['name_field']))
             $data['messages']['failure'][] = 'Ошибка данных: не найдено имя полей';
-        if(sizeof($_POST['name_field']) != sizeof(array_unique($_POST['name_field'])))
+        if(!empty($_POST['name_field']) && sizeof($_POST['name_field']) != sizeof(array_unique($_POST['name_field'])))
             $data['messages']['failure'][] = 'Ошибка данных: имена должны быть уникальными';
         if(empty($_POST['label_field']))
             $data['messages']['failure'][] = 'Ошибка данных: не найдено название полей';
-        if(sizeof($_POST['type_field']) != sizeof($_POST['name_field']) || sizeof($_POST['name_field']) != sizeof($_POST['label_field']))
+        if(!empty($_POST['type_field']) && !empty($_POST['name_field']) && 
+            (sizeof($_POST['type_field']) != sizeof($_POST['name_field']) || 
+            sizeof($_POST['name_field']) != sizeof($_POST['label_field']))
+            )
+        {
             $data['messages']['failure'][] = 'Ошибка данных: не совпадает информация о полях';
+        }
         //
         if(empty($data['messages']))
         {
@@ -238,9 +243,16 @@ form_setup:'.$yml_fields;
         fclose($fp);
         
         // редирект на созданые файл в админке
-        redirect('c=crud&m=index&t='.$alias);
-        }else{
-            $this->index($data);
+        //redirect('c=crud&m=index&t='.$alias);
+            $data['redirect'] = site_url('c=crud&m=index&t='.$alias);
+            $data['success'] = true;
         }
+        if($this->input->post('act') == 'create_component')
+        {
+            echo json_encode($data);
+            exit;
+        }
+        
+        $this->index($data);
     }
 }

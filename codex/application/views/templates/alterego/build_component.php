@@ -73,24 +73,37 @@ jQuery(document).ready(function(){
         return false;
     });
     
+    jQuery('.form_action').submit(function(){
+        var url = jQuery(this).attr('action');
+        var data = jQuery(this).serialize();
+        
+        jQuery.post(url,data,function(responce){
+            if(responce.success)
+                location.href = responce.redirect;
+            alert(responce.messages);
+            
+        },'json');
+        return false;
+    });
 });
 </script>
 <div id="messages">
     <?php $this->codextemplates->loadInlineView('templates/'.$this->template.'/codex_messages');?>
 </div>
-<form action="<?=site_url('construct/build')?>" method="post" class="form-horizontal">
+<form action="<?=site_url('construct/build')?>" method="post" class="form-horizontal form_action">
+<input type="hidden" name="act" value="create_component">
 <fieldset>
       <legend>New Component</legend>
     <div class="control-group">
         <label class="control-label" for="title">Title</label>
         <div class="controls">
-            <input type="text" value="" name="title" id="title" /> 
+            <input type="text" value="<?=$this->input->post('title')?>" name="title" id="title" /> 
         </div>
     </div>
     <div class="control-group" id="div_alias">
         <label class="control-label" for="alias">Alias</label>
         <div class="controls">
-            <input type="text" name="alias" value="" id="alias" /> 
+            <input type="text" name="alias" value="<?=$this->input->post('alias')?>" id="alias" /> 
             
             <span class="help-inline">It should only contain letters and numbers</span>
         </div>
@@ -200,6 +213,6 @@ jQuery(document).ready(function(){
 <div class="form-actions" style="background:none"> <button  id="add_field" class="btn btn-success add_field" href="#"><i class="icon-plus icon-white"></i> Add new field</button>   </div>
 </fieldset>
 <div class="form-actions">
-    <button type="submit" name="codex_installer_submit" class="btn btn-primary">Create new component</button>    
+    <button type="submit" class="btn btn-primary">Create new component</button>    
 </div>
 </form>
