@@ -4,14 +4,17 @@ jQuery(document).ready(function(){
     jQuery('#dictionaries').hide();
     jQuery('.dictionaries').hide();
     
-    jQuery('.type_field').change(function(){
+    jQuery('body').delegate('.type_field','change',function(){
         
-        jQuery('.dictionaries').hide();
+        //jQuery('.dictionaries').hide();
+        if (jQuery(this).next().hasClass('dictionaries'))
+            jQuery(this).next().hide();
         
         var val = jQuery(this).val();
         
         if( val == 'dropdown' || val == 'checkbox' || val == 'radio' )
-            jQuery('.dictionaries').show();
+            if (jQuery(this).next().hasClass('dictionaries'))
+                jQuery(this).next().show();
         
     });
     
@@ -184,6 +187,14 @@ jQuery(document).ready(function(){
                     <option value="file">File</option>
                     <option value="image">Image</option>
                 </select>
+                <? if(!empty($dictionaries)): ?>
+                <select name="dictionaries[]" class="dictionaries">
+                    <option value="0">выбери из списка</option>
+                    <? foreach($dictionaries as $row): ?>
+                        <option value="<?=$row->id?>"><?=$row->desc?></option>
+                    <? endforeach; ?>
+                </select>
+                <? endif; ?>
                 <a class="btn btn-danger remove-rows" href="#"><i class="icon-trash icon-white"></i>Delete</a>
             </div>
         </div>
