@@ -44,14 +44,14 @@ class Construct extends codexController
     function _check_perms(&$data)
     {
         if(!file_exists('./codex/application/definitions/'))
-            $data['messages']['failure'][] = 'Не существует директории ./codex/application/definitions';
+            $data['messages']['failure'][] = $this->lang->line('codex_no_directory').' ./codex/application/definitions';
         if(!is_writable('./codex/application/definitions/'))
-            $data['messages']['failure'][] = 'Нет прав на запись в папке ./codex/application/definitions';
+            $data['messages']['failure'][] = $this->lang->line('codex_write_permission').' ./codex/application/definitions';
         //
         if(!file_exists('./application/modules/'))
-            $data['messages']['failure'][] = 'Не существует директории ./application/modules';
+            $data['messages']['failure'][] = $this->lang->line('codex_no_directory').' ./application/modules';
         if(!is_writable('./application/modules/'))
-            $data['messages']['failure'][] = 'Нет прав на запись в папке ./application/modules';
+            $data['messages']['failure'][] = $this->lang->line('codex_write_permission').' ./application/modules';
     }
     //
     function index($data = array())
@@ -86,31 +86,31 @@ class Construct extends codexController
         // проверяем есть ли уже такой файл,
         // чтобы соблюдать уникальность
         if(empty($title))
-            $data['messages']['failure'][] = 'Title is empty';
+            $data['messages']['failure'][] = $this->lang->line('codex_title_empty');
         //
         if(empty($alias))
-            $data['messages']['failure'][] = 'Alias is empty';
+            $data['messages']['failure'][] = $this->lang->line('codex_alias_empty');
         
         if(preg_match('/[^a-zA-Z0-9_]+/u',$alias))
-            $data['messages']['failure'][] = 'Alias должен содержать только латинские буквы и цифры';
+            $data['messages']['failure'][] = $this->lang->line('codex_alias').' '.$this->lang->line('codex_contain_letters_numbers');
         
         if(in_array($file_name,$files))
-            $data['messages']['failure'][] = 'Alias "'.$alias.'" exists';
+            $data['messages']['failure'][] = $this->lang->line('codex_alias').' "'.$alias.'" '.$this->lang->line('codex_exists');
         //
-        if(empty($_POST['type_field']))
-            $data['messages']['failure'][] = 'Ошибка данных: не найден тип полей';
+        if(empty($_POST['type_field']))      
+            $data['messages']['failure'][] = $this->lang->line('codex_data_error').': '.$this->lang->line('codex_not_found_type_field');
         if(empty($_POST['name_field']))
-            $data['messages']['failure'][] = 'Ошибка данных: не найдено имя полей';
+            $data['messages']['failure'][] = $this->lang->line('codex_data_error').': '.$this->lang->line('codex_not_found_name_field');
         if(!empty($_POST['name_field']) && sizeof($_POST['name_field']) != sizeof(array_unique($_POST['name_field'])))
-            $data['messages']['failure'][] = 'Ошибка данных: имена должны быть уникальными';
+            $data['messages']['failure'][] = $this->lang->line('codex_data_error').': '.$this->lang->line('codex_names_must_unique');
         if(empty($_POST['label_field']))
-            $data['messages']['failure'][] = 'Ошибка данных: не найдено название полей';
+            $data['messages']['failure'][] = $this->lang->line('codex_data_error').': '.$this->lang->line('codex_not_found_label_field');
         if(!empty($_POST['type_field']) && !empty($_POST['name_field']) && 
             (sizeof($_POST['type_field']) != sizeof($_POST['name_field']) || 
             sizeof($_POST['name_field']) != sizeof($_POST['label_field']))
             )
         {
-            $data['messages']['failure'][] = 'Ошибка данных: не совпадает информация о полях';
+            $data['messages']['failure'][] = $this->lang->line('codex_data_error').': '.$this->lang->line('codex_not_match_information_fields');
         }
         //
         if(empty($data['messages']))

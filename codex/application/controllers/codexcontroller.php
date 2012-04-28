@@ -14,6 +14,7 @@ class codexController extends CI_Controller {
     var $table_access_restriction = array();
 
     var $add_link         ;     
+    var $import_link      ;     
     var $edit_link        ;     
     var $controller_link  ;    
      
@@ -28,6 +29,7 @@ class codexController extends CI_Controller {
     var $search_action    ;     
     
     var $user_data = array();     
+    var $responce  = array();
     
     function codexController () {
         
@@ -116,6 +118,7 @@ class codexController extends CI_Controller {
          $this->first_item               = $this->getFirstItem();
 
          $this->add_link                 = (isset($config['add_link']))? $config['add_link'] : strtolower($this->controller_name).'/add';
+         $this->import_link              = (isset($config['import_link']))? $config['import_link'] : strtolower($this->controller_name).'/import';
          $this->edit_link                = (isset($config['edit_link']))? $config['edit_link'] : strtolower($this->controller_name).'/manage/edit/{num}';
          $this->add_action               = (isset($config['add_action']))? $config['add_action'] : strtolower($this->controller_name).'/execute_add';
          $this->edit_action              = (isset($config['edit_action']))? $config['edit_action'] : strtolower($this->controller_name).'/execute_edit';
@@ -174,11 +177,12 @@ class codexController extends CI_Controller {
         
     }
     //
-    function ajaxPagination($per_page=10,$page=1)
+    function ajaxPagination($per_page=10,$page=0)
     {
         $keywords = $this->input->post('query');
         $fields   = $this->input->post('field');
         
+        $page = ($page <= 0) ? 0:$page;
         
         $this->codexcrumbs->add($this->lang->line('codex_crumbs_overview'));
         $this->codexadmin->state = 'index';
@@ -455,6 +459,90 @@ class codexController extends CI_Controller {
         $this->db->set($field,$value);
         $this->db->where($primary_key,$primary_value);
         $this->db->update($table);
+    }
+    //
+    function import()
+    {
+        $config = array();
+        $config['upload_path'] = './codex/temp/';
+        $config['allowed_types'] = 'csv|xls|xlsx';
+        $config['max_size'] = '2048';
+        $config['encrypt_name'] = true;
+        $this->load->library('upload', $config);
+        
+        if($this->upload->do_upload('import'))
+        {
+            
+            $finfo = $this->upload->data();
+            $file_name = $finfo['file_name']; 
+            $file_ext = $finfo['file_ext']; 
+            
+            $insert_data = array();
+            if(ltrim($file_ext,'.') == 'csv')
+            {
+                if (($handle = fopen('./codex/temp/'.$file_name, "r")) !== FALSE)
+                {
+                    while (($data = fgetcsv($handle, 1000, ";")) !== FALSE)
+                    {
+                        $insert_data[] = $data;
+                    }
+                    fclose($handle);
+                }
+            }
+            if(in_array(ltrim($file_ext,'.'),array('xls','xlsx')))
+            {
+                require_once 'codex/application/my_classes/classes/PHPExcel.php';
+                require_once 'codex/application/my_classes/classes/PHPExcel/IOFactory.php';
+                
+                $objPHPExcel = PHPExcel_IOFactory::load('./codex/temp/'.$file_name);
+                foreach ($objPHPExcel->getWorksheetIterator() as $worksheet)
+                {
+                    $worksheetTitle     = $worksheet->getTitle();
+                    $highestRow         = $worksheet->getHighestRow(); // например, 10
+                    $highestColumn      = $worksheet->getHighestColumn(); // например, 'F'
+                    $highestColumnIndex = PHPExcel_Cell::columnIndexFromString($highestColumn);
+                    $nrColumns = ord($highestColumn) - 64;
+                    
+                    for ($row = 1; $row <= $highestRow; ++ $row)
+                    {
+                        $idata = array();
+                        for ($col = 0; $col < $highestColumnIndex; ++ $col) 
+                        {
+                            $cell = $worksheet->getCellByColumnAndRow($col, $row);
+                            $val = $cell->getValue();
+                            $dataType = PHPExcel_Cell_DataType::dataTypeForValue($val);
+                            $idata[] = $val;
+                        }
+                        $insert_data[] = $idata;
+                    }
+                }
+            }
+            //
+            if(is_array($this->codexadmin->display_fields))
+            {
+                foreach($insert_data as $_k=>$_v)
+                {
+                    $j=0;
+                    foreach($this->codexadmin->display_fields as $k=>$item)
+                    {
+                        if(empty($_v[$j])) continue;
+                        $this->db->set($k,$_v[$j]);
+                        ++$j;
+                    }
+                    if($j)
+                        $this->db->insert($this->table);
+                }
+            }
+            if(file_exists('./codex/temp/'.$file_name) && is_file('./codex/temp/'.$file_name))
+                unlink('./codex/temp/'.$file_name);
+                
+            $this->responce['success'] = true;
+        }else{
+            $this->responce['messages'] = strip_tags($this->upload->display_errors());
+            $this->responce['success'] = false;
+        }
+        echo json_encode($this->responce);
+        exit;
     }
     //
     function add($populate_form_with = array())

@@ -67,7 +67,8 @@ var selected = false;
 $this->codextemplates->inlineJS('js-tablesorter-init', $table_sorter_js); ?>
 <div id="codex-table">
 
-        <?php if(count($entries) == 0) echo '<div class="info">'.$this->lang->line('codexadmin_no_entries').'</div>'; else {?>
+        <?php if(count($entries) == 0) echo '<div class="info">'.$this->lang->line('codexadmin_no_entries').'</div>'; 
+        else{?>
         <?=form_open($this->delete_action); ?>
         <table id="main-table" class="table table-bordered">
             <thead>
@@ -78,9 +79,6 @@ $this->codextemplates->inlineJS('js-tablesorter-init', $table_sorter_js); ?>
                         $headers = $this->codexforms->iterate('getDisplayName'); 
                         
                         foreach($this->codexadmin->display_fields as $field=>$header){
-                                    /*if(function_exists('humanize'))
-                                        echo '<th>'.humanize($headers[$field]).'</th>'."\n";
-                                    else*/
                                     if(isset($headers[$field]))
                                         echo '<th id="'.$field.'">'.mb_ucfirst($headers[$field]).'</th>'."\n";
                                     else
@@ -117,13 +115,11 @@ $this->codextemplates->inlineJS('js-tablesorter-init', $table_sorter_js); ?>
                                     $anchor = $entry[$field];
                                     
                                     if(empty($anchor) && $anchor !=0)
-                                        $anchor = 'Click to edit';
+                                        $anchor = $this->lang->line('codex_click_to_edit');
 
                                     echo codexAnchor(str_replace('{num}',$entry[$this->codexadmin->primary_key],$this->edit_link),$anchor,array('title'=>'')).'</td>';
                                     $i++; 
                                }
-                               //elseif($field == 'user_id' && $this->controller_name == 'Vin')
-                                   //echo '<a href="'.base_url().'backend.php?c=crud&m=manage&t=USERS&a=edit&id='.$entry[$field].'">'.$entry[$field].'</a></td>'."\n";
                                else
                                    echo $entry[$field],'</td>',"\n";
                           }
@@ -162,13 +158,13 @@ $this->codextemplates->inlineJS('js-tablesorter-init', $table_sorter_js); ?>
         </table>
 <div id="pager" class="pager">
     <div class="well">
-        <button class="btn"  id="select-all-anchor" >Select all</button>
-        <button class="btn btn-danger" id="delete-selected" onclick="return confirm('Вы уверены?')" name="delete_selected" value="1"><?=$this->lang->line('codex_delete_selected'); ?></button>
+        <button class="btn"  id="select-all-anchor" ><?=$this->lang->line('codex_select_all')?></button>
+        <button class="btn btn-danger" id="delete-selected" onclick="return confirm('<?=$this->lang->line('codex_confirm')?>')" name="delete_selected" value="1"><?=$this->lang->line('codex_delete_selected'); ?></button>
         <button class="btn btn-primary"  id="copy-selected" name="copy_selected" value="1"><?=$this->lang->line('codex_copy_selected'); ?></button>
            
         <div class="inline-user">
             <div class="control-group">
-                <label class="control-label" for="count">Выводить по </label>
+                <label class="control-label" for="count"><?=$this->lang->line('codex_list_by')?> </label>
                 <div class="controls">
                     <select class="pagesize span1">
                         <option selected="selected" value="10">10</option>
@@ -182,13 +178,13 @@ $this->codextemplates->inlineJS('js-tablesorter-init', $table_sorter_js); ?>
     </div>
     <ul>
       <li>
-        <a href="javascript:void" class="prev">&larr; Previous</a>
+        <a href="javascript:void" class="prev">&larr; <?=$this->lang->line('codex_previous')?></a>
       </li>
       <li>
           <input type="text" style="width:40px" class="pagedisplay badge badge-info" />
       </li>
       <li>
-        <a href="javascript:void" class="next">Next &rarr;</a>
+        <a href="javascript:void" class="next"><?=$this->lang->line('codex_next')?> &rarr;</a>
       </li>
     </ul>
 </div>

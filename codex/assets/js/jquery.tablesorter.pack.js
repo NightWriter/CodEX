@@ -244,7 +244,8 @@
 					r = c.row, 
 					n= c.normalized, 
 					totalRows = n.length, 
-					checkCell = (n[0].length-1), 
+                    
+					checkCell = totalRows>0?(n[0].length-1):1, 
 					tableBody = $(table.tBodies[0]),
 					rows = [];
 				

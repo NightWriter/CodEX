@@ -49,6 +49,7 @@ class CRUD extends codexController{
         
         $config['edit_link'] = $prefix.$this->implodeAssoc('=','&amp;',array_merge($_GET,array('m'=>'manage','a'=>'edit','id'=>'{num}')));
         $config['add_link'] = $prefix.$this->implodeAssoc('=','&amp;',array_merge($_GET,array('m'=>'add')));
+        $config['import_link'] = $prefix.$this->implodeAssoc('=','&amp;',array_merge($_GET,array('m'=>'import')));
         
         if(isset($config['user_link']))
             $config['user_link'] = $config['user_link'];
@@ -62,6 +63,12 @@ class CRUD extends codexController{
 
 
         $this->setConfig($config);
+    }
+    //
+    //
+    function import()
+    {
+        parent::import();
     }
     //
     function ajax_pagination()

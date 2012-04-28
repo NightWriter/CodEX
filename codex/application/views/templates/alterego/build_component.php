@@ -126,122 +126,120 @@ jQuery(document).ready(function(){
 <form action="<?=site_url('construct/build')?>" method="post" class="form-horizontal form_action">
 <input type="hidden" name="act" value="create_component">
 <fieldset>
-      <legend>New Component</legend>
+      <legend><?=$this->lang->line('codex_new_component')?></legend>
     <div class="control-group">
-        <label class="control-label" for="title">Title</label>
+        <label class="control-label" for="title"><?=$this->lang->line('codex_title')?></label>
         <div class="controls">
             <input type="text" value="<?=$this->input->post('title')?>" name="title" id="title" /> 
         </div>
     </div>
     <div class="control-group" id="div_alias">
-        <label class="control-label" for="alias">Alias</label>
+        <label class="control-label" for="alias"><?=$this->lang->line('codex_alias')?></label>
         <div class="controls">
             <input type="text" name="alias" value="<?=$this->input->post('alias')?>" id="alias" /> 
             
-            <span class="help-inline">It should only contain letters and numbers</span>
+            <span class="help-inline"><?=$this->lang->line('codex_contain_letters_numbers')?></span>
         </div>
     </div>
     
 </fieldset>
 <fieldset>
-    <legend>Fields</legend>
-    
-    
+    <legend><?=$this->lang->line('codex_fields')?></legend>
     
     <div id="blanck_fields" >
         <div class="control-group">
-            <label class="control-label" for="label_field">Label field</label>
+            <label class="control-label" for="label_field"><?=$this->lang->line('codex_label_field')?></label>
             <div class="controls">
                 <input type="text" name="label_field[]" value="" class="label_field" /> 
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="name_field">Name field</label>
+            <label class="control-label" for="name_field"><?=$this->lang->line('codex_name_field')?></label>
             <div class="controls">
                 <input type="text" name="name_field[]" value="" class="name_field" /> 
-                <span class="help-inline">It should only contain letters and numbers</span>
+                <span class="help-inline"><?=$this->lang->line('codex_contain_letters_numbers')?></span>
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="required_field">Required field</label>
+            <label class="control-label" for="required_field"><?=$this->lang->line('codex_required_field')?></label>
             <div class="controls">
                 <input type="hidden" class="tmp-ckeck-parent" name="required_field[]" value="0">
                 <input type="checkbox" class="tmp-ckeck" value="1" /> 
             </div>
         </div>
         <div class="control-group ">
-            <label class="control-label" for="type_field">Type field</label>
+            <label class="control-label" for="type_field"><?=$this->lang->line('codex_type_field')?></label>
             <div class="controls">
                 <select name="type_field[]" class="type_field" id="type_field">
                     <option value="-">-</option>
-                    <option value="textbox">Text</option>
-                    <option value="password">Password</option>
-                    <option value="textarea">Textarea</option>
-                    <option value="date">Date</option>
-                    <option value="time">Date Time</option>
-                    <option value="dropdown">DropDown</option>
-                    <!--<option value="dbdropdown">DbDropDown</option>
-                    <option value="manytomany">ManyToMany</option>-->
-                    <option value="checkbox">Checkbox</option>
-                    <option value="radio">Radio button</option>
-                    <option value="file">File</option>
-                    <option value="image">Image</option>
+                    <option value="textbox"><?=$this->lang->line('codex_type_text')?></option>
+                    <option value="password"><?=$this->lang->line('codex_type_password')?></option>
+                    <option value="textarea"><?=$this->lang->line('codex_type_textarea')?></option>
+                    <option value="date"><?=$this->lang->line('codex_type_date')?></option>
+                    <option value="time"><?=$this->lang->line('codex_type_date_time')?></option>
+                    <option value="dropdown"><?=$this->lang->line('codex_type_drop_down')?></option>
+                    <!--<option value="dbdropdown"><?=$this->lang->line('codex_type_db_drop_down')?></option>
+                    <option value="manytomany"><?=$this->lang->line('codex_type_many_to_many')?></option>-->
+                    <option value="checkbox"><?=$this->lang->line('codex_type_checkbox')?></option>
+                    <option value="radio"><?=$this->lang->line('codex_type_radio')?></option>
+                    <option value="file"><?=$this->lang->line('codex_type_file')?></option>
+                    <option value="image"><?=$this->lang->line('codex_type_image')?></option>
                 </select>
                 <? if(!empty($dictionaries)): ?>
                 <select name="dictionaries[]" class="dictionaries">
-                    <option value="0">выбери из списка</option>
+                    <option value="0"><?=$this->lang->line('codex_select_from_list')?></option>
                     <? foreach($dictionaries as $row): ?>
                         <option value="<?=$row->id?>"><?=$row->desc?></option>
                     <? endforeach; ?>
                 </select>
                 <? endif; ?>
-                <a class="btn btn-danger remove-rows" href="#"><i class="icon-trash icon-white"></i>Delete</a>
+                <a class="btn btn-danger remove-rows" href="#"><i class="icon-trash icon-white"></i><?=$this->lang->line('codex_delete')?></a>
             </div>
         </div>
        
     </div>
     <div id="area_fields" style="padding-top: 20px;">
         <div class="control-group">
-            <label class="control-label" for="label_field">Label field</label>
+            <label class="control-label" for="label_field"><?=$this->lang->line('codex_label_field')?></label>
             <div class="controls">
                 <input type="text" name="label_field[]" value="" class="label_field" /> 
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="name_field">Name field</label>
+            <label class="control-label" for="name_field"><?=$this->lang->line('codex_name_field')?></label>
             <div class="controls">
                 <input type="text" name="name_field[]" value="" class="name_field" /> 
-                <span class="help-inline">It should only contain letters and numbers</span>
+                <span class="help-inline"><?=$this->lang->line('codex_contain_letters_numbers')?></span>
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="required_field">Required field</label>
+            <label class="control-label" for="required_field"><?=$this->lang->line('codex_required_field')?></label>
             <div class="controls">
                 <input type="hidden" class="tmp-ckeck-parent" name="required_field[]" value="0">
                 <input type="checkbox" class="tmp-ckeck" value="1" /> 
             </div>
         </div>
         <div class="control-group ">
-            <label class="control-label" for="type_field">Type field</label>
+            <label class="control-label" for="type_field"><?=$this->lang->line('codex_type_field')?></label>
             <div class="controls">
                 <select name="type_field[]" class="type_field" class="type_field">
                     <option value="-">-</option>
-                    <option value="textbox">Text</option>
-                    <option value="password">Password</option>
-                    <option value="textarea">Textarea</option>
-                    <option value="date">Date</option>
-                    <option value="time">Date Time</option>
-                    <option value="dropdown">DropDown</option>
-                    <!--<option value="dbdropdown">DbDropDown</option>
-                    <option value="manytomany">ManyToMany</option>-->
-                    <option value="checkbox">Checkbox</option>
-                    <option value="radio">Radio button</option>
-                    <option value="file">File</option>
-                    <option value="image">Image</option>
+                    <option value="textbox"><?=$this->lang->line('codex_type_text')?></option>
+                    <option value="password"><?=$this->lang->line('codex_type_password')?></option>
+                    <option value="textarea"><?=$this->lang->line('codex_type_textarea')?></option>
+                    <option value="date"><?=$this->lang->line('codex_type_date')?></option>
+                    <option value="time"><?=$this->lang->line('codex_type_date_time')?></option>
+                    <option value="dropdown"><?=$this->lang->line('codex_type_drop_down')?></option>
+                    <!--<option value="dbdropdown"><?=$this->lang->line('codex_type_db_drop_down')?></option>
+                    <option value="manytomany"><?=$this->lang->line('codex_type_many_to_many')?></option>-->
+                    <option value="checkbox"><?=$this->lang->line('codex_type_checkbox')?></option>
+                    <option value="radio"><?=$this->lang->line('codex_type_radio')?></option>
+                    <option value="file"><?=$this->lang->line('codex_type_file')?></option>
+                    <option value="image"><?=$this->lang->line('codex_type_image')?></option>
                 </select>
                 <? if(!empty($dictionaries)): ?>
                 <select name="dictionaries[]" class="dictionaries">
-                    <option value="0">выбери из списка</option>
+                    <option value="0"><?=$this->lang->line('codex_select_from_list')?></option>
                     <? foreach($dictionaries as $row): ?>
                         <option value="<?=$row->id?>"><?=$row->desc?></option>
                     <? endforeach; ?>
@@ -251,9 +249,9 @@ jQuery(document).ready(function(){
         </div>
         <div class="group-new"></div>
     </div>
-<div class="form-actions" style="background:none"> <button  id="add_field" class="btn btn-success add_field" href="#"><i class="icon-plus icon-white"></i> Add new field</button>   </div>
+<div class="form-actions" style="background:none"> <button  id="add_field" class="btn btn-success add_field" href="#"><i class="icon-plus icon-white"></i> <?=$this->lang->line('codex_add_new_field')?></button>   </div>
 </fieldset>
 <div class="form-actions">
-    <button type="submit" class="btn btn-primary">Create new component</button>    
+    <button type="submit" class="btn btn-primary"><?=$this->lang->line('codex_create_new_component')?></button>    
 </div>
 </form>

@@ -52,7 +52,7 @@ function getSearchItemHTML($fields,$query,$selected_field,$asset_folder){
                             $fields = $this->input->post('fields');
 
                             if(count($queries) != count($fields))
-                                show_error("Problem with setup of keywords vs fields...");
+                                show_error($this->lang->line('codex_search_keywords_vs_fields'));
 
                             if($queries){
                                 echo form_input('query[]',current($queries)); 
@@ -76,7 +76,7 @@ function getSearchItemHTML($fields,$query,$selected_field,$asset_folder){
                                 array_shift($fields); 
                             ?>
                         </select>
-                                <button type="submit" class="btn">Search</button>
+                                <button type="submit" class="btn"><?=$this->lang->line('codex_search')?></button>
                        
                         <div id="search-overflow">
                         <?php

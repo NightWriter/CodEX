@@ -58,7 +58,7 @@ $this->codextemplates->inlineJS('js-init',$js);
 ?>
 <div id="codex-table">
 <form method="post">
-Пользователь:
+<?=$this->lang->line('codex_consumer')?>:
             <select name="filter_user">
                 <option value=""></option>
                 <?php
@@ -71,7 +71,7 @@ $this->codextemplates->inlineJS('js-init',$js);
                     }
                 ?>
             </select>
-Таблица:
+<?=$this->lang->line('codex_table')?>:
           <select name="filter_table">
             <option value=""></option>
             <?php
@@ -84,8 +84,8 @@ $this->codextemplates->inlineJS('js-init',$js);
                     }
                 ?>
             </select>
-Дата с: <input class="text" size="7" id="codexdatepicker_from" type="text" value="<?=$this->input->post('filter_date_from')?>" name="filter_date_from">
-Дата по: <input class="text" size="7" id="codexdatepicker_to" type="text" value="<?=$this->input->post('filter_date_to')?>" name="filter_date_to">
+<?=$this->lang->line('codex_date_from')?>: <input class="text" size="7" id="codexdatepicker_from" type="text" value="<?=$this->input->post('filter_date_from')?>" name="filter_date_from">
+<?=$this->lang->line('codex_date_to')?>: <input class="text" size="7" id="codexdatepicker_to" type="text" value="<?=$this->input->post('filter_date_to')?>" name="filter_date_to">
 
 <input type="image" src="<?php echo $this->codexadmin->asset_folder; ?>/images/search.png" id="search-submit" />
 </form>
@@ -150,7 +150,7 @@ $this->codextemplates->inlineJS('js-init',$js);
         <?php echo form_close(); ?>
 
         <div id="select-all">
-            <a id="select-all-anchor" href="#">Select All</a>
+            <a id="select-all-anchor" href="#"><?=$this->lang->line('codex_select_all')?></a>
 
             <div id="pager" class="pager">
                 <form>

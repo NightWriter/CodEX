@@ -135,7 +135,7 @@
             ?>
             <?php
                 }else{
-                    echo '<h3><a href="#">Развернуть</a></h3>
+                    echo '<h3><a href="#">'.$this->lang->line('codex_expand').'</a></h3>
                         <div>
                             <p';
                     if((strstr($val,$main_url[2])) || (strcmp(humanize($key),humanize($this->page_header)) == 0)){ echo ' id="active-page"';$active=$i;}
