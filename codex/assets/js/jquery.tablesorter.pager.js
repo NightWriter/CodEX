@@ -95,6 +95,35 @@
                 }
             }
             
+            function moveToSaidPage(table)
+            {
+                var c = table.config;
+                var temp = $(c.cssPageDisplay,c.container).val().split('/');
+                
+                if(typeof(temp[0]) != 'undefined')
+                    c.page = parseInt(temp[0]) - 1;
+                if(typeof(temp[1]) != 'undefined')
+                    c.totalPages = parseInt(temp[1]);
+                
+                if(c.ajax){
+                    
+                    $.post(c.controllerLink,{query:c.query,field:c.field,per_page:c.size,page:c.page},function(data){
+                        if(data){
+                            
+                            $("#main-table tbody").html(data); 
+                            $("#main-table").trigger("update"); 
+                            
+                            updatePageDisplay(c);
+                            renderTable(table);
+                        }
+                    });
+                    
+                    
+                }else{
+                    
+                    moveToPage(table);
+                }
+            }
             function moveToNextPage(table) {
                 var c = table.config;
                 c.page++;
@@ -162,9 +191,11 @@
             
             function renderTable(table,rows) {
                 
+                if(typeof(rows) == 'undefined') return false;
+                
                 var c = table.config;
-                if(rows)
-                    var l = rows.length;
+                
+                var l = rows.length;
                 var s = (c.page * c.size);
                 var e = (s + c.size);
                 
@@ -203,6 +234,7 @@
                         }
                     }
                }
+               
                 fixPosition(table,tableBody);
                 
                 $(table).trigger("applyWidgets");
@@ -281,6 +313,13 @@
                     $(config.cssPageSize,pager).change(function() {
                         setPageSize(table,parseInt($(this).val()));
                         return false;
+                    });
+                    $(config.cssPageDisplay,pager).keydown(function(e) {
+                        if(e.keyCode == 13)
+                        {
+                            moveToSaidPage(table);
+                            return false;
+                        }
                     });
                 });
             };
