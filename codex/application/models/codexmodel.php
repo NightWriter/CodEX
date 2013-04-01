@@ -59,12 +59,12 @@ class CodexModel extends CI_Model{
                 $this->db->select($key);
                 
             $this->db->where($this->codexadmin->primary_key,$id);
+
             $row = $this->db->get($table,1);
-            
+          
             if(sizeof($data) == 0)
                 foreach($row->list_fields() as $field)
                     $data[$field] = '';
-                    
             $before = array();
             if($row->num_rows == 1){
                 foreach($data as $key=>$val)
@@ -86,15 +86,76 @@ class CodexModel extends CI_Model{
     function _add($table,$data){
         if($this->table_data_logs == $table)
             return;
-        $this->data_logs($table,0,$data);//заносим  в таблицу логов
-        return $this->db->insert($table,$data);
+        
+        foreach($data as $k=>$v)
+        {
+            if(!is_array($v))
+            {
+                
+                $this->data_logs($table,0,$data);//заносим  в таблицу логов
+                $res = $this->db->insert($table,$data);
+                // ВАЖНО!! РАБОТАЕТ ТОЛЬКО ПРИ ОТКЛЮЧЕННОМ ДЕБАГЕ В config/database.php
+                // 1452 - код ошибки вставки с неустановленным ключем.
+                if($this->db->_error_number())
+                {
+                    if($this->db->_error_number() == DATABASE_INSERT_FOREIGN_KEY_ERROR)
+                    {
+                        $tables_russian_names = array();
+                        $related_tables = $this->get_related_tables($table);
+                        // так как имя каждой таблицы совпадает с одноименным yml-файлом, считаем из него заголовок
+                        foreach($related_tables as $related_table)
+                        {
+                            $temp_table_yml_file = $this->spyc->YAMLLOAD($this->codexadmin->getDefinitionFileName($related_table));
+                            $tables_russian_names[] = $temp_table_yml_file['page_header'];
+                        }
+                        $error_message = 'Обязательна установленная связь с таблицами '.implode(',',$tables_russian_names);
+                        throw new Exception($error_message);
+                    }
+                    else
+                    {
+                         throw new Exception($this->db->_error_message());
+                    }
+                }
+                return $res;
+            }
+            else
+            {
+                $this->data_logs($table,0,$v);//заносим  в таблицу логов
+                $this->db->insert($table,$v);
+
+            }
+        }
+        return;
     }
     function _edit($table,$id,$data){
         if($this->table_data_logs == $table)
             return;
         $this->data_logs($table,$id,$data);//заносим  в таблицу логов
         $this->db->where($this->codexadmin->primary_key,$id);
-        return $this->db->update($table,$data);
+        $res = $this->db->update($table,$data);
+        
+        
+        // ВАЖНО!! РАБОТАЕТ ТОЛЬКО ПРИ ОТКЛЮЧЕННОМ ДЕБАГЕ В config/database.php
+        // 1452 - код ошибки вставки с неустановленным ключем.
+
+        if(empty($res) && $this->db->_error_number() == DATABASE_INSERT_FOREIGN_KEY_ERROR)
+        {
+            $tables_russian_names = array();
+            $related_tables = $this->get_related_tables($table);
+            // так как имя каждой таблицы совпадает с одноименным yml-файлом, считаем из него заголовок
+            foreach($related_tables as $related_table)
+            {
+                $temp_table_yml_file = $this->spyc->YAMLLOAD($this->codexadmin->getDefinitionFileName($related_table));
+                $tables_russian_names[] = $temp_table_yml_file['page_header'];
+            }
+            $error_message = 'Обязательна установленная связь с таблицами '.implode(',',$tables_russian_names);
+            throw new Exception($error_message);
+        }
+        else if(empty($res))
+        {
+             throw new Exception($this->db->_error_message());
+        }
+        return $res;
         /*echo $this->db->last_query();
         exit;*/
     }
@@ -102,7 +163,28 @@ class CodexModel extends CI_Model{
         if($this->table_data_logs == $table)
             return;
         $this->data_logs($table,$id);//заносим  в таблицу логов
-        return $this->db->delete($table, array($this->codexadmin->primary_key => $id));
+        $res = $this->db->delete($table, array($this->codexadmin->primary_key => $id));
+        if($this->db->_error_number())
+        {
+            if($this->db->_error_number() == DATABASE_DELETE_FOREIGN_KEY_ERROR)
+            {
+                $tables_russian_names = array();
+                $related_tables = $this->get_related_tables($table);
+                // так как имя каждой таблицы совпадает с одноименным yml-файлом, считаем из него заголовок
+                foreach($related_tables as $related_table)
+                {
+                    $temp_table_yml_file = $this->spyc->YAMLLOAD($this->codexadmin->getDefinitionFileName($related_table));
+                    $tables_russian_names[] = $temp_table_yml_file['page_header'];
+                }
+                $error_message = 'Нельзя удалить записть, пока существует связь с таблицами '.implode(',',$tables_russian_names);
+                throw new Exception($error_message);
+            }
+            else
+            {
+                throw new Exception($this->db->_error_message());
+            }
+        }
+        return $res;
     }
     //
     function copy_row($table,$id){
@@ -134,5 +216,28 @@ class CodexModel extends CI_Model{
         if($rows->num_rows > 0)
             return $rows->result();
         return array();
+    }
+    
+    /**
+    * Получить связанные с помощью внешних ключей таблицы
+    * 
+    * @param string $tablename имя таблицы
+    * @return array список таблиц
+    */
+    function get_related_tables($tablename)
+    {
+        // получим список связей для переданной таблицы в текущей базе данных
+        $sql = "SELECT * 
+                    FROM information_schema.KEY_COLUMN_USAGE
+                    WHERE TABLE_SCHEMA =  '{$this->db->database}'
+                    AND TABLE_NAME =  '{$tablename}'
+                    AND CONSTRAINT_NAME <>  'PRIMARY'
+                    AND REFERENCED_TABLE_NAME IS NOT NULL 
+        ";
+        $tables = $this->db->query($sql)->result_array();
+        $result = array();
+        foreach($tables as $table)
+            $result[] = $table['REFERENCED_TABLE_NAME'];
+        return $result;
     }
 }

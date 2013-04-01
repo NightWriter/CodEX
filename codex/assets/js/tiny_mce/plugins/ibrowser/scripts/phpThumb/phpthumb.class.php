@@ -883,7 +883,7 @@ class phpthumb {
 		$AvailableImageOutputFormats = array_unique($AvailableImageOutputFormats);
 		$this->DebugMessage('$AvailableImageOutputFormats = array('.implode(';', $AvailableImageOutputFormats).')', __FILE__, __LINE__);
 
-		$this->f = ereg_replace('[^a-z]', '', strtolower($this->f));
+		$this->f = preg_replace('/[^a-z]/', '', strtolower($this->f));
 		if (strtolower($this->config_output_format) == 'jpg') {
 			$this->config_output_format = 'jpeg';
 		}
@@ -973,7 +973,7 @@ class phpthumb {
 		}
 
 		//if (eregi('^(f|ht)tps?\://', $filename)) {
-		if (eregi('^[a-z0-9]+\:/{1,2}', $filename)) {
+		if (preg_match('/^[a-z0-9]+\:\/{1,2}/', $filename)) {
 			// eg: http://host/path/file.jpg (HTTP URL)
 			// eg: ftp://host/path/file.jpg  (FTP URL)
 			// eg: data1:/path/file.jpg      (Netware path)

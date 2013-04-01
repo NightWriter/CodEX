@@ -86,6 +86,7 @@ img.datepicker_trigger {
 	font-weight: bold;
 	height: 1.3em;
 	width: 272px;
+    min-height: 24px;
 }
 .datepicker_header select {
 	background: #f6fef8;
@@ -93,6 +94,7 @@ img.datepicker_trigger {
 	border: 0px;
 	font-weight: bold;
 	width: 100px;
+    margin-right: 5px;
 }
 .datepicker {
 	background: #ccc;
@@ -181,7 +183,7 @@ img.datepicker_trigger {
 }
 .datepicker_oneMonth {
 	float: left;
-	width: 185px;
+	/*width: 185px;*/
 }
 .datepicker_newRow {
 	clear: left;

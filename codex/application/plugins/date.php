@@ -2,11 +2,21 @@
 
 class Date extends codexForms
 {
-    function Date($name,$params) { 
+    var $_params = array(); // параметры вывода плагина
+    
+    function Date($name,$params) {
+        $this->_params = $params; // заполнение параметров значениями из yml-файла
         codexForms::initiate($name,$params);
     }
 
     function prepForDisplay($value){
+        // если время хранится в формате integer
+        if(!empty($params['params']['type']) && $params['params']['type'] == 'int_time')
+        {
+            // мы должны переконвертировать число секунд с начала эпохи Unix в стандартное время        
+            $value = date('Y-m-d',$value);
+        }
+        // дальнейший вывод - стандартный и не модифицировался.
         if(!empty($value) AND ($value != 0 AND $value != "0000-00-00")){
             $explode = explode('-',$value);
             
@@ -22,12 +32,27 @@ class Date extends codexForms
             return '';
     }
 
+    function prepForDB($value){
+       
+        $params = $this->_params;
+        // значит, время хранится в базе данных в формате integer
+        if(!empty($params['params']['type']) && $params['params']['type'] == 'int_time')
+        {
+            // мы должны переконвертировать введенную дату в число секунд с начала эпохи Unix.        
+            $value = strtotime($value);
+        }
+        // в любом случае, возвращаем value
+        return $value;
+    }
+    
 	function getHTML()
 	{
         $CI = &get_instance();
-        $CI->codextemplates->cssFromAssets('css-datepicker','ui.datepicker.css');
-        $CI->codextemplates->jsFromAssets('js-datepicker','ui.datepicker.js');
-
+        //$CI->codextemplates->cssFromAssets('css-datepicker','ui.datepicker.css');
+        $CI->codextemplates->cssFromAssets('css-datepicker','themes/ui-lightness/jquery-ui-1.7.2.custom.css');
+        //$CI->codextemplates->jsFromAssets('js-datepicker','ui.datepicker.js');
+        $CI->codextemplates->jsFromAssets('js-ui','jquery-ui-1.8.16.custom.min.js');
+        
         if(!empty($this->params['default_value']))
             if($this->params['default_value'] == 'today')
                 $this->value = date('Y-m-d');
@@ -45,7 +70,11 @@ class Date extends codexForms
           <div class="controls">  <input  class="input-xlarge" id="codexdatepicker'.$this->name.'" type="text" value="'.$this->value.'" name="'.$this->element_name.'" '.$this->getAttributes($this->attributes).'></div>
         ';
         $js ="$(document).ready(function() {
-                $('#codexdatepicker".$this->name."').datepicker({dateFormat: 'yy-mm-dd'});
+                $('#codexdatepicker".$this->name."').datepicker({
+                    dateFormat: 'yy-mm-dd',
+                    changeMonth: true,
+                    changeYear: true 
+                    });
               });";
         $CI->codextemplates->inlineJS('js-'.$this->name.'-init',$js); 
 		$html .= $this->suffix;

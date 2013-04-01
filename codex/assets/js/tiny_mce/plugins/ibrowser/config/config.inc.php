@@ -95,13 +95,9 @@
 	// use static image libraries	
 	$cfg['ilibs'] = array (																// image library path with slashes; absolute to root directory - please make sure that the directories have write permissions	
 		array (																		
-			'value'   	=> './images/personnel/',												
-			'text'    	=> 'Превью работника',
+			'value'   	=> 'upload/blog/',												
+			'text'    	=> 'Фото',
 		),
-		array (
-			'value'   	=> './images/projects/', 				
-			'text'    	=> 'Превью работы',
-		),	
 	);
 	//-------------------------------------------------------------------------
 	// use dynamic image libraries - if $cfg['ilibs_inc'] is set, static image libraries above are ignored
@@ -118,7 +114,7 @@
 	$cfg['root_dir']    = ((@$_SERVER['DOCUMENT_ROOT'] && file_exists(@$_SERVER['DOCUMENT_ROOT'] . $_SERVER['PHP_SELF'])) ? $_SERVER['DOCUMENT_ROOT'] : str_replace(dirname(@$_SERVER['PHP_SELF']), '', str_replace('\\', '/', realpath('.'))));
 	$cfg['base_url'] 	= 'http://' . $_SERVER['SERVER_NAME']; 							// base url; e.g. 'http://localhost/'	
 	//$cfg['main_dir'] 	= dirname($_SERVER['PHP_SELF']); 								// iBrowser main dir; e.g. '/home/domain/public_html/ibrowser/'	
-	$cfg['main_dir']    = ereg_replace("//", "/", dirname($_SERVER['PHP_SELF']));
+	$cfg['main_dir']    = str_replace("//", "/", dirname($_SERVER['PHP_SELF']));
 	$cfg['scripts']  	= $cfg['main_dir'] . '/scripts/'; 								// scripts dir; e.g. '/home/domain/public_html/ibrowser/scripts/'	
 	$cfg['pop_url']    	= $cfg['scripts'] . 'popup.php'; 								// popup dir; relative to 'script' dir	
 	$cfg['temp']     	= realpath(dirname(__FILE__) . '/../temp'); 					// temp dir; e.g. 'D:/www/temp'	

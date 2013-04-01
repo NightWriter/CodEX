@@ -3988,3 +3988,10 @@ a.thumbnail:hover {
 .invisible {
   visibility: hidden;
 }
+/* integration*/
+.form-element-text{
+    line-height: 25px;
+}
+.input-xlarge {
+  width: 507px;
+}

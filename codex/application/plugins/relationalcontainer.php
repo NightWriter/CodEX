@@ -70,12 +70,22 @@ class RelationalContainer extends FormContainer
      */
     function setupJS(){
 
+        $append_button=empty($this->can_add_new) ? '' : <<<EOT
+        //Append the "Add New" link
+            $('.{$this->name}-relational').append('<div style="width:50%;margin-bottom:15px"><span class="{$this->name}-relational-anchor codex-relational-anchor">Add new</span></div>');
+            
+            $('.relational-form-close').live('click',function(){
+                $(this).parent().slideUp('fast',function(){\$(this).remove();});
+            });
+EOT;
+        
+        
         $js = <<<EOT
         var {$this->name}iter = {$this->initial_iteration};
         $(document).ready(function() {  
-            //Append the "Add New" link
-            $('.{$this->name}-relational').append('<div style="width:50%;margin-bottom:15px"><span class="{$this->name}-relational-anchor codex-relational-anchor">Add new</span></div>');
 
+            {$append_button}
+            
             $('.{$this->name}-relational-anchor').bind('click',function(){
                 //If the button is clicked for the first time, clear the divs contents
                 if({$this->name}iter == 0){
@@ -122,16 +132,6 @@ class RelationalContainer extends FormContainer
 EOT;
         $this->CI->codextemplates->inlineJS($this->name.'relational-plugin',$js);
 
-
-        $js = <<<EOT
-        $(document).ready(function() {  
-
-            $('.relational-form-close').livequery('click',function(){
-                $(this).parent().slideUp('fast',function(){\$(this).remove();});
-            });
-        });
-EOT;
-        $this->CI->codextemplates->inlineJS('relational-plugin',$js);
     }
 
     /*
@@ -202,7 +202,7 @@ EOT;
                    </label>';
 
         $html .='<div class="controls"><div class="'.$this->name.'-relational codex-relational"  style="float:left">
-                   <select class="codex-relational-left" name="'.$this->element_name.'_null[]" multiple></div>'."\n";
+                   <select style="float:left" class="codex-relational-left" name="'.$this->element_name.'_null[]" multiple></div>'."\n";
 
         foreach($all_foreign_records as $row){
                 $display_field = '';
@@ -230,7 +230,7 @@ EOT;
                         <i class="icon-chevron-left"></i>
                       </button>
                    </div>
-                   <select class="codex-relational-right" name="'.$this->element_name.'_selected_values[]" multiple>';
+                   <select class="codex-relational-right" style="float:left" name="'.$this->element_name.'_selected_values[]" multiple>';
 
         foreach($this->preselected_rows as $row){
                 $display_field = '';
@@ -249,7 +249,7 @@ EOT;
         }
 
         $html .='  </select></div>
-                   <table border=0 cellspacing=0 cellpadding=0>';
+                   <div style="clear:both"><table border=0 cellspacing=0 cellpadding=0>';
                    
         if(!empty($this->change_field)){
             foreach($this->preselected_rows as $row){
@@ -268,36 +268,42 @@ EOT;
                 $html .= '<tr id="change_'.$row[$this->primary_key].'"><td>'.$display_field.':</td><td><input type="text" name="'.$this->change_field.'['.$row[$this->primary_key].']" value="'.$row[$this->change_field].'"></td></tr>'."\n";
             }
         }
-        $html .= '</table><div class="clear"></div>
+        $html .= '</table></div><div class="clear"></div>
                    
                    <input type="hidden" name="'.$this->name.'" value="">
                    <div class="'.$this->name.'-relational-form codex-relational-form">';
-        if(isset($_POST[$this->name]) AND is_array($_POST[$this->name])){
-            foreach($_POST[$this->name] as $row){
-                $this->initial_iteration++;
-                $html .= '
-                    <div ="'.$this->name.'-form-extra">
-                        <div class="relational-form-close">X</div>
-                        '.$this->setupExtraHTML($row,$this->initial_iteration).'
-                    </div>';
+        
+        if(!empty($this->can_add_new)){
+            if(isset($_POST[$this->name]) AND is_array($_POST[$this->name])){
+                foreach($_POST[$this->name] as $row){
+                    $this->initial_iteration++;
+                    $html .= '
+                        <div ="'.$this->name.'-form-extra">
+                            <div class="relational-form-close">X</div>
+                            '.$this->setupExtraHTML($row,$this->initial_iteration).'
+                        </div>';
+                }
             }
+            else
+                $html .= 'Click on the Add new button to add new items to '.$this->label;
+            // extra html
+            $extra_html = '
+                 <div class="'.$this->name.'manytomany-hidden manytomany-hidden" style="display:none">
+                    <div class="'.$this->name.'-form-extra">
+                        <div class="relational-form-close">X</div>
+                        '.$this->setupExtraHTML().'
+                    </div>
+                 </div>';  
+            $this->CI->codextemplates->set('extra-form-html',$extra_html);     
         }
-        else
-            $html .= 'Click on the Add new button to add new items to '.$this->label;
+        
 
         $html .= '
                    </div>
                  </div> 
                    ';
         $html .= $this->suffix;
-        $extra_html = '
-                 <div class="'.$this->name.'manytomany-hidden manytomany-hidden">
-                    <div class="'.$this->name.'-form-extra">
-                        <div class="relational-form-close">X</div>
-                        '.$this->setupExtraHTML().'
-                    </div>
-                 </div>';  
-        $this->CI->codextemplates->set('extra-form-html',$extra_html);
+        
         $this->setupJS();
 		
 		return $html;

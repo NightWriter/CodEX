@@ -142,10 +142,10 @@ class codexValidation {
 				
 			$data[$data] = $rules;
 		}
-	
+	    
 		foreach ($data as $key => $val)
 		{
-            if(is_array($_POST[$key])){
+            if(isset($_POST[$key]) && is_array($_POST[$key])){
                 $flattened = $this->array_flatten($_POST);
                 foreach($flattened as $k=>$v){
                     $this->_rules[$k] = $val;
@@ -287,7 +287,9 @@ class codexValidation {
                         $field = humanize(implode('\'s ',$field));
                     else
                         $field = ucfirst(implode('\'s ',$field));
-                    $this->CI->codexmessages->add('form',$field.'|'.addslashes($line));
+                        
+                    //$this->CI->codexmessages->add('form',$field.'|'.addslashes($line));
+                    $this->CI->codexmessages->add('form',$field.' | '.addslashes(sprintf($line,$field)));
                     //End Zaatar edit
 
 					$this->_error_array[] = sprintf($line, $field);	
@@ -396,7 +398,7 @@ class codexValidation {
                     //End Zaatar Edit
 
 					$message = sprintf($line, $mfield, $mparam);
-                    $this->CI->codexmessages->add('form',$key.'|'.addslashes($message));
+                    $this->CI->codexmessages->add('form',ucfirst($key).' | '.addslashes($message));
 					
 					// Set the error variable.  Example: $this->username_error
 					$error = $field.'_error';

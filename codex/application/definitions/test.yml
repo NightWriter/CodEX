@@ -1,0 +1,5 @@
+page_header: 'проерка'
+groups: 'Dictionaries'
+form_setup:
+    value:
+        class: TextBox

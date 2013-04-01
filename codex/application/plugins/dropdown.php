@@ -47,7 +47,8 @@ class DropDown extends codexForms
             <label for="'.$this->element_name.'" class="control-label">
                 '.$this->label.'
             </label>';
-        $html .= '<select name="'.$this->element_name.((isset($this->params['multiple']) AND $this->params['multiple'] == true)?'[]':'').'" ';
+        
+        $html .= '<div class="controls"><select class="input-xlarge "  name="'.$this->element_name.((isset($this->params['multiple']) AND $this->params['multiple'] == true)?'[]':'').'" ';
 
         if(isset($this->params['multiple']) AND $this->params['multiple'] == true)
             $html .= "multiple ";
@@ -56,7 +57,7 @@ class DropDown extends codexForms
 
         $html .= $this->getList();
 
-        $html .= '</select>';
+        $html .= '</select></div>';
         $html .= $this->suffix;
 		
 		return $html;

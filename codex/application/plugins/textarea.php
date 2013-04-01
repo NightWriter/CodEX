@@ -16,7 +16,11 @@ class TextArea extends codexForms
     }
 
     function prepForDisplay($value){
-        return (stripslashes(strip_tags($value,'<br /><br>')));
+        $value = (stripslashes(strip_tags($value,'<br /><br>')));
+        if (function_exists('mb_strlen') && mb_strlen($value,"utf8")>100)
+            $value = (mb_substr($value,0,100,"utf8").'...');
+        
+        return $value;
     }
 
 	function getHTML()
@@ -42,7 +46,10 @@ class TextArea extends codexForms
                 '.$this->label.'
             </label>
             <textarea id="'.$this->name.'" name="'.$this->element_name.'" '.$this->getAttributes($this->attributes).'>'.$this->br2nl(stripslashes(strip_tags($this->value))).'</textarea>
-        ';*/
+        ';*/ 
+        if(!isset($this->attributes['class'])){
+            $this->attributes['class']='input-xlarge';
+        }
         if(isset($this->_params['params']['serialize'])){
             $html .= '
             <table border=0>

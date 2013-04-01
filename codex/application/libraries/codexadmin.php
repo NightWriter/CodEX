@@ -41,7 +41,7 @@ class codexAdmin {
         $this->primary_key     = (isset($params['primary_key']))? $params['primary_key'] : 'id';
 
         $this->CI->codexforms->setup($this->form_setup,$this->form_prefix,$this->form_suffix);
-
+        
         if(isset($params['display_fields'])){
             if(!is_array($params['display_fields']))
                 $params['display_fields'] = explode(',',$params['display_fields']);

@@ -8,7 +8,8 @@ class ManyToMany extends RelationalContainer
     var $change_field = '';
     var $local_table = '';
     var $foreign_table = '';
-
+    var $display_name = ''; // Display name in table
+    
     function ManyToMany($name,$params) { 
         RelationalContainer::RelationalContainer($name,$params);
         
@@ -25,7 +26,22 @@ class ManyToMany extends RelationalContainer
         $this->display_field = (isset($this->params['display_field']))?
                                    $this->params['display_field'] : 
                                    show_error('A display field must be defined in your YAML file for the ManyToMany plugin ('.$name.')');
+        $this->can_add_new= (isset($this->params['can_add_new'])? $this->params['can_add_new']: true);
+        
+        if(!empty($params['params']['display_name']))
+            $this->display_name = $params['params']['display_name'];
     }
+    
+    /**
+    * Вернет имя поля, если такое задано.
+    * В противном случае - имя таблицы
+    * 
+    */
+    function getDisplayName()
+    {
+        return !empty($this->display_name) ? $this->display_name : parent::getDisplayName();
+    }
+    
 	
     /*
      * REQUIRES: 

@@ -30,6 +30,7 @@ class codexController extends CI_Controller {
     
     var $user_data = array();     
     var $responce  = array();
+    //
     
     function codexController () {
         
@@ -39,9 +40,11 @@ class codexController extends CI_Controller {
         
         $this->load->model('codexmodel');
 
+        $this->load->helper('preview');
+        
         $this->codextemplates->docType('html5');
         $this->codextemplates->setTitle($this->config->item('codex_default_title'));
-        $this->codextemplates->rawHeaderHTML('<meta http-equiv="Content-Type" content="text/html;charset=utf-8">');
+        $this->codextemplates->rawHeaderHTML('<meta http-equiv="Content-Type" content="text/html;charset=utf-8">'); 
     } 
     function _remap($method)
     {
@@ -86,7 +89,7 @@ class codexController extends CI_Controller {
         }
     }
     function setConfig($config){
-        
+         
          $this->table                    = (isset($config['db_table']))? $config['db_table'] : show_error($this->lang->line('codex_table_not_defined'));
          $this->form_setup               = (isset($config['form_setup']))? $config['form_setup'] : show_error($this->lang->line('codex_form_not_defined'));
          
@@ -124,6 +127,10 @@ class codexController extends CI_Controller {
          $this->edit_action              = (isset($config['edit_action']))? $config['edit_action'] : strtolower($this->controller_name).'/execute_edit';
          $this->delete_action            = (isset($config['delete_action']))? $config['delete_action'] : strtolower($this->controller_name).'/manage';
          $this->search_action            = (isset($config['search_action']))? $config['search_action'] : strtolower($this->controller_name).'/search';
+         
+         if(!empty($config['no_search_form']))
+            $this->search_action         = '';
+            
          $this->theme_chooser_action     = (isset($config['template_chooser_action']))? $config['template_chooser_action'] : strtolower($this->controller_name).'/changeTemplate';
          $this->view_mode_chooser_action = (isset($config['view_mode_chooser_action']))? $config['view_mode_chooser_action'] : strtolower($this->controller_name).'/changeViewMode';
          $this->controller_link          = (isset($config['controller_link']))? $config['controller_link'] : strtolower($this->controller_name);
@@ -137,18 +144,24 @@ class codexController extends CI_Controller {
          $this->codexcrumbs->setSelected($this->page_header);
          
          $this->codexadmin->_initialize($config);
-
+         
          $access_level = 0;
          $user_level   = intval($this->codexsession->userdata('user_level'));
          if(!empty($config['access_level']))
             $access_level = intval($config['access_level']);
-        
          if(!$this->codexmodel->check_access($this->uri->uri_string()))
          {
             if($user_level != 3 && ($user_level < $access_level || $access_level == 0))
             {
                 if($red_link = $this->codexmodel->get_redirect_link())
+                {
+                    // если get-параметры - начало  get не нужно
+                    if(strpos($red_link,'?') === 0)
+                        $red_link = substr($red_link,1,strlen($red_link));
+                    // декод спецсимволов в сущности
+                    $red_link = html_entity_decode($red_link);
                     redirect($red_link);
+                }
                 else
                     redirect('login');
             }
@@ -255,7 +268,6 @@ class codexController extends CI_Controller {
 
         //Retrieve all the records
         $query = $this->db->get($this->table,$this->on_one_page);
-        
         //if(!array_key_exists($this->codexadmin->primary_key,$this->form_setup))
             $primary_key = $this->codexadmin->primary_key;
         
@@ -267,11 +279,10 @@ class codexController extends CI_Controller {
                     $this->db->where_in($field,$value);
                 else
                     $this->db->where($field,$value);
-            }
-                
+            }   
         $rows = $this->db->get($this->table);
         $total_rows = $rows->row()->cnt;
-
+        
         $result = $query->result_array();
         
         $this->loadOverview($result,$total_rows);
@@ -525,7 +536,7 @@ class codexController extends CI_Controller {
                     $j=0;
                     foreach($this->codexadmin->display_fields as $k=>$item)
                     {
-                        if(empty($_v[$j])) continue;
+                        if(!isset($_v[$j])) continue;
                         $this->db->set($k,$_v[$j]);
                         ++$j;
                     }
@@ -653,21 +664,97 @@ class codexController extends CI_Controller {
 
         $db_data = array();
         $this->event->trigger('preInsertHook');
-        $db_data = $this->event->trigger('prepForDb',array($_POST));
+        
+        // если мультиаплод файлов
+        if(!empty($_REQUEST['multiupload']))
+        {
+            $db_data = $this->event->trigger('multiUploadFile',array($_POST));
+        }
+        else
+        {
+            $db_data = $this->event->trigger('prepForDb',array($_POST));
+        }
+
+        if(!empty($this->table_access_restriction))
+            $db_data[0] = array_merge($db_data[0],$this->table_access_restriction);
+            
+        if(isset($db_data[0]['date_cr']))
+        {
+            $db_data[0]['date_cr'] = time();
+        }
 
         if(count($db_data) > 0)
-            if($this->codexmodel->_add($this->table,$db_data[0])){
+            try
+            {
+                if($this->codexmodel->_add($this->table,$db_data[0])){
 
-                $this->codexadmin->active_id        = $this->db->insert_id();
-                $_POST[$this->codexadmin->primary_key]            = $this->codexadmin->active_id;
-                $_POST['table']         = $this->table;
-                $this->event->trigger('postInsertHook',array($_POST));
+                    $this->codexadmin->active_id        = $this->db->insert_id();
+                    
+                    if($this->table == 'vehicles')
+                    {
+                        // очищаем ТО
+                        // fixed, было просто $id
+                        $this->main->remove_maintenance_to_vehicles($this->codexadmin->active_id);
+                        //
+                        // добавляем ТО
+                        $_insert_data = array();
+                        
+                        $_insert_data['maintenance_id'] = @$_POST['maintenance'];
+                        $_insert_data['mileage']        = @$_POST['maintenance_mileage'];
+                        $_insert_data['price']          = @$_POST['maintenance_price'];
+                        
+                        $this->main->add_maintenance_to_vehicles($this->codexadmin->active_id,$_insert_data);
+                        
+                        // добавим новую модификацию в список купленных пользователями
+                        $this->main->add_reports_with_new_vehicle($this->codexadmin->active_id, $db_data[0]['model_id']);
+                    }
+                    // нужно найти загруженные картинки и видео и дополнительно продублировать их в аттачи
+                    elseif($this->table == 'blog_posts')
+                    {
+                        $attaches = array();
+                        // регулярка ищет картинки
+                        if(preg_match_all('#<img.*src="([../]*upload/blog/([^"]*))"[^>]*>#',$_POST['text'],$matches)){
+                            if(!empty($matches[2])){
+                                foreach($matches[2] as $key=>$code){
+                                   // отдельно сложим фото и видео 
+                                   $attaches[] = $code;
+                                }    
+                            }                   
+                            
+                        }
+                        
+                        $preview = get_youtube_preview($_POST['text']);
+                        if(empty($preview))
+                            $preview = get_vimeo_preview($_POST['text']);
+                        
+                        if(!empty($preview))
+                        {
+                            $attache = md5($preview).get_ext_from_url($preview);
+                            @copy($preview,'upload/blog/'.$attache);
+                            $attaches[] = $attache;
+                        }
+                        
+                        if(!empty($attaches))
+                        {
+                            $this->blog->add_attaches($this->codexadmin->active_id, $attaches);    
+                        }
+                    }
+                    //
+                    $_POST[$this->codexadmin->primary_key]            = $this->codexadmin->active_id;
+                    $_POST['table']         = $this->table;
+                    $this->event->trigger('postInsertHook',array($_POST));
 
-                $this->codexmessages->add('success',$this->codexadmin->get_message('add_success'));
-                redirect(str_replace('&amp;','&',$this->controller_link));
+                    $this->codexmessages->add('success',$this->codexadmin->get_message('add_success'));
+                    redirect(str_replace('&amp;','&',$this->controller_link));
+                }
+                else{
+                    $this->codexmessages->add('success',$this->codexadmin->get_message('add_failure'));
+                    redirect(str_replace('&amp;','&',$this->controller_link));
+                }
             }
-            else{
-                $this->codexmessages->add('success',$this->codexadmin->get_message('add_failure'));
+            catch (Exception $e)
+            {
+                $this->codexmessages->add('failure',$e->getMessage());
                 redirect(str_replace('&amp;','&',$this->controller_link));
             }
     }
@@ -705,16 +792,55 @@ class codexController extends CI_Controller {
         }
 
         $this->event->trigger('preEditHook',array($this->table,$id));
-        $db_data = $this->event->trigger('prepForDb',array($_POST));
-        
-        if($this->codexmodel->_edit($this->table,$id,$db_data[0])){
-            $this->event->trigger('postEditHook',array($db_data[0]));
-            $this->codexmessages->add('success',$this->codexadmin->get_message('edit_success'));
-            redirect(str_replace('&amp;','&',$this->controller_link));
+        // если мультиаплод файлов
+        if(!empty($_REQUEST['multiupload']))
+        {
+            $db_data = $this->event->trigger('multiUploadFile',array($_POST));
         }
-        else{
-            $this->codexmessages->add('failure',$this->codexadmin->get_message('edit_failure'));
-            redirect(str_replace('&amp;','&',$this->controller_link));
+        else
+        {
+            $db_data = $this->event->trigger('prepForDb',array($_POST));
+        }
+
+        if(isset($db_data[0]) && isset($db_data[0]['date_cr']))
+            unset($db_data[0]['date_cr']);
+        
+        if(isset($db_data[0]) && isset($db_data[0]['date_md']))
+            $db_data[0]['date_md'] = time();
+        // обработаем возможные ошибки при редактировании.
+        try
+        {
+            if($this->codexmodel->_edit($this->table,$id,$db_data[0]))
+            {
+                $this->event->trigger('postEditHook',array($db_data[0]));
+            
+                if($this->table == 'vehicles')
+                {
+                    // очищаем ТО
+                    $this->main->remove_maintenance_to_vehicles($id);
+                    //
+                    // добавляем ТО
+                    $_insert_data = array();
+                    
+                    $_insert_data['maintenance_id'] = @$_POST['maintenance'];
+                    $_insert_data['mileage']        = @$_POST['maintenance_mileage'];
+                    $_insert_data['price']          = @$_POST['maintenance_price'];
+                    
+                    $this->main->add_maintenance_to_vehicles($id,$_insert_data);
+                }
+                    
+                $this->codexmessages->add('success',$this->codexadmin->get_message('edit_success'));
+                redirect(str_replace('&amp;','&',$this->controller_link));
+            }
+            else{
+                $this->codexmessages->add('failure',$this->codexadmin->get_message('edit_failure'));
+                redirect(str_replace('&amp;','&',$this->controller_link));
+            }
+        }
+        catch (Exception $e)
+        {           
+            $this->codexmessages->add('failure',$e->getMessage());
+            redirect(str_replace('&amp;','&',$this->controller_link));    
         }
     }
     function _delete_selected_helper($id){
@@ -734,10 +860,26 @@ class codexController extends CI_Controller {
                 redirect(str_replace('&amp;','&',$this->controller_link));
             }
         }
-
+        
         if($this->event->trigger('preDeleteHook',array($table,$id))){
             $this->event->trigger('prepForDelete',array($table,$id));
-            $this->codexmodel->delete($table,$id);
+            
+            // при удалении машины, удаляем связанные с ними данные
+            if($table == 'vehicles')
+            {
+                $this->main->remove_maintenance_to_vehicles($id);
+            }
+            try
+            {
+                $this->codexmodel->delete($table,$id);
+            }
+            catch (Exception $e)
+            {
+                $this->codexmessages->add('failure',$e->getMessage());
+                redirect(str_replace('&amp;','&',$this->controller_link));    
+            }
+            
+            
             $this->event->trigger('postDeleteHook',array($table,$id));
 
             if($this->db->affected_rows() != 1){
@@ -785,7 +927,6 @@ class codexController extends CI_Controller {
         $this->codextemplates->printHTML();
     }
     function manage(){
-        
         if($id = $this->input->post('edit'))
             return $this->_edit();
 
@@ -876,5 +1017,41 @@ class codexController extends CI_Controller {
         $this->codextemplates->loadView('templates/'.$this->template.'/codex_footer');
         $this->codextemplates->setTitle($this->config->item('codex_site_title').' - '.$data['title']);
         $this->codextemplates->printHTML();
+    }
+    
+    function ajax_file_upload($params = array())
+    {
+        $response = array();
+        $_config = array_merge(array(
+            'upload_path'=>'upload/temp',
+            'sizeLimit'=>10485760,//2 * 1024 * 1024, // Максимально допустимый размер файла, в байтах  
+            'allowed_extensions'=> array(),
+            'saveFileName' => true,
+        ),$params); 
+        $_config['upload_path'] = rtrim('./'.ltrim($_config['upload_path'],'./'),'/').'/';
+        //
+        if(!file_exists('upload/temp')){
+            mkdir('upload/temp',0777);    
+        }
+//        if(!file_exists($_config['upload_path'])){
+//            mkdir($_config['upload_path'],0777);    
+//        } 
+        // библиотека в которой будет храниться код обработчика
+        $this->load->library("qqfileuploader", array($_config['allowed_extensions'], $_config['sizeLimit'],$_config['saveFileName']));
+        // результат работы 'success' => 'true' при успешной загрузке
+        $result = $this->qqfileuploader->handleUpload($_config['upload_path'],true);
+        if(!empty($result["error"])){
+            $response['errors'][]=$result["error"];    
+        }else{
+            $respinse['results']=array();
+            
+            foreach($this->qqfileuploader->uploaded_files as $code)
+            {
+                   $is_image = getimagesize("upload/temp/{$code}")?true:false; 
+                   $response['results'][]= array('name' => $code, 'is_image' => $is_image);
+                   $response['success']=true;
+            }
+        }
+        echo json_encode($response);
     }
 }

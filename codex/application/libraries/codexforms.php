@@ -127,6 +127,9 @@ class codexForms
         $html = "";
         
         foreach($this->objects as $name => $object){
+            // если нужно переопределить форму и взять обратботку некоторых полей
+            if(!empty($object->params['no_display_in_form'])) continue;
+            
 			$html .= $object->getHTML();
         }
         return $html;
@@ -222,7 +225,6 @@ class codexForms
 
     function iterate ($func_name,$param_array=array()){ 
         $return_array = array();
-
         foreach($this->objects as $name=>$obj){
             if(is_array($obj->getIterateNames())){
                 foreach($obj->getIterateNames() as $field){
@@ -236,6 +238,7 @@ class codexForms
                 $return_array[$name] = $this->objects[$name]->$func_name($value,$name);
             }
         }
+        // var_dump($return_array);
         return $return_array;
     }
     function callFuncOnObject($object_name,$func,$params=''){
@@ -258,5 +261,22 @@ class codexForms
     function postInsertHook(){}
     function preEditHook(){}
     function postEditHook(){}
+    function multiUploadFile($value){
+    }
+    
+    /**
+    * Function returns only realy isset fields.
+    * Can be used to separate additional params in $_POST etc.
+    * 
+    */
+    function getRealIssetFields()
+    {
+        $fields = array();
+        foreach($this->objects as $obj)
+        {
+            $fields[] = $obj->element_name;
+        }
+        return $fields;
+    }
 }
 ?>

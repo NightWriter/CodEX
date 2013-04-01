@@ -295,12 +295,11 @@ if (!defined('KH_EVENT_HANDLER'))
     
     		if ($args === null)
     			$args = array ();
-    
+
     		/*
     		 * Iterate over the registered observers triggering the event
     		 * for each observer that handles the event.
     		 */
-    		
     		foreach ($this->_observers as $observer)
     		{
     			if (is_array($observer))
@@ -309,7 +308,6 @@ if (!defined('KH_EVENT_HANDLER'))
                      * Observer in this case is simply a callable function
                      * or class method.
                      */
-    			    
     				if ($observer['event'] == $event)
     				{
                         $results[] = call_user_func_array($observer['handler'], $args);
@@ -322,7 +320,7 @@ if (!defined('KH_EVENT_HANDLER'))
     				/*
     				 * Observer is setup extending the KH_Observer class.
     				 */
-    				
+       
                     if (method_exists($observer, $event))
                     {
                         $args['event'] = $event;

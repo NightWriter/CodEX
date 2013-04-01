@@ -1,0 +1,16 @@
+page_header: 'Test1'
+groups: 'Default'
+rules:
+                    name_field1:trim|required
+form_setup:    
+        name_field1:
+            class: dropdown
+            label: 'label_field1'
+            params:
+                display_name: 'label_field1'
+                list:
+                    -red
+                    -blue
+                    -green
+                    -black
+                    -white

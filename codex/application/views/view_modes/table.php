@@ -64,6 +64,12 @@ var selected = false;
 
 ";
 
+/*echo '<pre>';
+var_dump($this->codexadmin->display_fields); echo '<br>' ;
+var_dump($entries); echo '<br>' ;
+var_dump($this->codexforms->objects); echo '<br>' ;
+echo '</pre>';*/
+
 $this->codextemplates->inlineJS('js-tablesorter-init', $table_sorter_js); ?>
 <div id="codex-table">
 
@@ -79,10 +85,13 @@ $this->codextemplates->inlineJS('js-tablesorter-init', $table_sorter_js); ?>
                         $headers = $this->codexforms->iterate('getDisplayName'); 
                         
                         foreach($this->codexadmin->display_fields as $field=>$header){
+                                if(!empty($this->codexforms->objects[$field]->params['not_display_in_list'])){
+                                    continue;
+                                }
                                     if(isset($headers[$field]))
-                                        echo '<th id="'.$field.'">'.mb_ucfirst($headers[$field]).'</th>'."\n";
+                                        echo '<th style="white-space:nowrap" id="'.$field.'">'.mb_ucfirst($headers[$field]).'</th>'."\n";
                                     else
-                                        echo '<th id="'.$field.'">'.mb_ucfirst($field).'</th>'."\n";
+                                        echo '<th style="white-space:nowrap" id="'.$field.'">'.mb_ucfirst($field).'</th>'."\n";
                         }
                         if(!empty($this->user_link))
                         {
@@ -109,7 +118,11 @@ $this->codextemplates->inlineJS('js-tablesorter-init', $table_sorter_js); ?>
                 <td class="first"><input class="edit-button" type="checkbox" value="<?php echo $entry[$this->codexadmin->primary_key]?>" name="selected_rows[]"/></td>
                    <?php $i = 0; 
                    
-                   foreach($this->codexadmin->display_fields as $field=>$foo){
+                       foreach($this->codexadmin->display_fields as $field=>$foo)
+                       {
+                            if(!empty($this->codexforms->objects[$field]->params['not_display_in_list'])){
+                                    continue;
+                            }
                            echo '<td align="center"  onClick="document.location=\''.site_url(str_replace('{num}',$entry[$this->codexadmin->primary_key],$this->edit_link)).'\'">';
                                if($i == 0){
                                     $anchor = $entry[$field];
@@ -171,6 +184,8 @@ $this->codextemplates->inlineJS('js-tablesorter-init', $table_sorter_js); ?>
                         <option value="20">20</option>
                         <option value="30">30</option>
                         <option  value="40">40</option>
+                        <option  value="60">60</option>
+                        <option  value="100">100</option>
                     </select>
                 </div>
             </div>

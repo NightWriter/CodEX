@@ -1,0 +1,16 @@
+page_header: 'www'
+groups: 'Default'
+rules:
+                    www:trim|required
+form_setup:    
+        www:
+            class: dropdown
+            label: 'www'
+            params:
+                display_name: 'www'
+                list:
+                    -red
+                    -blue
+                    -green
+                    -black
+                    -white

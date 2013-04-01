@@ -14,10 +14,10 @@ class ReadOnly extends codexForms
             $html .= '<div class="failure">'.$this->getMessage($this->name).'</div>';
 
         $html .= '
-            <label for="'.$this->element_name.'">
+            <label class="control-label" for="'.$this->element_name.'">
                 '.$this->label.'
             </label>';
-        $html .= '    <input class="text" type="text" value="'.$this->value.'" disabled="disabled" '.$this->getAttributes($this->attributes).'>
+        $html .= '    <div class="controls"><input class="input-xlarge " type="text" readonly="readonly" value="'.$this->value.'" '.$this->getAttributes($this->attributes).'></div>
         ';
 
         $html .= $this->suffix;

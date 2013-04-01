@@ -10,7 +10,7 @@
                    echo '<li class="active">'.$anchor.'</li>';
             } else {
         echo '  <li>
-    <a href="#">'.$anchor.'</a> <span class="divider">/</span>
+    <a href="'.site_url().'">'.$anchor.'</a> <span class="divider">/</span>
   </li>';    }
          endforeach; ?>
 

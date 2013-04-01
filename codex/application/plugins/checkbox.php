@@ -50,7 +50,6 @@ class CheckBox extends codexForms
     }
 
     function prepForDisplay($value){
-        
         if($value == 'y' || $value == 1)
             return '<img src="'.base_url().'codex/images/status_1.png" border="0" />';
         else 

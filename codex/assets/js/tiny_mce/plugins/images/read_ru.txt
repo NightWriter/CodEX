@@ -1,0 +1,3 @@
+TinyMCE Images Plugin
+
+Сайт автора: http://dustweb.ru/log/projects/tinymce_images/

@@ -1,4 +1,19 @@
 <?php
+        $i=1;
+        $active_link='';
+        while($seg=$this->uri->segment($i)){
+            $active_link.=$seg.'/';
+            $i++ ;
+        }
+        $active_link=rtrim($active_link,'/');
+        $main_url = explode('/',$_SERVER['REQUEST_URI']);
+        if(empty($main_url[2]))
+            $main_url = range(0,3);
+        if(!empty($main_url[2]) && !empty($main_url[3]))
+            $main_url[2] = $main_url[2].'/'.$main_url[3];
+                
+        $expanded_group='';
+                
         //If the user wants to automatically 
         //generate CRUDS for the tables, then get
         //the list of the tables not excluded
@@ -82,6 +97,13 @@
                 foreach($auto_generated_links as $_k=>$_v){
                     if($v['groups'] == $_v['groups']){
                             $_auto_generated_links[$v['groups']][$_v['key']] = $_v;
+                            if(
+                                (strstr($_v['link'],$main_url[2])) 
+                                || (strcmp(humanize($_v['key']),humanize($this->page_header)) == 0)
+                                || ($_v['link']===$active_link)
+                                ){
+                                $expanded_group=$v['groups'];    
+                            }
                     }
                 }
             }
@@ -89,20 +111,12 @@
         }
 ?>
 
-
-
 <div class="accordion" id="accordion-02" style="margin-right:20px">
 
             <?php 
             $active = 0;
             $i=-1;
             $temp = '';
-            
-            $main_url = explode('/',$_SERVER['REQUEST_URI']);
-            if(empty($main_url[2]))
-                $main_url = range(0,3);
-            if(!empty($main_url[2]) && !empty($main_url[3]))
-                $main_url[2] = $main_url[2].'/'.$main_url[3];
             
             //echo $this->page_header;
             
@@ -118,14 +132,14 @@
                                         '.mb_ucfirst($_val['groups'],'UTF8').'
                                     </a>
                                 </div>
-                                <div id="collapse-'.$i.'" class="accordion-body collapse '.((strstr($_val['link'],$main_url[2])) || (strcmp(humanize($_val['key']),humanize($this->page_header)) == 0)?'in':'').'">
+                                <div id="collapse-'.$i.'" class="accordion-body '.($_val['groups']==$expanded_group? 'in' : 'collapse' ).' collapse '.((strstr($_val['link'],$main_url[2])) || (strcmp(humanize($_val['key']),humanize($this->page_header)) == 0)?'in':'').'">
                                     <div class="accordion-inner" style="background-color:whiteSmoke;">
                                         <ul class="nav nav-list">';
                             $temp = $_val['groups'];
                         }
             ?>
                                         <?php echo '<li';
-                                        if((strstr($_val['link'],$main_url[2])) || (strcmp(humanize($_val['key']),humanize($this->page_header)) == 0)){ echo ' class="active"';$active=$i;}
+                                        if((strstr($_val['link'],$main_url[2])) || (strcmp(humanize($_val['key']),humanize($this->page_header)) == 0) || ($_val['link']===$active_link)){ echo ' class="active"';$active=$i;}
                                             echo '>'.codexAnchor($_val['link'],$_val['key'])."</li>\n"; 
                     }
                                         echo '</ul>
