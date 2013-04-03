@@ -50,14 +50,13 @@ class CheckBox extends codexForms
     }
 
     function prepForDisplay($value){
+
+        $CI = & get_instance();
+        
         if($value == 'y' || $value == 1)
-            return '<img src="'.base_url().'codex/images/status_1.png" border="0" />';
+            return '<a href="'.site_url($CI->controller_link.'&update_object=change_checkbox').'" class="checkbox_updated" data-primary_key=\''.$CI->codexadmin->primary_key.'\' data-primary_value=\''.$CI->codexadmin->active_id.'\' data-value=\'0\' data-field=\''.$this->name.'\' data-table=\''.$CI->table.'\' "><img src="'.base_url().'codex/images/status_1.png" id="'.$this->name.$CI->codexadmin->active_id.'" border="0" /></a>';
         else 
-            return '<img src="'.base_url().'codex/images/status_0.png" border="0" />';
-        /*if(!empty($value))
-            return $this->label;
-        else 
-            return '';*/
+            return '<a href="'.site_url($CI->controller_link.'&update_object=change_checkbox').'" class="checkbox_updated" data-primary_key=\''.$CI->codexadmin->primary_key.'\' data-primary_value=\''.$CI->codexadmin->active_id.'\' data-value=\'1\' data-field=\''.$this->name.'\' data-table=\''.$CI->table.'\' "><img src="'.base_url().'codex/images/status_0.png" id="'.$this->name.$CI->codexadmin->active_id.'" border="0" /></a>';
     }
 
 	function getHTML()

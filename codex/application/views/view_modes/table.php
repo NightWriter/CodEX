@@ -123,7 +123,13 @@ $this->codextemplates->inlineJS('js-tablesorter-init', $table_sorter_js); ?>
                             if(!empty($this->codexforms->objects[$field]->params['not_display_in_list'])){
                                     continue;
                             }
-                           echo '<td align="center"  onClick="document.location=\''.site_url(str_replace('{num}',$entry[$this->codexadmin->primary_key],$this->edit_link)).'\'">';
+                            
+                            $on_click = '';
+                            if(!($this->codexforms->objects[$field] instanceof CheckBox))
+                                $on_click = 'onClick="document.location=\''.site_url(str_replace('{num}',$entry[$this->codexadmin->primary_key],$this->edit_link)).'\'"';
+                                
+                            echo '<td align="center" '.$on_click.'>';
+                           
                                if($i == 0){
                                     $anchor = $entry[$field];
                                     

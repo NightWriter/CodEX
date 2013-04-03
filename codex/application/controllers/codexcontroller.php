@@ -188,6 +188,18 @@ class codexController extends CI_Controller {
         $this->codextemplates->jsFromAssets('js-framework','jquery.js');
         $this->codextemplates->jsFromAssets('js-livequery','jquery.livequery.min.js');*/
         
+        /**
+        * обрабатываем обновление полей в списке данных
+        * не заходя на редактирование
+        */
+        if(!empty($_REQUEST['update_object']))
+        {
+            if($_REQUEST['update_object'] == 'change_checkbox')
+            {
+                $this->change_checkbox();
+            }
+            exit;
+        }
     }
     //
     function ajaxPagination($per_page=10,$page=0)
@@ -458,6 +470,31 @@ class codexController extends CI_Controller {
                     $this->db->where($this->table.'.'.$field,$value);
             }
     }
+    /**
+    * обновляем значение Чекбокса
+    * 
+    */
+    function change_checkbox()
+    {
+        $primary_key   = trim($this->input->post('primary_key'));
+        $primary_value = intval($this->input->post('primary_value'));
+        $table = trim($this->input->post('table'));
+        $field = trim($this->input->post('field'));
+        $value = intval($this->input->post('value'));
+        
+        $this->db->set($field,$value);
+        $this->db->where($primary_key,$primary_value);
+        
+        $response = array('success' => FALSE, 'value' => $value);
+        if($this->db->update($table))
+        {
+            $response['value'] = ($value ? 0 : 1);
+            $response['src'] = base_url().'codex/images/status_'.($value ? 1 : 0).'.png';
+            $response['success'] = TRUE;
+        }
+        
+        echo json_encode($response);
+    }
     //
     function change_select()
     {
@@ -690,55 +727,6 @@ class codexController extends CI_Controller {
 
                     $this->codexadmin->active_id        = $this->db->insert_id();
                     
-                    if($this->table == 'vehicles')
-                    {
-                        // очищаем ТО
-                        // fixed, было просто $id
-                        $this->main->remove_maintenance_to_vehicles($this->codexadmin->active_id);
-                        //
-                        // добавляем ТО
-                        $_insert_data = array();
-                        
-                        $_insert_data['maintenance_id'] = @$_POST['maintenance'];
-                        $_insert_data['mileage']        = @$_POST['maintenance_mileage'];
-                        $_insert_data['price']          = @$_POST['maintenance_price'];
-                        
-                        $this->main->add_maintenance_to_vehicles($this->codexadmin->active_id,$_insert_data);
-                        
-                        // добавим новую модификацию в список купленных пользователями
-                        $this->main->add_reports_with_new_vehicle($this->codexadmin->active_id, $db_data[0]['model_id']);
-                    }
-                    // нужно найти загруженные картинки и видео и дополнительно продублировать их в аттачи
-                    elseif($this->table == 'blog_posts')
-                    {
-                        $attaches = array();
-                        // регулярка ищет картинки
-                        if(preg_match_all('#<img.*src="([../]*upload/blog/([^"]*))"[^>]*>#',$_POST['text'],$matches)){
-                            if(!empty($matches[2])){
-                                foreach($matches[2] as $key=>$code){
-                                   // отдельно сложим фото и видео 
-                                   $attaches[] = $code;
-                                }    
-                            }                   
-                            
-                        }
-                        
-                        $preview = get_youtube_preview($_POST['text']);
-                        if(empty($preview))
-                            $preview = get_vimeo_preview($_POST['text']);
-                        
-                        if(!empty($preview))
-                        {
-                            $attache = md5($preview).get_ext_from_url($preview);
-                            @copy($preview,'upload/blog/'.$attache);
-                            $attaches[] = $attache;
-                        }
-                        
-                        if(!empty($attaches))
-                        {
-                            $this->blog->add_attaches($this->codexadmin->active_id, $attaches);    
-                        }
-                    }
                     //
                     $_POST[$this->codexadmin->primary_key]            = $this->codexadmin->active_id;
                     $_POST['table']         = $this->table;
@@ -814,20 +802,6 @@ class codexController extends CI_Controller {
             {
                 $this->event->trigger('postEditHook',array($db_data[0]));
             
-                if($this->table == 'vehicles')
-                {
-                    // очищаем ТО
-                    $this->main->remove_maintenance_to_vehicles($id);
-                    //
-                    // добавляем ТО
-                    $_insert_data = array();
-                    
-                    $_insert_data['maintenance_id'] = @$_POST['maintenance'];
-                    $_insert_data['mileage']        = @$_POST['maintenance_mileage'];
-                    $_insert_data['price']          = @$_POST['maintenance_price'];
-                    
-                    $this->main->add_maintenance_to_vehicles($id,$_insert_data);
-                }
                     
                 $this->codexmessages->add('success',$this->codexadmin->get_message('edit_success'));
                 redirect(str_replace('&amp;','&',$this->controller_link));
@@ -864,11 +838,6 @@ class codexController extends CI_Controller {
         if($this->event->trigger('preDeleteHook',array($table,$id))){
             $this->event->trigger('prepForDelete',array($table,$id));
             
-            // при удалении машины, удаляем связанные с ними данные
-            if($table == 'vehicles')
-            {
-                $this->main->remove_maintenance_to_vehicles($id);
-            }
             try
             {
                 $this->codexmodel->delete($table,$id);
