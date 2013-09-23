@@ -1,0 +1,11 @@
+title:
+    class: TextBox
+    label: 'Caption'
+    params:
+        display_name: 'Caption'
+access:
+    class: ManyToMany
+    label: 'Access to pages'
+    params:
+        display_field: title  
+        display_name: 'Access to pages'
