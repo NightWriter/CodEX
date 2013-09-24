@@ -59,6 +59,7 @@ $lang['codex_new_dictionaries']             = 'New Dictionaries';
 $lang['codex_short_desc']                   = 'Short Desc';
 $lang['codex_alias']                        = 'Alias';
 $lang['codex_contain_letters_numbers']      = 'It should only contain letters and numbers';
+$lang['codex_contain_system_tables']        = 'This field contains the name of the registered';
 $lang['codex_values']                       = 'Values';
 $lang['codex_value']                        = 'Value';
 $lang['codex_add_value']                    = 'Add value';

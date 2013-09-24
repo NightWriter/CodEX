@@ -1,36 +1,40 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed'); 
 
 class codexController extends CI_Controller {
-    var $page_header = "";
-    var $view_mode = "";
-    var $controller_name = "";
-    var $table = "";
-    var $template = "";
-    var $rules = "";
-    var $order_by = "";
-    var $order_type = "";
-    var $on_one_page = "";
-    var $extra_uri_segments = "";
-    var $table_access_restriction = array();
+    
+    protected $system_table_list = array('access','access_access_level','access_level','admin_data_logs'
+                                          ,'ci_sessions','dictionaries','example','import','related_example'
+                                          ,'users','user_records');
+    public $page_header = "";
+    public $view_mode = "";
+    public $controller_name = "";
+    public $table = "";
+    public $template = "";
+    public $rules = "";
+    public $order_by = "";
+    public $order_type = "";
+    public $on_one_page = "";
+    public $extra_uri_segments = "";
+    public $table_access_restriction = array();
 
-    var $add_link         ;     
-    var $import_link      ;     
-    var $export_link      ;     
-    var $edit_link        ;     
-    var $controller_link  ;    
+    public $add_link         ;     
+    public $import_link      ;     
+    public $export_link      ;     
+    public $edit_link        ;     
+    public $controller_link  ;    
      
-    var $user_link        = '';
-    var $ordering_link    = '';     
-    var $pagination_link  = '';
+    public $user_link        = '';
+    public $ordering_link    = '';     
+    public $pagination_link  = '';
     
-    var $add_action       ;     
-    var $edit_action      ;     
-    var $delete_action    ;     
-    var $copy_action    ;     
-    var $search_action    ;     
+    public $add_action       ;     
+    public $edit_action      ;     
+    public $delete_action    ;     
+    public $copy_action    ;     
+    public $search_action    ;     
     
-    var $user_data = array();     
-    var $responce  = array();
+    public $user_data = array();     
+    protected $responce  = array();
     //
     
     function codexController ()

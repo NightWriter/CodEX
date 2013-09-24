@@ -11,7 +11,7 @@ class Date extends codexForms
 
     function prepForDisplay($value){
         // если время хранится в формате integer
-        if(!empty($params['params']['type']) && $params['params']['type'] == 'int_time')
+        if(!empty($this->_params['params']['type']) && $this->_params['params']['type'] == 'int_time')
         {
             // мы должны переконвертировать число секунд с начала эпохи Unix в стандартное время        
             $value = date('Y-m-d',$value);
@@ -34,9 +34,8 @@ class Date extends codexForms
 
     function prepForDB($value){
        
-        $params = $this->_params;
         // значит, время хранится в базе данных в формате integer
-        if(!empty($params['params']['type']) && $params['params']['type'] == 'int_time')
+        if(!empty($this->_params['params']['type']) && $this->_params['params']['type'] == 'int_time')
         {
             // мы должны переконвертировать введенную дату в число секунд с начала эпохи Unix.        
             $value = strtotime($value);
@@ -45,13 +44,17 @@ class Date extends codexForms
         return $value;
     }
     
-	function getHTML()
-	{
+    function getHTML()
+    {
         $CI = &get_instance();
         //$CI->codextemplates->cssFromAssets('css-datepicker','ui.datepicker.css');
         $CI->codextemplates->cssFromAssets('css-datepicker','themes/ui-lightness/jquery-ui-1.7.2.custom.css');
         //$CI->codextemplates->jsFromAssets('js-datepicker','ui.datepicker.js');
         $CI->codextemplates->jsFromAssets('js-ui','jquery-ui-1.8.16.custom.min.js');
+        
+        // значит, время хранится в базе данных в формате integer
+        if(!empty($this->_params['params']['type']) && $this->_params['params']['type'] == 'int_time')
+            $this->value = date('Y-m-d',$this->value);
         
         if(!empty($this->params['default_value']))
             if($this->params['default_value'] == 'today')
@@ -77,10 +80,8 @@ class Date extends codexForms
                     });
               });";
         $CI->codextemplates->inlineJS('js-'.$this->name.'-init',$js); 
-		$html .= $this->suffix;
-		
-		return $html;
-	}
+        $html .= $this->suffix;
+        
+        return $html;
+    }
 }
-
-?>

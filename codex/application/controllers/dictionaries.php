@@ -18,10 +18,10 @@ class Dictionaries extends codexController
     //
     function check_alias()
     {
-        $name          = $this->input->post('name');
+        $name = (string)trim($this->input->post('name'));
         
         if(preg_match('/[^a-zA-Z0-9_]+/u',$name))
-            exit('0');
+            exit('1');
         
         $name = strip_tags(trim($name));
         if(empty($name))

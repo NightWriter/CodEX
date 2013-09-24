@@ -10,14 +10,17 @@ class Construct extends codexController
     // проверяем уникальность для компонента
     function check_alias()
     {
-        $name = $this->input->post('name');
+        $name = strip_tags(trim($this->input->post('name')));
         if(preg_match('/[^a-zA-Z0-9_]+/u',$name))
             exit('0');
-        $file_name = strip_tags(trim($name));
-        if(empty($file_name))
+            
+        if(empty($name))
+            exit('0');
+        
+        if(in_array($name,$this->system_table_list,TRUE))
             exit('0');
             
-        $file_name .= '.yml';
+        $file_name = $name.'.yml';
         $files = get_files('./codex/application/definitions/');
         
         if(!in_array($file_name,$files))
@@ -94,6 +97,9 @@ class Construct extends codexController
         if(preg_match('/[^a-zA-Z0-9_]+/u',$alias))
             $data['messages']['failure'][] = $this->lang->line('codex_alias').' '.$this->lang->line('codex_contain_letters_numbers');
         
+        if(in_array($alias,$this->system_table_list,TRUE))
+            $data['messages']['failure'][] = $this->lang->line('codex_alias').' '.$this->lang->line('codex_contain_system_tables');
+            
         if(in_array($file_name,$files))
             $data['messages']['failure'][] = $this->lang->line('codex_alias').' "'.$alias.'" '.$this->lang->line('codex_exists');
         //
