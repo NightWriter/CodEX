@@ -20,7 +20,7 @@ class Dictionaries extends codexController
     {
         $name = (string)trim($this->input->post('name'));
         
-        if(preg_match('/[^a-zA-Z0-9_]+/u',$name))
+        if(preg_match('/[^a-zA-Z0-9_]+/',$name))
             exit('1');
         
         $name = strip_tags(trim($name));
@@ -53,7 +53,7 @@ class Dictionaries extends codexController
         {
             $data['messages']['failure'][] = $this->lang->line('codex_alias').' "'.$alias.'" '.$this->lang->line('codex_exists');
         }
-        if(preg_match('/[^a-zA-Z0-9_]+/u',$alias))
+        if(preg_match('/[^a-zA-Z0-9_]+/',$alias))
             $data['messages']['failure'][] = $this->lang->line('codex_alias').': '.$this->lang->line('codex_contain_letters_numbers');
         
         if(empty($title))

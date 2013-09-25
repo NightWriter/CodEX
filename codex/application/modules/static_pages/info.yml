@@ -1,0 +1,6 @@
+title: 'Static pages'
+description: ''
+access:
+    - /codex/application/definitions
+    - /application/modules
+    - /uploads

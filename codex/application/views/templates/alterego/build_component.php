@@ -12,7 +12,7 @@ jQuery(document).ready(function(){
         
         var val = jQuery(this).val();
         
-        if( val == 'dropdown' || val == 'checkbox' || val == 'radio' )
+        if( val == 'dropdown' || val == 'radiogroup' )
             if (jQuery(this).next().hasClass('dictionaries'))
                 jQuery(this).next().show();
         
@@ -181,7 +181,7 @@ jQuery(document).ready(function(){
                     <!--<option value="dbdropdown"><?=$this->lang->line('codex_type_db_drop_down')?></option>
                     <option value="manytomany"><?=$this->lang->line('codex_type_many_to_many')?></option>-->
                     <option value="checkbox"><?=$this->lang->line('codex_type_checkbox')?></option>
-                    <option value="radio"><?=$this->lang->line('codex_type_radio')?></option>
+                    <option value="radiogroup"><?=$this->lang->line('codex_type_radio')?></option>
                     <option value="file"><?=$this->lang->line('codex_type_file')?></option>
                     <option value="image"><?=$this->lang->line('codex_type_image')?></option>
                 </select>
@@ -233,7 +233,7 @@ jQuery(document).ready(function(){
                     <!--<option value="dbdropdown"><?=$this->lang->line('codex_type_db_drop_down')?></option>
                     <option value="manytomany"><?=$this->lang->line('codex_type_many_to_many')?></option>-->
                     <option value="checkbox"><?=$this->lang->line('codex_type_checkbox')?></option>
-                    <option value="radio"><?=$this->lang->line('codex_type_radio')?></option>
+                    <option value="radiogroup"><?=$this->lang->line('codex_type_radio')?></option>
                     <option value="file"><?=$this->lang->line('codex_type_file')?></option>
                     <option value="image"><?=$this->lang->line('codex_type_image')?></option>
                 </select>

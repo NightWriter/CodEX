@@ -1,0 +1,54 @@
+page_header: 'Static pages'
+groups: 'Static pages'
+rules:
+    title: required
+    text: required
+form_setup:
+    title:
+        class: TextBox
+        label: 'Title'
+        params:
+            display_name: 'Title'
+    ind:
+        class: DropDown
+        label: 'Type'
+        params:
+            display_name: 'Type'
+            list:
+                rules: 'Rules'
+                ad: 'Ad'
+    text:
+        class: TextArea
+        label: 'Content'
+        params:
+            display_name: 'Content'
+    preview:
+        class: Image
+        label: 'Превью'
+        params:
+            base_path: uploads/static_pages/
+            url_path: uploads/static_pages/[id]/
+            upload_path: ./uploads/static_pages/[id]/
+            max_count_subfolders: static_pages
+            encrypt_name: false
+            display_name: 'Превью'
+    meta_title:
+        class: TextBox
+        label: 'META title'
+        params:
+            display_name: 'META title'
+    meta_description:
+        class: TextBox
+        label: 'META description'
+        params:
+            display_name: 'META description'
+    meta_keywords:
+        class: TextBox
+        label: 'META keywords'
+        params:
+            display_name: 'META keywords'
+    date_cr:
+        class: Time
+        label: 'Date create'
+        params:
+            display_name: 'Date create'

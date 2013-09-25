@@ -1,0 +1,22 @@
+page_header: 'News Category'
+groups: 'News'
+rules:
+    title: required
+form_setup:
+    title:
+        class: TextBox
+        label: 'Title'
+        params:
+            display_name: 'Title'
+    in_main:
+        class: CheckBox
+        label: 'In main'
+        params:
+            display_name: 'In main'
+    alias:
+        class: AliasBox
+        label: 'Alias'
+        params:
+            display_name: 'Alias'
+            table: news_categories
+            field: alias

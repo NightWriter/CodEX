@@ -99,6 +99,18 @@ EOD;
                             $errors[] = "Problem creating the new database. Do you have enough privleges to do so?";
                     }
 ///
+                $sql = 'CREATE TABLE IF NOT EXISTS `modules` (
+                          `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                          `alias` varchar(50) NOT NULL,
+                          `date_install` int(11) NOT NULL,
+                          PRIMARY KEY (`id`)
+                        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;';
+
+                $result = mysql_query($sql);
+                
+                if(!$result)
+                   $warnings['modules'] = "Problem creating the modules table: ".mysql_error();
+                
                 $sql = 'CREATE TABLE IF NOT EXISTS `access` (
                   `id` int(11) NOT NULL AUTO_INCREMENT,
                   `title` varchar(255) NOT NULL,

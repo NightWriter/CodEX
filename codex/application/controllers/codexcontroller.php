@@ -4,7 +4,7 @@ class codexController extends CI_Controller {
     
     protected $system_table_list = array('access','access_access_level','access_level','admin_data_logs'
                                           ,'ci_sessions','dictionaries','example','import','related_example'
-                                          ,'users','user_records');
+                                          ,'users','user_records','modules');
     public $page_header = "";
     public $view_mode = "";
     public $controller_name = "";

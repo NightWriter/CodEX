@@ -1,0 +1,6 @@
+title: 'News'
+description: 'News module  in site'
+access:
+    - /codex/application/definitions
+    - /application/modules
+    - /uploads

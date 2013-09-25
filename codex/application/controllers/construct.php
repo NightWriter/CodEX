@@ -11,7 +11,7 @@ class Construct extends codexController
     function check_alias()
     {
         $name = strip_tags(trim($this->input->post('name')));
-        if(preg_match('/[^a-zA-Z0-9_]+/u',$name))
+        if(preg_match('/[^a-zA-Z0-9_]+/',$name))
             exit('0');
             
         if(empty($name))
@@ -94,7 +94,7 @@ class Construct extends codexController
         if(empty($alias))
             $data['messages']['failure'][] = $this->lang->line('codex_alias_empty');
         
-        if(preg_match('/[^a-zA-Z0-9_]+/u',$alias))
+        if(preg_match('/[^a-zA-Z0-9_]+/',$alias))
             $data['messages']['failure'][] = $this->lang->line('codex_alias').' '.$this->lang->line('codex_contain_letters_numbers');
         
         if(in_array($alias,$this->system_table_list,TRUE))
@@ -128,7 +128,7 @@ class Construct extends codexController
                 if($k == 0 || $v == '-') continue;
                 
                 $type = '';
-                if(in_array($v, array('textbox','aliasbox','checkbox','dropdown','password','radio','image','file')))
+                if(in_array($v, array('textbox','aliasbox','checkbox','dropdown','password','radiogroup','image','file')))
                     $type = 'varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci ';
                 
                 if($v == 'date')
@@ -159,7 +159,7 @@ class Construct extends codexController
             params:
                 display_name: '".strip_tags(trim($_POST['label_field'][$k]))."'";
                 
-                if(in_array($v,array('dropdown','checkbox','radio')) && !empty($_POST['dictionaries'][$k]))
+                if(in_array($v,array('dropdown','radiogroup')) && !empty($_POST['dictionaries'][$k]))
                 {
                     $yml_fields .= '
                 list:';

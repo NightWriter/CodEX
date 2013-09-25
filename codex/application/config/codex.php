@@ -48,5 +48,6 @@ $config['codex_navigation']         = array(
                                         'Administrations'=>array('groups'=>'System','link'=>'userregistration'),
                                         'Access levels' => array('groups'=>'System', 'link'=>'access_level'),
                                         'Build Components'=>array('groups'=>'System', 'link'=>'construct'),
-                                        'Build Dictionaries'=>array('groups'=>'System', 'link'=>'dictionaries')
+                                        'Build Dictionaries'=>array('groups'=>'System', 'link'=>'dictionaries'),
+                                        'Modules'=>array('groups'=>'System', 'link'=>'modules')
                                       );
